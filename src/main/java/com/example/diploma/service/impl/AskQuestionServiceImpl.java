@@ -1,5 +1,9 @@
 package com.example.diploma.service.impl;
 
+import com.example.diploma.dao.QuestionDao;
+import com.example.diploma.dto.CreateQuestionDTORequest;
+import com.example.diploma.dto.QuestionDTOResponse;
+import com.example.diploma.mapper.QuestionMapper;
 import com.example.diploma.model.Question;
 import com.example.diploma.service.AskQuestionService;
 import com.example.diploma.repo.QuestionRepository;
@@ -10,14 +14,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AskQuestionServiceImpl implements AskQuestionService {
 
+    private final QuestionDao questionDao;
     private final QuestionRepository questionRepository;
 
-    public Question createQuestion(Question question) {
-        System.out.println(question);
-        Question questionFromRepo = questionRepository.findByQuestion(question.getQuestion());
+    @Override
+    public QuestionDTOResponse createQuestion(CreateQuestionDTORequest questionDto) {
+
+        Question questionFromRepo = questionDao.findByQuestion(questionDto.getQuestion());
+        Question question = new Question();
+
         if (questionFromRepo == null) {
-            questionRepository.save(question);
+            question = questionRepository.save(QuestionMapper.mapToQuestion(questionDto));
         }
-        return question;
+        return QuestionMapper.mapToQuestionDto(question);
     }
 }

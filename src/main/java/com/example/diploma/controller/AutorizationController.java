@@ -2,12 +2,17 @@ package com.example.diploma.controller;
 
 import com.example.diploma.enumiration.ERole;
 import com.example.diploma.jwt.JwtUtils;
+import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Role;
+import com.example.diploma.model.Teacher;
 import com.example.diploma.model.User;
 import com.example.diploma.pojo.JwtResponse;
 import com.example.diploma.pojo.LoginRequest;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.pojo.SignUpRequest;
+import com.example.diploma.repo.PupilRepository;
+import com.example.diploma.repo.RoleRepository;
+import com.example.diploma.repo.TeacherRepository;
 import com.example.diploma.repo.UserRepository;
 import com.example.diploma.service.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;

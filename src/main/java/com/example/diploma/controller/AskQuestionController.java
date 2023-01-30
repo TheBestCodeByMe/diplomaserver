@@ -1,5 +1,7 @@
 package com.example.diploma.controller;
 
+import com.example.diploma.dto.CreateQuestionDTORequest;
+import com.example.diploma.dto.QuestionDTOResponse;
 import com.example.diploma.model.Question;
 import com.example.diploma.service.AskQuestionService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ public class AskQuestionController {
     private final AskQuestionService askQuestionService;
 
     @PostMapping("/addQuestion")
-    public Question createQuestion(@Validated @RequestBody Question question) {
+    public QuestionDTOResponse createQuestion(@Validated @RequestBody CreateQuestionDTORequest question) {
         return askQuestionService.createQuestion(question);
     }
 }

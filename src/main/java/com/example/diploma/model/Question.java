@@ -34,11 +34,12 @@ public class Question {
     @Column(name = "close_date", nullable = true)
     private Date closeDate;
 
-
-    public Question(String question, String response, boolean flag) {
+    public Question(String question, boolean flag, Long statusId, String code, Date createDate) {
         this.question = question;
-        this.response = response;
         this.flag = flag;
+        this.statusId = statusId;
+        this.code = code;
+        this.createDate = createDate;
     }
 
     @Override
