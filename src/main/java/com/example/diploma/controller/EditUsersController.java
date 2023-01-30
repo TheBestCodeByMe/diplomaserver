@@ -20,7 +20,7 @@ import java.util.Map;
 public class EditUsersController { // TODO: убрать возможность нескольких добавлений пользователя к ученику/учителю
 
     private final EditUsersService editUsersService;
-
+/*
     @PostMapping("/createPupilDTO")
     public Pupil createPupil(@Validated @RequestBody PupilDTO pupilDTO) {
         return editUsersService.createPupil(pupilDTO);
@@ -66,5 +66,5 @@ public class EditUsersController { // TODO: убрать возможность 
     @PostMapping("/unblockUser/{login}")
     public Map<String, Boolean> unblockUser(@PathVariable(value = "login") String login) {
         return editUsersService.unblockUser(login);
-    }
+    }*/
 }

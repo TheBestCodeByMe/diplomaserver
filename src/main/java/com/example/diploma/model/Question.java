@@ -42,6 +42,16 @@ public class Question {
         this.createDate = createDate;
     }
 
+    public Question(String question, String response, boolean flag, Long statusId, String code, Date createDate, Date closeDate) {
+        this.question = question;
+        this.response = response;
+        this.flag = flag;
+        this.statusId = statusId;
+        this.code = code;
+        this.createDate = createDate;
+        this.closeDate = closeDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

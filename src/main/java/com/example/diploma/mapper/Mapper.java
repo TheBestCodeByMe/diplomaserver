@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Mapper {
-    public static PupilDTO mapToPupilDTO(Pupil pupils, Parents parents, Classroom classrooms) {
+/*    public static PupilDTO mapToPupilDTO(Pupil pupils, Parents parents, Classroom classrooms) {
         PupilDTO pupilDTOS = new PupilDTO();
         pupilDTOS.setName(pupils.getName());
         pupilDTOS.setLastname(pupils.getLastname());
@@ -181,5 +181,5 @@ public class Mapper {
         diaryDTO.setClassName(classroom.getName());
 
         return diaryDTO;
-    }
+    }*/
 }

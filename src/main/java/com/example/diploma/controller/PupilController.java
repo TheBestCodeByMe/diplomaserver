@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/pupil")
 @RequiredArgsConstructor
 public class PupilController {
-
+/*
     private final PupilService pupilService;
 
     @PostMapping("/getByUserId")
     public PupilDTO getPupilByFIO(@RequestBody String userId) {
         return pupilService.getPupilByFIO(userId);
     }
+}*/
 }

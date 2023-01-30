@@ -14,7 +14,7 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final TeacherRepository teacherRepository;
-
+/*
     @Override
     public List<Teacher> getAllTeacher() {
         return teacherRepository.findAll();
@@ -30,5 +30,5 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Teacher getTeacherByUserId(String userId) {
         return teacherRepository.findByUserId(Long.parseLong(userId));
-    }
+    }*/
 }

@@ -5,7 +5,7 @@ import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.model.User;
 import com.example.diploma.exception.ResourceNotFoundException;
-import com.example.diploma.map.Mapper;
+import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.UserService;
 import com.example.diploma.repo.PupilRepository;
 import com.example.diploma.repo.TeacherRepository;
@@ -25,13 +25,13 @@ public class UserServiceImpl implements UserService {
 
     private final PupilRepository pupilRepository;
 
-    private final TeacherRepository teacherRepository;
+    private final TeacherRepository teacherRepository;/*
 
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
-    }
-
+    }*/
+/*
     @Override
     public ResponseEntity<UserDTO> getUserById(Long userId)
             throws ResourceNotFoundException {
@@ -76,5 +76,5 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
         return ResponseEntity.ok(userDetails);
-    }
+    }*/
 }

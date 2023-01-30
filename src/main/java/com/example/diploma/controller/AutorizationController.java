@@ -55,7 +55,7 @@ public class AutorizationController {
 
     @Autowired
     JwtUtils jwtUtils;
-
+/*
     @PostMapping("/signIn")
     public ResponseEntity<?> authUser(@RequestBody LoginRequest loginRequest) {
         //Set<String> role = new HashSet<String>();
@@ -160,5 +160,5 @@ public class AutorizationController {
             teacherRepository.save(teacher);
         }
         return ResponseEntity.ok(new MessageResponse("User CREATED"));
-    }
+    }*/
 }

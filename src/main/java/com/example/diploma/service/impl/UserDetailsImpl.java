@@ -23,6 +23,7 @@ public class UserDetailsImpl implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
     private String status;
     private String link;
+/*
 
     public UserDetailsImpl(Long id, String login, String password,  Collection<? extends GrantedAuthority> authorities, String status, String link) {
         this.id = id;
@@ -46,6 +47,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getStatus(),
                 user.getLink());
     }
+*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

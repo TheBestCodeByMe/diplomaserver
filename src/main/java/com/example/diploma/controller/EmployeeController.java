@@ -15,7 +15,7 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-
+/*
     @GetMapping("/getAll")
     public List<Teacher> getAllTeacher() {
         return employeeService.getAllTeacher();
@@ -30,4 +30,5 @@ public class EmployeeController {
     public Teacher getTeacherByUserId(@RequestBody String userId) {
         return employeeService.getTeacherByUserId(userId);
     }
+}*/
 }

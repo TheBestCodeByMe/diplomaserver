@@ -15,11 +15,11 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class DirectorController {
-
+/*
     private final DirectorService directorService;
 
     @GetMapping("/classroomDTO")
     public List<ClassroomDTO> getAllClassroom() {
         return directorService.getAllClassroom();
-    }
+    }*/
 }

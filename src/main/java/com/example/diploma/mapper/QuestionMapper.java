@@ -6,6 +6,8 @@ import com.example.diploma.model.*;
 import com.example.diploma.service.impl.GenerationCodeServiceImpl;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 public class QuestionMapper {
@@ -17,7 +19,7 @@ public class QuestionMapper {
 
     public static Question mapToQuestion(CreateQuestionDTORequest question) {
         return new Question (
-                question.getQuestion(), true, EStatus.ACTIVE.getId(), GenerationCodeServiceImpl.generateCode(), Date.from(Instant.ofEpochSecond(System.currentTimeMillis()))
+                question.getQuestion(), null, true, EStatus.ACTIVE.getId(), GenerationCodeServiceImpl.generateCode(), java.sql.Timestamp.valueOf(LocalDateTime.now()), null
         );
     }
 }

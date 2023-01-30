@@ -4,7 +4,7 @@ import com.example.diploma.dto.PupilDTO;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Parents;
 import com.example.diploma.model.Pupil;
-import com.example.diploma.map.Mapper;
+import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.PupilService;
 import com.example.diploma.repo.ClassroomRepository;
 import com.example.diploma.repo.ParentsRepository;
@@ -21,12 +21,12 @@ public class PupilServiceImpl implements PupilService {
     private final ParentsRepository parentsRepository;
 
     private final ClassroomRepository classroomRepository;
-
+/*
     @Override
     public PupilDTO getPupilByFIO(String userId) {
         Pupil pupil = pupilRepository.findByUserId(Long.parseLong(userId));
         Parents parents = parentsRepository.getById(pupil.getParentsId());
         Classroom classroom = classroomRepository.getById(pupil.getClassroomId());
         return Mapper.mapToPupilDTO(pupil, parents, classroom);
-    }
+    }*/
 }

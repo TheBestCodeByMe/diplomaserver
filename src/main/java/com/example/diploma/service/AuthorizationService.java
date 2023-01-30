@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface AuthorizationService {
 
-    ResponseEntity<?> authUser(LoginRequest loginRequest);
+    /*ResponseEntity<?> authUser(LoginRequest loginRequest);
 
-    ResponseEntity<?> registerUser(SignUpRequest signupRequest);
+    ResponseEntity<?> registerUser(SignUpRequest signupRequest);*/
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class UserController {
-
+/*
     private final UserService userService;
 
     @GetMapping("/users")
@@ -34,5 +34,5 @@ public class UserController {
     public ResponseEntity<UserDTO> updateUser(@PathVariable(value = "id") Long userId,
                                            @Validated @RequestBody UserDTO userDetails) throws ResourceNotFoundException {
         return userService.updateUser(userId, userDetails);
-    }
+    }*/
 }

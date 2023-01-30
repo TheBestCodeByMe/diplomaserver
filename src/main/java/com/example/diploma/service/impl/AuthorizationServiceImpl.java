@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AuthorizationServiceImpl implements AuthorizationService {
-
+/*
     // не работает
     private final AuthenticationManager authenticationManager;
 
@@ -111,10 +111,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Your role is null"));
-/*            Role userRole = roleRepository
+*//*            Role userRole = roleRepository
                     .findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
-              roles.add(userRole);*/
+              roles.add(userRole);*//*
         } else {
             reqRoles.forEach(r -> {
                 switch (r) {
@@ -150,5 +150,5 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             teacherRepository.save(teacher);
         }
         return ResponseEntity.ok(new MessageResponse("User CREATED"));
-    }
+    }*/
 }

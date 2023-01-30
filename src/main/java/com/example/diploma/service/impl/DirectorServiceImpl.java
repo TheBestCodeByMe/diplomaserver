@@ -3,7 +3,7 @@ package com.example.diploma.service.impl;
 import com.example.diploma.dto.ClassroomDTO;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Teacher;
-import com.example.diploma.map.Mapper;
+import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.DirectorService;
 import com.example.diploma.repo.ClassroomRepository;
 import com.example.diploma.repo.TeacherRepository;
@@ -17,7 +17,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class DirectorServiceImpl implements DirectorService {
-
+/*
     private final TeacherRepository teacherRepository;
 
     private final ClassroomRepository classroomRepository;
@@ -35,5 +35,5 @@ public class DirectorServiceImpl implements DirectorService {
             }
         }
         return classroomDTOList;
-    }
+    }*/
 }

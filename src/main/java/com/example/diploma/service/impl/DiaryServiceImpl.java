@@ -2,7 +2,7 @@ package com.example.diploma.service.impl;
 
 import com.example.diploma.dto.DiaryDTO;
 import com.example.diploma.model.*;
-import com.example.diploma.map.Mapper;
+//import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.repo.*;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -19,7 +19,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class DiaryServiceImpl implements DiaryService {
-
+/*
     private final AttendanceRepository attendanceRepository;
 
     private final AcademicPerfomanceRepository academicPerfomanceRepository;
@@ -292,5 +292,5 @@ public class DiaryServiceImpl implements DiaryService {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
+    }*/
 }

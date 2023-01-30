@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface EditUsersService {
-    Pupil createPupil(PupilDTO pupilDTO);
+   /* Pupil createPupil(PupilDTO pupilDTO);
 
     List<PupilDTO> getAllPupilDTO();
 
@@ -28,5 +28,5 @@ public interface EditUsersService {
 
     Map<String, Boolean> blockUser(String login) throws ResourceNotFoundException;
 
-    Map<String, Boolean> unblockUser(String login);
+    Map<String, Boolean> unblockUser(String login);*/
 }

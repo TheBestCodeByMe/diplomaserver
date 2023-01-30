@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/diary")
 @RequiredArgsConstructor
 public class DiaryController {
-
+/*
     private final DiaryService diaryService;
 
     @PostMapping("/addAttendanceAndAcademicPerfomance")
@@ -74,5 +74,5 @@ public class DiaryController {
             throws ResourceNotFoundException {
         diaryService.saveGradesByUserId(userId);
         return ResponseEntity.ok().body("okeyy");
-    }
+    }*/
 }

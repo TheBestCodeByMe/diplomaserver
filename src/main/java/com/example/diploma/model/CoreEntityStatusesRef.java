@@ -18,9 +18,9 @@ import java.util.Objects;
 public class CoreEntityStatusesRef {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="core_entity_statuses_ref_id")
+    @Column(name="entity_status_id")
     private Long id;
-    @Column(name = "core_entity_statuses_ref_name", nullable = false)
+    @Column(name = "entity_status_name", nullable = false)
     private EStatus name;
 
     @Override

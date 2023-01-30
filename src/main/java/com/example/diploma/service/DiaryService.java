@@ -6,7 +6,7 @@ import com.example.diploma.model.*;
 import java.util.List;
 
 public interface DiaryService {
-    DiaryDTO addAcademicPerfomance(DiaryDTO diaryDTO);
+/*    DiaryDTO addAcademicPerfomance(DiaryDTO diaryDTO);
 
     DiaryDTO addAttendance(DiaryDTO diaryDTO);
 
@@ -24,5 +24,5 @@ public interface DiaryService {
 
     double getAverageGrade(Long id);
 
-    void saveGradesByUserId(Long userId);
+    void saveGradesByUserId(Long userId);*/
 }

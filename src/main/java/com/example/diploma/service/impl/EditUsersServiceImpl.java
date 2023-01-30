@@ -6,7 +6,7 @@ import com.example.diploma.dto.SheduleDTO;
 import com.example.diploma.model.*;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.exception.ResourceNotFoundException;
-import com.example.diploma.map.Mapper;
+import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.EditUsersService;
 import com.example.diploma.repo.*;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class EditUsersServiceImpl implements EditUsersService {
     private final CalendarRepository calendarRepository;
 
     private final SheduleRepository sheduleRepository;
-
+/*
     @Override
     public Pupil createPupil(PupilDTO pupilDTO) {
         Pupil pupil = Mapper.mapPupilDTOToPupil(pupilDTO);
@@ -201,5 +201,5 @@ public class EditUsersServiceImpl implements EditUsersService {
             response.put("notUnBlocked", Boolean.FALSE);
         }
         return response;
-    }
+    }*/
 }

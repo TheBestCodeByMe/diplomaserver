@@ -4,7 +4,7 @@ package com.example.diploma.service.impl;
 import com.example.diploma.dto.SheduleDTO;
 import com.example.diploma.model.*;
 import com.example.diploma.exception.ResourceNotFoundException;
-import com.example.diploma.map.Mapper;
+import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.SheduleService;
 import com.example.diploma.repo.*;
 import lombok.RequiredArgsConstructor;
@@ -35,13 +35,13 @@ public class SheduleServiceImpl implements SheduleService {
     private final TeacherRepository teacherRepository;
 
     private final CalendarRepository calendarRepository;
-
+/*
     @Override
     public ResponseEntity<List<SheduleDTO>> getScheduleByIdAndDate(@PathVariable(value = "userId") Long userId, @PathVariable(value = "date") String date)
             throws ResourceNotFoundException {
         return ResponseEntity.ok().body(getScheduleDTOByIdAndDate(userId, date));
-    }
-
+    }*/
+/*
     @Override
     public List<SheduleDTO> getScheduleDTOByIdAndDate(Long userId, String date) {
         Pupil pupil = pupilRepository.findByUserId(userId);
@@ -59,6 +59,6 @@ public class SheduleServiceImpl implements SheduleService {
             sheduleDTOList.add(sheduleDTO);
         }
         return sheduleDTOList;
-    }
+    }*/
 
 }
