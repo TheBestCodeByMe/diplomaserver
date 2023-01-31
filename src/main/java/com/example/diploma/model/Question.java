@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "question_from_users")
+@Table(name = "questions_from_users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,15 +19,15 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "question_from_users_question", nullable = false)
+    @Column(name = "questions_from_users_question", nullable = false)
     private String question;
-    @Column(name = "question_from_users_response")
+    @Column(name = "questions_from_users_response")
     private String response;
-    @Column(name = "question_from_users_flag")
+    @Column(name = "questions_from_users_flag")
     private boolean flag;
-    @Column(name = "question_from_users_status_id", nullable = false)
+    @Column(name = "questions_from_users_status_id", nullable = false)
     private Long statusId;
-    @Column(name = "question_from_users_code", nullable = false)
+    @Column(name = "questions_from_users_code", nullable = false)
     private String code;
     @Column(name = "create_date", nullable = false)
     private Date createDate;

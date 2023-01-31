@@ -197,7 +197,7 @@ CREATE TABLE if not exists questions_from_users
     questions_from_users_response varchar(10000),
     questions_from_users_flag     boolean,
     questions_from_users_status_id   bigint  not null,
-    question_from_users_code varchar(50) not null unique,
+    questions_from_users_code varchar(50) not null unique,
     create_date   date not null,
     close_date    date,
     FOREIGN KEY (questions_from_users_status_id) REFERENCES core_entity_statuses_ref(entity_status_id)
