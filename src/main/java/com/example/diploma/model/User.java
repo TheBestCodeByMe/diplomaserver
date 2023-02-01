@@ -1,5 +1,6 @@
 package com.example.diploma.model;
 
+import com.example.diploma.enumiration.ERole;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,6 +48,13 @@ public class User {
     public User(String login, String password, Long status) {
         this.login = login;
         this.password = password;
+        this.status = status;
+    }
+
+    public User(String login, String password, Set<Role> roles, Long status) {
+        this.login = login;
+        this.password = password;
+        this.roles = roles;
         this.status = status;
     }
 

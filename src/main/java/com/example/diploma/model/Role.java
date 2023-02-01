@@ -24,7 +24,7 @@ public class Role {
     @Column(length = 20, name="role_name")
     private ERole name;
 
-    public Role(ERole rolePupil) {
+    public Role(ERole role) {
     }
 
     @Override
