@@ -1,6 +1,7 @@
 package com.example.diploma.controller;
 
 import com.example.diploma.enumiration.ERole;
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.jwt.JwtUtils;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Role;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/auth")
@@ -55,7 +57,7 @@ public class AutorizationController {
 
     @Autowired
     JwtUtils jwtUtils;
-/*
+
     @PostMapping("/signIn")
     public ResponseEntity<?> authUser(@RequestBody LoginRequest loginRequest) {
         //Set<String> role = new HashSet<String>();
@@ -87,7 +89,7 @@ public class AutorizationController {
 
     @PostMapping("/signUp")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signupRequest) {
-                if (userRepository.existsByLogin(signupRequest.getLogin())) {
+        if (userRepository.existsByLogin(signupRequest.getLogin())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is exist"));
@@ -112,7 +114,7 @@ public class AutorizationController {
 
         User user = new User(signupRequest.getLogin(),
                 passwordEncoder.encode(signupRequest.getPassword()),
-                signupRequest.getStatus());
+                EStatus.getId(signupRequest.getStatus()));
 
         Set<String> reqRoles = signupRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -121,10 +123,10 @@ public class AutorizationController {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Your role is null"));
-            Role userRole = roleRepository
+/*            Role userRole = roleRepository
                     .findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
-              roles.add(userRole);
+              roles.add(userRole);*/
         } else {
             reqRoles.forEach(r -> {
                 switch (r) {
@@ -160,5 +162,5 @@ public class AutorizationController {
             teacherRepository.save(teacher);
         }
         return ResponseEntity.ok(new MessageResponse("User CREATED"));
-    }*/
+    }
 }

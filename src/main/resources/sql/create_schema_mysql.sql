@@ -15,9 +15,6 @@ create table if not exists users
     user_password varchar(200) not null,
     user_status_id   bigint  not null,
     user_link     varchar(100) default null,
-    user_code    varchar(100) not null unique,
-    create_date   date not null,
-    close_date    date,
     FOREIGN KEY (user_status_id) REFERENCES core_entity_statuses_ref(entity_status_id)
 );
 

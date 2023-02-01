@@ -35,22 +35,19 @@ public class User {
     private Long status;
     @Column(name = "user_link", nullable = true)
     private String link;
-    @Column(name = "user_code", nullable = false)
-    private String code;
-    @Column(name = "create_date", nullable = false)
-    private Date createDate;
-    @Column(name = "close_date", nullable = true)
-    private Date closeDate;
 
-    public User(String login, String password, Set<Role> roles, Long status, String link, String code, Date createDate, Date closeDate) {
+    public User(String login, String password, Set<Role> roles, Long status, String link) {
         this.login = login;
         this.password = password;
         this.roles = roles;
         this.status = status;
         this.link = link;
-        this.code = code;
-        this.createDate = createDate;
-        this.closeDate = closeDate;
+    }
+
+    public User(String login, String password, Long status) {
+        this.login = login;
+        this.password = password;
+        this.status = status;
     }
 
     @Override
@@ -58,11 +55,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles) && Objects.equals(status, user.status) && Objects.equals(link, user.link) && Objects.equals(code, user.code) && Objects.equals(createDate, user.createDate) && Objects.equals(closeDate, user.closeDate);
+        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles) && Objects.equals(status, user.status) && Objects.equals(link, user.link);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, roles, status, link, code, createDate, closeDate);
+        return Objects.hash(id, login, password, roles, status, link);
     }
 }

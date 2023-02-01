@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class UserDetailsImpl implements UserDetails {
 
     @Serial
@@ -21,11 +22,10 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
-    private String status;
+    private Long status;
     private String link;
-/*
 
-    public UserDetailsImpl(Long id, String login, String password,  Collection<? extends GrantedAuthority> authorities, String status, String link) {
+    public UserDetailsImpl(Long id, String login, String password,  Collection<? extends GrantedAuthority> authorities, Long status, String link) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -47,7 +47,6 @@ public class UserDetailsImpl implements UserDetails {
                 user.getStatus(),
                 user.getLink());
     }
-*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,7 +63,7 @@ public class UserDetailsImpl implements UserDetails {
         return login;
     }
 
-    public String getStatus() {
+    public Long getStatus() {
         return status;
     }
 
