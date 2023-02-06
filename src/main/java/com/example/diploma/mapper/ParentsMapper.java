@@ -2,6 +2,7 @@ package com.example.diploma.mapper;
 
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Parents;
 import com.example.diploma.model.Pupil;
@@ -21,6 +22,7 @@ public class ParentsMapper {
         parent.setLastnameMom(createPupilDTORequest.getLastnameMom());
         parent.setPatronymicMom(createPupilDTORequest.getPatronymicMom());
         parent.setCode(parentsCode);
+        parent.setStatusId(EStatus.ACTIVE.getId());
         parent.setCreateDate(valueOf(LocalDateTime.now()));
         parent.setCloseDate(null);
 

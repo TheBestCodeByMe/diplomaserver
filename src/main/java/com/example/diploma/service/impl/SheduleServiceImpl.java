@@ -1,20 +1,10 @@
 package com.example.diploma.service.impl;
 
 
-import com.example.diploma.dto.SheduleDTO;
-import com.example.diploma.model.*;
-import com.example.diploma.exception.ResourceNotFoundException;
-import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.SheduleService;
 import com.example.diploma.repo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

@@ -1,15 +1,11 @@
 package com.example.diploma.service.impl;
 
-import com.example.diploma.dao.ClassroomDao;
-import com.example.diploma.dao.ParentsDao;
-import com.example.diploma.dao.SubjectDao;
-import com.example.diploma.dao.TeacherDao;
+import com.example.diploma.dao.*;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
+import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
-import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
-import com.example.diploma.dto.teacher.TeacherDTO;
 import com.example.diploma.mapper.*;
 import com.example.diploma.model.*;
 import com.example.diploma.pojo.MessageResponse;
@@ -29,6 +25,8 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     private final PupilRepository pupilRepository;
 
+    private final PupilDao pupilDao;
+
     private final ParentsRepository parentsRepository;
 
     private final ParentsDao parentsDao;
@@ -47,7 +45,11 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     private final CalendarRepository calendarRepository;
 
-    private final SheduleRepository sheduleRepository;
+    private final CalendarDao calendarDao;
+
+    private final SheduleRepository scheduleRepository;
+
+    private final ScheduleDao scheduleDao;
 
     @Override
     public ResponseEntity<?> createPupil(CreatePupilDTORequest createPupilDTORequest) {
@@ -56,25 +58,28 @@ public class EditUsersServiceImpl implements EditUsersService {
         Classroom classroom = ClassroomMapper.mapCreatePupilDTOToClassroom(createPupilDTORequest);
         Classroom classroomFromDB = classroomDao.findClassroomByName(classroom.getName());
 
-        if (classroomFromDB != null) {
-            pupil.setClassroomId(classroomFromDB.getId());
-
-            Parents parent = parentsDao.findByFIO(parents.getNameDad(), parents.getLastnameDad(), parents.getPatronymicDad(), parents.getNameMom(), parents.getLastnameMom(), parents.getPatronymicMom());
-
-            if (parent != null) {
-                pupil.setParentsId(parent.getId());
-            } else {
-                parentsRepository.save(parents);
-                Parents newParents = parentsRepository.findByNameDadAndLastnameDadAndPatronymicDadAndNameMomAndLastnameMomAndPatronymicMom(parents.getNameDad(), parents.getLastnameDad(), parents.getPatronymicDad(), parents.getNameMom(), parents.getLastnameMom(), parents.getPatronymicMom());
-                pupil.setParentsId(newParents.getId());
-            }
-            return pupilRepository.save(pupil);
+        if (pupilDao.findByFio(pupil.getName(), pupil.getLastname(), pupil.getPatronymic()) != null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой учащийся уже существует"));
         } else {
-            return ResponseEntity.badRequest().body("Error: Такого класса не существует");
-        }
 
-        Pupil pupil1 = new Pupil();
-        return pupilRepository.save(pupil1);
+            if (classroomFromDB != null) {
+                pupil.setClassroomId(classroomFromDB.getId());
+
+                Parents parent = parentsDao.findByFIO(parents.getNameDad(), parents.getLastnameDad(), parents.getPatronymicDad(), parents.getNameMom(), parents.getLastnameMom(), parents.getPatronymicMom());
+
+                if (parent != null) {
+                    pupil.setParentsId(parent.getId());
+                } else {
+                    parentsRepository.save(parents);
+                    Parents newParents = parentsDao.findByCode(parents.getCode());
+                    pupil.setParentsId(newParents.getId());
+                }
+            } else {
+                return ResponseEntity.badRequest().body("Error: Такого класса не существует");
+            }
+
+            return ResponseEntity.ok(PupilMapper.mapToPupilDTO(pupilRepository.save(pupil), parents, classroom));
+        }
     }
 /*
     @Override
@@ -117,38 +122,38 @@ public class EditUsersServiceImpl implements EditUsersService {
         }
         return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой предмет уже есть"));
     }
-/*
+
     @Override
-    public SheduleDTO createSheduleDTO(SheduleDTO sheduleDTO) {
-        Classroom classroom = classroomRepository.findClassroomByName(sheduleDTO.getClassroomName());
-        Subject subject = subjectRepository.findBySubjectName(sheduleDTO.getSubjectName());
-        Teacher teacher = teacherRepository.findByNameAndLastNameAndPatronymic(sheduleDTO.getNameTeacher(), sheduleDTO.getLastnameTeacher(), sheduleDTO.getPatronymicTeacher());
-        Calendar calendar = calendarRepository.findByLessonNumberAndWeekDay(sheduleDTO.getLessonNumber(), sheduleDTO.getWeekDay());
+    public ResponseEntity<?> createScheduleDTO(CreateScheduleDTORequest createScheduleDTORequest) {
+        Classroom classroom = classroomDao.findClassroomByName(createScheduleDTORequest.getClassroomName());
+        Subject subject = subjectDao.findBySubjectName(createScheduleDTORequest.getSubjectName());
+        Teacher teacher = teacherDao.findByFio(createScheduleDTORequest.getNameTeacher(), createScheduleDTORequest.getLastnameTeacher(), createScheduleDTORequest.getPatronymicTeacher());
+        Calendar calendar = calendarDao.findByLessonNumberAndWeekDay(createScheduleDTORequest.getLessonNumber(), createScheduleDTORequest.getWeekDay());
 
         if (classroom == null) {
-            sheduleDTO.setSubjectName("Такого класса не существует");
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого класса не существует: " + createScheduleDTORequest.getClassroomName()));
         } else if (subject == null) {
-            sheduleDTO.setSubjectName("Такого предмета не существует");
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого предмета не существует"));
         } else if (teacher == null) {
-            sheduleDTO.setSubjectName("Такого преподавателя не существует");
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого преподавателя не существует"));
         } else if (calendar == null) {
-            sheduleDTO.setSubjectName("Такого времени урока не существует");
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого времени урока не существует"));
         } else {
-            Shedule shedule = Mapper.mapSheduleDTOToShedule(sheduleDTO, calendar.getId(), teacher.getId(), subject.getId(), classroom.getId());
+            Shedule schedule = ScheduleMapper.mapScheduleDTOToSchedule(createScheduleDTORequest, calendar.getId(), teacher.getId(), subject.getId(), classroom.getId(), GenerationCodeServiceImpl.generateCode());
 
-            if (sheduleRepository.findByCalendarIdAndClassroomIDAndDateAndSubjectIDAndTeacherIDAndWeekDay(shedule.getCalendarId(), shedule.getClassroomID(), shedule.getDate(), shedule.getSubjectID(), shedule.getTeacherID(), shedule.getWeekDay()) != null) {
-                sheduleDTO.setSubjectName("Такое расписание уже есть");
-            } else if (sheduleRepository.findByTeacherIDAndCalendarIdAndDate(shedule.getTeacherID(), shedule.getCalendarId(), shedule.getDate()) != null) {
-                sheduleDTO.setSubjectName("Учитель занят в это время");
-            } else if (sheduleRepository.findByCalendarIdAndClassroomIDAndDate(shedule.getCalendarId(), shedule.getClassroomID(), shedule.getDate()) != null) {
-                sheduleDTO.setSubjectName("У класса уже есть занятие в это время");
+            // don`t work, if exist
+            if (scheduleDao.findSchedule(schedule.getCalendarId(), schedule.getClassroomID(), schedule.getDate(), schedule.getSubjectID(), schedule.getTeacherID(), schedule.getWeekDay()) != null) {
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: Такое расписание уже есть"));
+            } else if (scheduleDao.findForTeacher(schedule.getTeacherID(), schedule.getCalendarId(), schedule.getDate()) != null) {
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: Учитель занят в это время"));
+            } else if (scheduleDao.findForClassroom(schedule.getCalendarId(), schedule.getClassroomID(), schedule.getDate()) != null) {
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: У класса уже есть занятие в это время"));
             } else {
-                sheduleRepository.save(shedule);
+                return ResponseEntity.ok(ScheduleMapper.mapScheduleToScheduleDTO(scheduleRepository.save(schedule), calendar, subject, teacher, classroom));
             }
         }
-        return sheduleDTO;
     }
-*/
+
     @Override
     public ResponseEntity<?> createClassroom(ClassroomDTO classroomDTO) {
         Teacher teacher = teacherDao.findByFio(classroomDTO.getClassroomTeacherName(), classroomDTO.getClassroomTeacherLastname(), classroomDTO.getClassroomTeacherPatronymic());

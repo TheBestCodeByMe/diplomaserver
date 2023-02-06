@@ -63,34 +63,6 @@ public class Mapper {
         return userDTO;
     }
 
-    public static SheduleDTO mapSheduleToSheduleDTO(Shedule shedule, Calendar calendar, Subject subject, Teacher teacher, Classroom classroom) {
-        SheduleDTO sheduleDTO = new SheduleDTO();
-        sheduleDTO.setDate(shedule.getDate());
-        sheduleDTO.setHometask(shedule.getHometask());
-        sheduleDTO.setClassroomName(classroom.getName());
-        sheduleDTO.setLastnameTeacher(teacher.getLastName());
-        sheduleDTO.setNameTeacher(teacher.getName());
-        sheduleDTO.setPatronymicTeacher(teacher.getPatronymic());
-        sheduleDTO.setLessonNumber(calendar.getLessonNumber());
-        sheduleDTO.setSemestrId(calendar.getSemesterID());
-        sheduleDTO.setSubjectName(subject.getSubjectName());
-
-        return sheduleDTO;
-    }
-
-    public static Shedule mapSheduleDTOToShedule(SheduleDTO sheduleDTO, long calendarId, long teacherId, long subjectId, long classroomId) {
-        Shedule shedule = new Shedule();
-        shedule.setDate(sheduleDTO.getDate());
-        shedule.setHometask(sheduleDTO.getHometask());
-        shedule.setWeekDay(sheduleDTO.getWeekDay());
-        shedule.setCalendarId(calendarId);
-        shedule.setSubjectID(subjectId);
-        shedule.setTeacherID(teacherId);
-        shedule.setClassroomID(classroomId);
-
-        return shedule;
-    }
-
     public static Calendar mapSheduleDTOToCalendar(SheduleDTO sheduleDTO) {
         Calendar calendar = new Calendar();
         calendar.setLessonNumber(sheduleDTO.getLessonNumber());

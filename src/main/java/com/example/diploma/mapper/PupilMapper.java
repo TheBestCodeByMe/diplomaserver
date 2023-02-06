@@ -2,9 +2,14 @@ package com.example.diploma.mapper;
 
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Parents;
 import com.example.diploma.model.Pupil;
+
+import java.time.LocalDateTime;
+
+import static java.sql.Timestamp.valueOf;
 
 public class PupilMapper {
 
@@ -37,7 +42,11 @@ public class PupilMapper {
         pupil.setEmail(pupilDTOs.getEmail());
         pupil.setDateOfBirthday(pupilDTOs.getDateOfBirthday());
         pupil.setPersonalCheck(pupilDTOs.getPersonalCheck());
+        pupil.setStatusId(EStatus.ACTIVE.getId());
         pupil.setCode(pupilCode);
+        pupil.setCreateDate(valueOf(LocalDateTime.now()));
+        pupil.setCloseDate(null);
+        pupil.setUserId(2);
 
         return pupil;
     }

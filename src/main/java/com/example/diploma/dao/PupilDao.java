@@ -7,6 +7,8 @@ import com.example.diploma.repo.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 @RequiredArgsConstructor
 public class PupilDao {
@@ -16,4 +18,6 @@ public class PupilDao {
     public Pupil findByUserId(Long userId) {
         return pupilRepository.findByUserId(userId);
     }
+
+    public Pupil findByFio(String name, String lastname, String patronymic) {return pupilRepository.findByNameAndLastnameAndPatronymic(name, lastname, patronymic);}
 }

@@ -1,4 +1,4 @@
-package com.example.diploma.dto;
+package com.example.diploma.dto.schedule;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +13,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @ToString
-public class SheduleDTO implements Serializable {
-    private Long id;
+public class CreateScheduleDTORequest implements Serializable {
     private String classroomName;
     private String nameTeacher;
     private String lastnameTeacher;
@@ -23,10 +22,10 @@ public class SheduleDTO implements Serializable {
     private int weekDay;
     private int lessonNumber;
     private Date date;
-    private int semestrId;
+    private int semesterId;
     private String hometask;
 
-    public SheduleDTO(String classroomName, String nameTeacher, String lastnameTeacher, String patronymicTeacher, String subjectName, int weekDay, int lessonNumber, Date date, int semestrId, String hometask) {
+    public CreateScheduleDTORequest(String classroomName, String nameTeacher, String lastnameTeacher, String patronymicTeacher, String subjectName, int weekDay, int lessonNumber, Date date, int semesterId, String hometask) {
         this.classroomName = classroomName;
         this.nameTeacher = nameTeacher;
         this.lastnameTeacher = lastnameTeacher;
@@ -35,7 +34,7 @@ public class SheduleDTO implements Serializable {
         this.weekDay = weekDay;
         this.lessonNumber = lessonNumber;
         this.date = date;
-        this.semestrId = semestrId;
+        this.semesterId = semesterId;
         this.hometask = hometask;
     }
 
@@ -43,12 +42,12 @@ public class SheduleDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SheduleDTO that = (SheduleDTO) o;
-        return weekDay == that.weekDay && lessonNumber == that.lessonNumber && semestrId == that.semestrId && Objects.equals(id, that.id) && Objects.equals(classroomName, that.classroomName) && Objects.equals(nameTeacher, that.nameTeacher) && Objects.equals(lastnameTeacher, that.lastnameTeacher) && Objects.equals(patronymicTeacher, that.patronymicTeacher) && Objects.equals(subjectName, that.subjectName) && Objects.equals(date, that.date) && Objects.equals(hometask, that.hometask);
+        CreateScheduleDTORequest that = (CreateScheduleDTORequest) o;
+        return weekDay == that.weekDay && lessonNumber == that.lessonNumber && semesterId == that.semesterId && Objects.equals(classroomName, that.classroomName) && Objects.equals(nameTeacher, that.nameTeacher) && Objects.equals(lastnameTeacher, that.lastnameTeacher) && Objects.equals(patronymicTeacher, that.patronymicTeacher) && Objects.equals(subjectName, that.subjectName) && Objects.equals(date, that.date) && Objects.equals(hometask, that.hometask);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, classroomName, nameTeacher, lastnameTeacher, patronymicTeacher, subjectName, weekDay, lessonNumber, date, semestrId, hometask);
+        return Objects.hash(classroomName, nameTeacher, lastnameTeacher, patronymicTeacher, subjectName, weekDay, lessonNumber, date, semesterId, hometask);
     }
 }

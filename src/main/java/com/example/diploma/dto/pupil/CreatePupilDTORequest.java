@@ -14,8 +14,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 public class CreatePupilDTORequest implements Serializable {
-    private Long id;
-    private long userId;
     private String name;
     private String lastname;
     private String patronymic;
@@ -30,8 +28,7 @@ public class CreatePupilDTORequest implements Serializable {
     private String patronymicDad;
     private String className;
 
-    public CreatePupilDTORequest(long userId, String name, String lastname, String patronymic, Date dateOfBirthday, String email, String personalCheck, String nameMom, String lastnameMom, String patronymicMom, String nameDad, String lastnameDad, String patronymicDad, String className) {
-        this.userId = userId;
+    public CreatePupilDTORequest(String name, String lastname, String patronymic, Date dateOfBirthday, String email, String personalCheck, String nameMom, String lastnameMom, String patronymicMom, String nameDad, String lastnameDad, String patronymicDad, String className) {
         this.name = name;
         this.lastname = lastname;
         this.patronymic = patronymic;
@@ -52,11 +49,11 @@ public class CreatePupilDTORequest implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CreatePupilDTORequest that = (CreatePupilDTORequest) o;
-        return userId == that.userId && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(lastname, that.lastname) && Objects.equals(patronymic, that.patronymic) && Objects.equals(dateOfBirthday, that.dateOfBirthday) && Objects.equals(email, that.email) && Objects.equals(personalCheck, that.personalCheck) && Objects.equals(nameMom, that.nameMom) && Objects.equals(lastnameMom, that.lastnameMom) && Objects.equals(patronymicMom, that.patronymicMom) && Objects.equals(nameDad, that.nameDad) && Objects.equals(lastnameDad, that.lastnameDad) && Objects.equals(patronymicDad, that.patronymicDad) && Objects.equals(className, that.className);
+        return Objects.equals(name, that.name) && Objects.equals(lastname, that.lastname) && Objects.equals(patronymic, that.patronymic) && Objects.equals(dateOfBirthday, that.dateOfBirthday) && Objects.equals(email, that.email) && Objects.equals(personalCheck, that.personalCheck) && Objects.equals(nameMom, that.nameMom) && Objects.equals(lastnameMom, that.lastnameMom) && Objects.equals(patronymicMom, that.patronymicMom) && Objects.equals(nameDad, that.nameDad) && Objects.equals(lastnameDad, that.lastnameDad) && Objects.equals(patronymicDad, that.patronymicDad) && Objects.equals(className, that.className);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, name, lastname, patronymic, dateOfBirthday, email, personalCheck, nameMom, lastnameMom, patronymicMom, nameDad, lastnameDad, patronymicDad, className);
+        return Objects.hash(name, lastname, patronymic, dateOfBirthday, email, personalCheck, nameMom, lastnameMom, patronymicMom, nameDad, lastnameDad, patronymicDad, className);
     }
 }

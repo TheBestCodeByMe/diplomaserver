@@ -20,4 +20,8 @@ public class ParentsDao {
     public Parents findByFIO(String nameDad, String lastnameDad, String patronymicDad, String nameMom, String lastnameMom, String patronymicMom) {
         return parentsRepository.findByNameDadAndLastnameDadAndPatronymicDadAndNameMomAndLastnameMomAndPatronymicMom(nameDad, lastnameDad, patronymicDad, nameMom, lastnameMom, patronymicMom);
     }
+
+    public Parents findByCode(String code) {
+        return parentsRepository.findByCode(code);
+    }
 }

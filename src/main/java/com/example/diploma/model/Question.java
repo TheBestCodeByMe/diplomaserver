@@ -18,6 +18,7 @@ import java.util.Objects;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "questions_from_users_id")
     private Long id;
     @Column(name = "questions_from_users_question", nullable = false)
     private String question;

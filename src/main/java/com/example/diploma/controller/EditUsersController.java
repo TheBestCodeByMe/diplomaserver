@@ -3,6 +3,7 @@ package com.example.diploma.controller;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
@@ -44,12 +45,11 @@ public class EditUsersController { // TODO: убрать возможность 
         return editUsersService.createSubject(subject);
     }
 
-    /*
-        @PostMapping("/createSheduleDTO")
-        public SheduleDTO createSheduleDTO(@Validated @RequestBody SheduleDTO sheduleDTO) {
-            return editUsersService.createSheduleDTO(sheduleDTO);
-        }
-    */
+    @PostMapping("/createSheduleDTO")
+    public ResponseEntity<?> createSheduleDTO(@Validated @RequestBody CreateScheduleDTORequest sheduleDTO) {
+        return editUsersService.createScheduleDTO(sheduleDTO);
+    }
+
     @PostMapping("/createClassroomDTO")
     public ResponseEntity<?> createClassroom(@Validated @RequestBody ClassroomDTO classroomDTO) {
         return editUsersService.createClassroom(classroomDTO);

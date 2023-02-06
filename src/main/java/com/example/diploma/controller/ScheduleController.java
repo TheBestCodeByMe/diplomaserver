@@ -1,13 +1,7 @@
 package com.example.diploma.controller;
 
-import com.example.diploma.dto.SheduleDTO;
-import com.example.diploma.exception.ResourceNotFoundException;
-import com.example.diploma.service.SheduleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
