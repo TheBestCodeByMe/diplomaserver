@@ -1,19 +1,17 @@
 package com.example.diploma.service.impl;
 
 import com.example.diploma.dao.ClassroomDao;
+import com.example.diploma.dao.ParentsDao;
 import com.example.diploma.dao.SubjectDao;
 import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dto.classroom.ClassroomDTO;
+import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
-import com.example.diploma.mapper.ClassroomMapper;
-import com.example.diploma.mapper.SubjectMapper;
-import com.example.diploma.mapper.TeacherMapper;
-import com.example.diploma.model.Classroom;
-import com.example.diploma.model.Subject;
-import com.example.diploma.model.Teacher;
+import com.example.diploma.mapper.*;
+import com.example.diploma.model.*;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.EditUsersService;
 import com.example.diploma.repo.*;
@@ -33,6 +31,8 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     private final ParentsRepository parentsRepository;
 
+    private final ParentsDao parentsDao;
+
     private final ClassroomDao classroomDao;
 
     private final ClassroomRepository classroomRepository;
@@ -48,18 +48,18 @@ public class EditUsersServiceImpl implements EditUsersService {
     private final CalendarRepository calendarRepository;
 
     private final SheduleRepository sheduleRepository;
-/*
+
     @Override
-    public Pupil createPupil(PupilDTO pupilDTO) {
-        Pupil pupil = Mapper.mapPupilDTOToPupil(pupilDTO);
-        Parents parents = Mapper.mapPupilDTOToParents(pupilDTO);
-        Classroom classroom = Mapper.mapPupilDTOToClassroom(pupilDTO);
-        Classroom classroom1 = classroomRepository.findClassroomByName(classroom.getName());
+    public ResponseEntity<?> createPupil(CreatePupilDTORequest createPupilDTORequest) {
+        Pupil pupil = PupilMapper.mapPupilDTOToPupil(createPupilDTORequest, GenerationCodeServiceImpl.generateCode());
+        Parents parents = ParentsMapper.mapPupilDTOToParents(createPupilDTORequest, GenerationCodeServiceImpl.generateCode());
+        Classroom classroom = ClassroomMapper.mapCreatePupilDTOToClassroom(createPupilDTORequest);
+        Classroom classroomFromDB = classroomDao.findClassroomByName(classroom.getName());
 
-        if (classroom1 != null) {
-            pupil.setClassroomId(classroom1.getId());
+        if (classroomFromDB != null) {
+            pupil.setClassroomId(classroomFromDB.getId());
 
-            Parents parent = parentsRepository.findByNameDadAndLastnameDadAndPatronymicDadAndNameMomAndLastnameMomAndPatronymicMom(parents.getNameDad(), parents.getLastnameDad(), parents.getPatronymicDad(), parents.getNameMom(), parents.getLastnameMom(), parents.getPatronymicMom());
+            Parents parent = parentsDao.findByFIO(parents.getNameDad(), parents.getLastnameDad(), parents.getPatronymicDad(), parents.getNameMom(), parents.getLastnameMom(), parents.getPatronymicMom());
 
             if (parent != null) {
                 pupil.setParentsId(parent.getId());
@@ -69,12 +69,14 @@ public class EditUsersServiceImpl implements EditUsersService {
                 pupil.setParentsId(newParents.getId());
             }
             return pupilRepository.save(pupil);
+        } else {
+            return ResponseEntity.badRequest().body("Error: Такого класса не существует");
         }
 
         Pupil pupil1 = new Pupil();
         return pupilRepository.save(pupil1);
     }
-
+/*
     @Override
     public List<PupilDTO> getAllPupilDTO() {
         List<Pupil> pupils = pupilRepository.findAll();

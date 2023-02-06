@@ -2,6 +2,7 @@ package com.example.diploma.mapper;
 
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.classroom.ClassroomDTOSearch;
+import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Classroom;
@@ -14,6 +15,13 @@ import static java.sql.Timestamp.valueOf;
 public class ClassroomMapper {
 
     public static Classroom mapPupilDTOToClassroom(PupilDTO pupilDTOs) {
+        Classroom classroom = new Classroom();
+        classroom.setName(pupilDTOs.getClassName());
+
+        return classroom;
+    }
+
+    public static Classroom mapCreatePupilDTOToClassroom(CreatePupilDTORequest pupilDTOs) {
         Classroom classroom = new Classroom();
         classroom.setName(pupilDTOs.getClassName());
 

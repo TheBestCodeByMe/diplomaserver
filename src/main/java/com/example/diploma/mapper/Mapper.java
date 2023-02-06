@@ -9,19 +9,7 @@ import java.util.Set;
 
 public class Mapper {
 /*
-    public static Parents mapPupilDTOToParents(PupilDTO pupilDTOs) {
-        Parents parent = new Parents();
-        parent.setNameMom(pupilDTOs.getNameMom());
-        parent.setNameDad(pupilDTOs.getNameDad());
-        parent.setLastnameDad(pupilDTOs.getLastnameDad());
-        parent.setPatronymicDad(pupilDTOs.getPatronymicDad());
-        parent.setLastnameMom(pupilDTOs.getLastnameMom());
-        parent.setPatronymicMom(pupilDTOs.getPatronymicMom());
-
-        return parent;
-    }
-
-    public static User mapUserDTOToUser(UserDTO userDTO) {
+     public static User mapUserDTOToUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
         // TODO: переделать

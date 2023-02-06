@@ -16,4 +16,8 @@ public class ParentsDao {
     public Parents findByParentsId(Long parentsId) {
         return parentsRepository.getById(parentsId);
     }
+
+    public Parents findByFIO(String nameDad, String lastnameDad, String patronymicDad, String nameMom, String lastnameMom, String patronymicMom) {
+        return parentsRepository.findByNameDadAndLastnameDadAndPatronymicDadAndNameMomAndLastnameMomAndPatronymicMom(nameDad, lastnameDad, patronymicDad, nameMom, lastnameMom, patronymicMom);
+    }
 }

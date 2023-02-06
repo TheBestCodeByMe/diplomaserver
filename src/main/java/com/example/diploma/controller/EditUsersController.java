@@ -1,6 +1,8 @@
 package com.example.diploma.controller;
 
 import com.example.diploma.dto.classroom.ClassroomDTO;
+import com.example.diploma.dto.pupil.CreatePupilDTORequest;
+import com.example.diploma.dto.pupil.PupilDTO;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
@@ -20,17 +22,18 @@ public class EditUsersController { // TODO: убрать возможность 
 
     private final EditUsersService editUsersService;
 
-    /*
-        @PostMapping("/createPupilDTO")
-        public Pupil createPupil(@Validated @RequestBody PupilDTO pupilDTO) {
-            return editUsersService.createPupil(pupilDTO);
-        }
 
-        @GetMapping("/showPupilDTO")
-        public List<PupilDTO> getAllPupilDTO() {
-            return editUsersService.getAllPupilDTO();
-        }
-    */
+    @PostMapping("/createPupilDTO")
+    public ResponseEntity<?> createPupil(@Validated @RequestBody CreatePupilDTORequest pupilDTO) {
+        return editUsersService.createPupil(pupilDTO);
+    }
+
+    /*
+            @GetMapping("/showPupilDTO")
+            public List<PupilDTO> getAllPupilDTO() {
+                return editUsersService.getAllPupilDTO();
+            }
+        */
     @PostMapping("/createTeacher")
     public ResponseEntity<?> createTeacher(@Validated @RequestBody CreateTeacherDTORequest teacherDTO) {
         return editUsersService.createTeacher(teacherDTO);
