@@ -8,38 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Mapper {
-/*    public static PupilDTO mapToPupilDTO(Pupil pupils, Parents parents, Classroom classrooms) {
-        PupilDTO pupilDTOS = new PupilDTO();
-        pupilDTOS.setName(pupils.getName());
-        pupilDTOS.setLastname(pupils.getLastname());
-        pupilDTOS.setPatronymic(pupils.getPatronymic());
-        pupilDTOS.setEmail(pupils.getEmail());
-        pupilDTOS.setDateOfBirthday(pupils.getDateOfBirthday());
-        pupilDTOS.setPersonalCheck(pupils.getPersonalCheck());
-        pupilDTOS.setClassName(classrooms.getName());
-        pupilDTOS.setNameMom(parents.getNameMom());
-        pupilDTOS.setNameDad(parents.getNameDad());
-        pupilDTOS.setLastnameDad(parents.getLastnameDad());
-        pupilDTOS.setPatronymicDad(parents.getPatronymicDad());
-        pupilDTOS.setLastnameMom(parents.getLastnameMom());
-        pupilDTOS.setPatronymicMom(parents.getPatronymicMom());
-
-        return pupilDTOS;
-    }
-
-    public static Pupil mapPupilDTOToPupil(PupilDTO pupilDTOs) {
-        Pupil pupil = new Pupil();
-
-        pupil.setName(pupilDTOs.getName());
-        pupil.setLastname(pupilDTOs.getLastname());
-        pupil.setPatronymic(pupilDTOs.getPatronymic());
-        pupil.setEmail(pupilDTOs.getEmail());
-        pupil.setDateOfBirthday(pupilDTOs.getDateOfBirthday());
-        pupil.setPersonalCheck(pupilDTOs.getPersonalCheck());
-
-        return pupil;
-    }
-
+/*
     public static Parents mapPupilDTOToParents(PupilDTO pupilDTOs) {
         Parents parent = new Parents();
         parent.setNameMom(pupilDTOs.getNameMom());
@@ -50,13 +19,6 @@ public class Mapper {
         parent.setPatronymicMom(pupilDTOs.getPatronymicMom());
 
         return parent;
-    }
-
-    public static Classroom mapPupilDTOToClassroom(PupilDTO pupilDTOs) {
-        Classroom classroom = new Classroom();
-        classroom.setName(pupilDTOs.getClassName());
-
-        return classroom;
     }
 
     public static User mapUserDTOToUser(UserDTO userDTO) {
@@ -148,24 +110,6 @@ public class Mapper {
         calendar.setSemesterID(sheduleDTO.getSemestrId());
 
         return calendar;
-    }
-
-    public static Classroom mapClassroomDTOToClassroom(ClassroomDTO classroomDTO, long teacherId) {
-        Classroom classroom = new Classroom();
-        classroom.setName(classroomDTO.getName());
-        classroom.setClassroomTeacherId(teacherId);
-
-        return classroom;
-    }
-
-    public static ClassroomDTO mapClassroomToClassroomDTO(Classroom classroom, Teacher teacher) {
-        ClassroomDTO classroomDTO = new ClassroomDTO();
-        classroomDTO.setName(classroom.getName());
-        classroomDTO.setClassroomTeacherName(teacher.getName());
-        classroomDTO.setClassroomTeacherLastname(teacher.getLastName());
-        classroomDTO.setClassroomTeacherPatronymic(teacher.getPatronymic());
-
-        return classroomDTO;
     }
 
     public static DiaryDTO mapToDiaryDTO(Shedule shedule, Pupil pupil, Classroom classroom, boolean attendance, String grade, Subject subject) {

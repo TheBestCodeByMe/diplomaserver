@@ -1,10 +1,13 @@
 package com.example.diploma.service.impl;
 
-import com.example.diploma.dto.PupilDTO;
+import com.example.diploma.dao.ClassroomDao;
+import com.example.diploma.dao.ParentsDao;
+import com.example.diploma.dao.PupilDao;
+import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.mapper.PupilMapper;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Parents;
 import com.example.diploma.model.Pupil;
-import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.PupilService;
 import com.example.diploma.repo.ClassroomRepository;
 import com.example.diploma.repo.ParentsRepository;
@@ -16,17 +19,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PupilServiceImpl implements PupilService {
 
-    private final PupilRepository pupilRepository;
+    private final PupilDao pupilDao;
 
-    private final ParentsRepository parentsRepository;
+    private final ParentsDao parentsDao;
 
-    private final ClassroomRepository classroomRepository;
-/*
+    private final ClassroomDao classroomDao;
+
     @Override
     public PupilDTO getPupilByFIO(String userId) {
-        Pupil pupil = pupilRepository.findByUserId(Long.parseLong(userId));
-        Parents parents = parentsRepository.getById(pupil.getParentsId());
-        Classroom classroom = classroomRepository.getById(pupil.getClassroomId());
-        return Mapper.mapToPupilDTO(pupil, parents, classroom);
-    }*/
+        Pupil pupil = pupilDao.findByUserId(Long.parseLong(userId));
+        Parents parents = parentsDao.findByParentsId(pupil.getParentsId());
+        Classroom classroom = classroomDao.findByClassroomId(pupil.getClassroomId());
+        return PupilMapper.mapToPupilDTO(pupil, parents, classroom);
+    }
 }

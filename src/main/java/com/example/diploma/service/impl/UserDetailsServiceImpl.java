@@ -6,6 +6,7 @@ import com.example.diploma.model.Role;
 import com.example.diploma.model.User;
 import com.example.diploma.repo.RoleRepository;
 import com.example.diploma.repo.UserRepository;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,11 +25,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+/*
     @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+*/
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 
-    @PostConstruct
+/*    @PostConstruct
     public void init() {
         Set<Role> role = new HashSet<>();
         role.add(new Role(ERole.ROLE_DIRECTOR));
@@ -59,5 +62,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         )
                 ));
         System.out.printf("_____? %s Bean ______ init() ______\n", getClass().getSimpleName());
-    }
+    }*/
 }

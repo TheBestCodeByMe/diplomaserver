@@ -1,18 +1,8 @@
 package com.example.diploma.service.impl;
 
-import com.example.diploma.dto.ClassroomDTO;
-import com.example.diploma.model.Classroom;
-import com.example.diploma.model.Teacher;
-import com.example.diploma.mapper.Mapper;
 import com.example.diploma.service.DirectorService;
-import com.example.diploma.repo.ClassroomRepository;
-import com.example.diploma.repo.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

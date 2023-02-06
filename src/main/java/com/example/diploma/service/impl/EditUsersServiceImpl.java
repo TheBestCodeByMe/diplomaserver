@@ -1,21 +1,19 @@
 package com.example.diploma.service.impl;
 
-import com.example.diploma.dto.ClassroomDTO;
-import com.example.diploma.dto.PupilDTO;
-import com.example.diploma.dto.SheduleDTO;
-import com.example.diploma.model.*;
-import com.example.diploma.model.Pupil;
-import com.example.diploma.exception.ResourceNotFoundException;
-import com.example.diploma.mapper.Mapper;
+import com.example.diploma.dao.ClassroomDao;
+import com.example.diploma.dao.TeacherDao;
+import com.example.diploma.dto.classroom.ClassroomDTO;
+import com.example.diploma.dto.teacher.TeacherDTO;
+import com.example.diploma.mapper.ClassroomMapper;
+import com.example.diploma.mapper.TeacherMapper;
+import com.example.diploma.model.Classroom;
+import com.example.diploma.model.Teacher;
+import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.EditUsersService;
 import com.example.diploma.repo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +25,13 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     private final ParentsRepository parentsRepository;
 
+    private final ClassroomDao classroomDao;
+
     private final ClassroomRepository classroomRepository;
 
     private final TeacherRepository teacherRepository;
+
+    private final TeacherDao teacherDao;
 
     private final SubjectRepository subjectRepository;
 
@@ -85,16 +87,16 @@ public class EditUsersServiceImpl implements EditUsersService {
 
         return pupilDTOS;//userRepository.findAll();
     }
-
+*/
     @Override
-    public Teacher createTeacher(Teacher teacher) {
-        if (teacherRepository.findByNameAndLastNameAndPatronymic(teacher.getName(), teacher.getLastName(), teacher.getPatronymic()) == null) {
-            teacherRepository.save(teacher);
-            return teacher;
+    public ResponseEntity<?> createTeacher(TeacherDTO teacherDTO) {
+        if (teacherRepository.findByNameAndLastNameAndPatronymic(teacherDTO.getName(), teacherDTO.getLastName(), teacherDTO.getPatronymic()) == null) {
+            Teacher teacher = teacherRepository.save(TeacherMapper.mapDtoToTeacher(teacherDTO, GenerationCodeServiceImpl.generateCode()));
+            return ResponseEntity.ok(TeacherMapper.mapToTeacherDto(teacher));
         }
-        return null;
+        return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой учитель уже существует"));
     }
-
+/*
     @Override
     public Subject createSubject(Subject subject) {
         if (subjectRepository.findBySubjectName(subject.getSubjectName()) == null) {
@@ -135,22 +137,24 @@ public class EditUsersServiceImpl implements EditUsersService {
         }
         return sheduleDTO;
     }
-
+*/
     @Override
-    public ClassroomDTO createClassroom(ClassroomDTO classroomDTO) {
-        Teacher teacher = teacherRepository.findByNameAndLastNameAndPatronymic(classroomDTO.getClassroomTeacherName(), classroomDTO.getClassroomTeacherLastname(), classroomDTO.getClassroomTeacherPatronymic());
+    public ResponseEntity<?> createClassroom(ClassroomDTO classroomDTO) {
+        Teacher teacher = teacherDao.findByFio(classroomDTO.getClassroomTeacherName(), classroomDTO.getClassroomTeacherLastname(), classroomDTO.getClassroomTeacherPatronymic());
 
-        if (classroomRepository.findClassroomByName(classroomDTO.getName()) != null) {
-            classroomDTO.setName("Такой класс уже есть");
+        if (classroomDao.findClassroomByName(classroomDTO.getName()) != null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой класс уже есть"));
+            //classroomDTO.setName("Такой класс уже есть");
         } else if (teacher == null) {
-            classroomDTO.setName("Такого преподавателя нет");
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого преподавателя нет"));
+            //classroomDTO.setName("Такого преподавателя нет");
         } else {
-            Classroom classroom = Mapper.mapClassroomDTOToClassroom(classroomDTO, teacher.getId());
+            Classroom classroom = ClassroomMapper.mapClassroomDTOToClassroom(classroomDTO, teacher.getId(), GenerationCodeServiceImpl.generateCode());
             classroomRepository.save(classroom);
         }
-        return classroomDTO;
+        return ResponseEntity.ok(classroomDTO);
     }
-
+/*
     @Override
     public Map<String, Boolean> deleteUser(String login)
             throws ResourceNotFoundException {

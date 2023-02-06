@@ -1,0 +1,44 @@
+package com.example.diploma.mapper;
+
+import com.example.diploma.dto.pupil.CreatePupilDTORequest;
+import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.model.Classroom;
+import com.example.diploma.model.Parents;
+import com.example.diploma.model.Pupil;
+
+public class PupilMapper {
+
+    public static PupilDTO mapToPupilDTO(Pupil pupils, Parents parents, Classroom classrooms) {
+        PupilDTO pupilDTOS = new PupilDTO();
+        pupilDTOS.setName(pupils.getName());
+        pupilDTOS.setLastname(pupils.getLastname());
+        pupilDTOS.setPatronymic(pupils.getPatronymic());
+        pupilDTOS.setEmail(pupils.getEmail());
+        pupilDTOS.setDateOfBirthday(pupils.getDateOfBirthday());
+        pupilDTOS.setPersonalCheck(pupils.getPersonalCheck());
+        pupilDTOS.setClassName(classrooms.getName());
+        pupilDTOS.setNameMom(parents.getNameMom());
+        pupilDTOS.setNameDad(parents.getNameDad());
+        pupilDTOS.setLastnameDad(parents.getLastnameDad());
+        pupilDTOS.setPatronymicDad(parents.getPatronymicDad());
+        pupilDTOS.setLastnameMom(parents.getLastnameMom());
+        pupilDTOS.setPatronymicMom(parents.getPatronymicMom());
+        pupilDTOS.setPupilCode(pupils.getCode());
+
+        return pupilDTOS;
+    }
+
+    public static Pupil mapPupilDTOToPupil(CreatePupilDTORequest pupilDTOs, String pupilCode) {
+        Pupil pupil = new Pupil();
+
+        pupil.setName(pupilDTOs.getName());
+        pupil.setLastname(pupilDTOs.getLastname());
+        pupil.setPatronymic(pupilDTOs.getPatronymic());
+        pupil.setEmail(pupilDTOs.getEmail());
+        pupil.setDateOfBirthday(pupilDTOs.getDateOfBirthday());
+        pupil.setPersonalCheck(pupilDTOs.getPersonalCheck());
+        pupil.setCode(pupilCode);
+
+        return pupil;
+    }
+}

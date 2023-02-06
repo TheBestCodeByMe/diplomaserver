@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
+import static java.sql.Timestamp.valueOf;
+
 public class QuestionMapper {
     public static QuestionDTOResponse mapToQuestionDto(Question question) {
         return new QuestionDTOResponse(
@@ -19,7 +21,7 @@ public class QuestionMapper {
 
     public static Question mapToQuestion(CreateQuestionDTORequest question) {
         return new Question (
-                question.getQuestion(), null, true, EStatus.ACTIVE.getId(), GenerationCodeServiceImpl.generateCode(), java.sql.Timestamp.valueOf(LocalDateTime.now()), null
+                question.getQuestion(), null, true, EStatus.ACTIVE.getId(), GenerationCodeServiceImpl.generateCode(), valueOf(LocalDateTime.now()), null
         );
     }
 }

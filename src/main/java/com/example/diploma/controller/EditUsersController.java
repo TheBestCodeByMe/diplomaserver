@@ -1,17 +1,13 @@
 package com.example.diploma.controller;
 
-import com.example.diploma.dto.ClassroomDTO;
-import com.example.diploma.dto.PupilDTO;
-import com.example.diploma.dto.SheduleDTO;
-import com.example.diploma.model.*;
-import com.example.diploma.exception.ResourceNotFoundException;
+import com.example.diploma.dto.classroom.ClassroomDTO;
+import com.example.diploma.dto.teacher.TeacherDTO;
+import com.example.diploma.model.Teacher;
 import com.example.diploma.service.EditUsersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200") // убрать)))
@@ -30,12 +26,12 @@ public class EditUsersController { // TODO: убрать возможность 
     public List<PupilDTO> getAllPupilDTO() {
         return editUsersService.getAllPupilDTO();
     }
-
+*/
     @PostMapping("/createTeacher")
-    public Teacher createTeacher(@Validated @RequestBody Teacher teacher) {
-        return editUsersService.createTeacher(teacher);
+    public ResponseEntity<?> createTeacher(@Validated @RequestBody TeacherDTO teacherDTO) {
+        return editUsersService.createTeacher(teacherDTO);
     }
-
+/*
     @PostMapping("/createSubject")
     public Subject createSubject(@Validated @RequestBody Subject subject) {
         return editUsersService.createSubject(subject);
@@ -45,12 +41,12 @@ public class EditUsersController { // TODO: убрать возможность 
     public SheduleDTO createSheduleDTO(@Validated @RequestBody SheduleDTO sheduleDTO) {
         return editUsersService.createSheduleDTO(sheduleDTO);
     }
-
+*/
     @PostMapping("/createClassroomDTO")
-    public ClassroomDTO createClassroom(@Validated @RequestBody ClassroomDTO classroomDTO) {
+    public ResponseEntity<?> createClassroom(@Validated @RequestBody ClassroomDTO classroomDTO) {
         return editUsersService.createClassroom(classroomDTO);
     }
-
+/*
     @DeleteMapping("/deleteUser/{login}")
     public Map<String, Boolean> deleteUser(@PathVariable(value = "login") String login)
             throws ResourceNotFoundException {

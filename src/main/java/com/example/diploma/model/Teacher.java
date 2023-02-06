@@ -53,6 +53,18 @@ public class Teacher {
         this.position = position;
     }
 
+    public Teacher(String name, String lastName, String patronymic, String email, String qualification, String position, Long statusId, String code, Date createDate) {
+        this.name = name;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.email = email;
+        this.qualification = qualification;
+        this.position = position;
+        this.statusId = statusId;
+        this.code = code;
+        this.createDate = createDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

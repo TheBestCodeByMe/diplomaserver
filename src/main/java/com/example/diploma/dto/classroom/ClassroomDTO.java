@@ -1,4 +1,4 @@
-package com.example.diploma.dto;
+package com.example.diploma.dto.classroom;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 public class ClassroomDTO implements Serializable {
-    private Long id;
     private String name;
     private String classroomTeacherName;
     private String classroomTeacherLastname;
@@ -31,11 +30,11 @@ public class ClassroomDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClassroomDTO that = (ClassroomDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(classroomTeacherName, that.classroomTeacherName) && Objects.equals(classroomTeacherLastname, that.classroomTeacherLastname) && Objects.equals(classroomTeacherPatronymic, that.classroomTeacherPatronymic);
+        return Objects.equals(name, that.name) && Objects.equals(classroomTeacherName, that.classroomTeacherName) && Objects.equals(classroomTeacherLastname, that.classroomTeacherLastname) && Objects.equals(classroomTeacherPatronymic, that.classroomTeacherPatronymic);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, classroomTeacherName, classroomTeacherLastname, classroomTeacherPatronymic);
+        return Objects.hash(name, classroomTeacherName, classroomTeacherLastname, classroomTeacherPatronymic);
     }
 }
