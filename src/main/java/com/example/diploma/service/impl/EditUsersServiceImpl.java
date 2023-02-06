@@ -1,12 +1,18 @@
 package com.example.diploma.service.impl;
 
 import com.example.diploma.dao.ClassroomDao;
+import com.example.diploma.dao.SubjectDao;
 import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dto.classroom.ClassroomDTO;
+import com.example.diploma.dto.subject.CreateSubjectDTORequest;
+import com.example.diploma.dto.subject.SubjectDTO;
+import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
 import com.example.diploma.mapper.ClassroomMapper;
+import com.example.diploma.mapper.SubjectMapper;
 import com.example.diploma.mapper.TeacherMapper;
 import com.example.diploma.model.Classroom;
+import com.example.diploma.model.Subject;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.EditUsersService;
@@ -14,6 +20,8 @@ import com.example.diploma.repo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +42,8 @@ public class EditUsersServiceImpl implements EditUsersService {
     private final TeacherDao teacherDao;
 
     private final SubjectRepository subjectRepository;
+
+    private final SubjectDao subjectDao;
 
     private final CalendarRepository calendarRepository;
 
@@ -89,24 +99,23 @@ public class EditUsersServiceImpl implements EditUsersService {
     }
 */
     @Override
-    public ResponseEntity<?> createTeacher(TeacherDTO teacherDTO) {
+    public ResponseEntity<?> createTeacher(CreateTeacherDTORequest teacherDTO) {
         if (teacherRepository.findByNameAndLastNameAndPatronymic(teacherDTO.getName(), teacherDTO.getLastName(), teacherDTO.getPatronymic()) == null) {
             Teacher teacher = teacherRepository.save(TeacherMapper.mapDtoToTeacher(teacherDTO, GenerationCodeServiceImpl.generateCode()));
             return ResponseEntity.ok(TeacherMapper.mapToTeacherDto(teacher));
         }
         return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой учитель уже существует"));
     }
-/*
-    @Override
-    public Subject createSubject(Subject subject) {
-        if (subjectRepository.findBySubjectName(subject.getSubjectName()) == null) {
-            subjectRepository.save(subject);
-            return subject;
-        }
-        subject.setSubjectName("Такой предмет уже есть");
-        return subject;
-    }
 
+    @Override
+    public ResponseEntity<?> createSubject(CreateSubjectDTORequest createSubjectDTORequest) {
+        if (subjectDao.findBySubjectName(createSubjectDTORequest.getName().toLowerCase(Locale.ROOT)) == null) {
+            Subject subject = subjectRepository.save(SubjectMapper.mapSubjectDTOToSubject(createSubjectDTORequest, GenerationCodeServiceImpl.generateCode()));
+            return ResponseEntity.ok(SubjectMapper.mapSubjectToSubjectDTO(subject));
+        }
+        return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой предмет уже есть"));
+    }
+/*
     @Override
     public SheduleDTO createSheduleDTO(SheduleDTO sheduleDTO) {
         Classroom classroom = classroomRepository.findClassroomByName(sheduleDTO.getClassroomName());
@@ -148,7 +157,9 @@ public class EditUsersServiceImpl implements EditUsersService {
         } else if (teacher == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого преподавателя нет"));
             //classroomDTO.setName("Такого преподавателя нет");
-        } else {
+        } else if (classroomDao.findClassroomByTeacherId(teacher.getId())!=null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: У учителя уже есть класс"));
+        } else{
             Classroom classroom = ClassroomMapper.mapClassroomDTOToClassroom(classroomDTO, teacher.getId(), GenerationCodeServiceImpl.generateCode());
             classroomRepository.save(classroom);
         }

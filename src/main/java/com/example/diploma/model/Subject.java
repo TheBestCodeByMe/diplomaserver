@@ -34,6 +34,14 @@ public class Subject {
         this.subjectName = subjectName;
     }
 
+    public Subject(String subjectName, Long statusId, String code, Date createDate, Date closeDate) {
+        this.subjectName = subjectName;
+        this.statusId = statusId;
+        this.code = code;
+        this.createDate = createDate;
+        this.closeDate = closeDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

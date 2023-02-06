@@ -18,4 +18,6 @@ public class ClassroomDao {
     }
 
     public Classroom findClassroomByName(String name) {return classroomRepository.findClassroomByName(name);}
+
+    public Classroom findClassroomByTeacherId(Long teacherId) {return classroomRepository.findClassroomByClassroomTeacherId(teacherId);}
 }

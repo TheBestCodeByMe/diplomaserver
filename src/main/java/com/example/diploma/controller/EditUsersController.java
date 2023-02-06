@@ -1,6 +1,9 @@
 package com.example.diploma.controller;
 
 import com.example.diploma.dto.classroom.ClassroomDTO;
+import com.example.diploma.dto.subject.CreateSubjectDTORequest;
+import com.example.diploma.dto.subject.SubjectDTO;
+import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.service.EditUsersService;
@@ -16,32 +19,34 @@ import org.springframework.web.bind.annotation.*;
 public class EditUsersController { // TODO: убрать возможность нескольких добавлений пользователя к ученику/учителю
 
     private final EditUsersService editUsersService;
-/*
-    @PostMapping("/createPupilDTO")
-    public Pupil createPupil(@Validated @RequestBody PupilDTO pupilDTO) {
-        return editUsersService.createPupil(pupilDTO);
-    }
 
-    @GetMapping("/showPupilDTO")
-    public List<PupilDTO> getAllPupilDTO() {
-        return editUsersService.getAllPupilDTO();
-    }
-*/
+    /*
+        @PostMapping("/createPupilDTO")
+        public Pupil createPupil(@Validated @RequestBody PupilDTO pupilDTO) {
+            return editUsersService.createPupil(pupilDTO);
+        }
+
+        @GetMapping("/showPupilDTO")
+        public List<PupilDTO> getAllPupilDTO() {
+            return editUsersService.getAllPupilDTO();
+        }
+    */
     @PostMapping("/createTeacher")
-    public ResponseEntity<?> createTeacher(@Validated @RequestBody TeacherDTO teacherDTO) {
+    public ResponseEntity<?> createTeacher(@Validated @RequestBody CreateTeacherDTORequest teacherDTO) {
         return editUsersService.createTeacher(teacherDTO);
     }
-/*
+
     @PostMapping("/createSubject")
-    public Subject createSubject(@Validated @RequestBody Subject subject) {
+    public ResponseEntity<?> createSubject(@Validated @RequestBody CreateSubjectDTORequest subject) {
         return editUsersService.createSubject(subject);
     }
 
-    @PostMapping("/createSheduleDTO")
-    public SheduleDTO createSheduleDTO(@Validated @RequestBody SheduleDTO sheduleDTO) {
-        return editUsersService.createSheduleDTO(sheduleDTO);
-    }
-*/
+    /*
+        @PostMapping("/createSheduleDTO")
+        public SheduleDTO createSheduleDTO(@Validated @RequestBody SheduleDTO sheduleDTO) {
+            return editUsersService.createSheduleDTO(sheduleDTO);
+        }
+    */
     @PostMapping("/createClassroomDTO")
     public ResponseEntity<?> createClassroom(@Validated @RequestBody ClassroomDTO classroomDTO) {
         return editUsersService.createClassroom(classroomDTO);

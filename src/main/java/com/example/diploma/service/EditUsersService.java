@@ -1,6 +1,9 @@
 package com.example.diploma.service;
 
 import com.example.diploma.dto.classroom.ClassroomDTO;
+import com.example.diploma.dto.subject.CreateSubjectDTORequest;
+import com.example.diploma.dto.subject.SubjectDTO;
+import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
 import com.example.diploma.model.Teacher;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +13,10 @@ public interface EditUsersService {
 
     List<PupilDTO> getAllPupilDTO();
 */
-    ResponseEntity<?> createTeacher(TeacherDTO teacherDTO);
-/*
-    com.example.diploma.model.Subject createSubject(
-        com.example.diploma.model.Subject subject);
+    ResponseEntity<?> createTeacher(CreateTeacherDTORequest teacherDTO);
 
+    ResponseEntity<?> createSubject(CreateSubjectDTORequest subject);
+/*
     SheduleDTO createSheduleDTO(SheduleDTO sheduleDTO);
 */
     ResponseEntity<?> createClassroom(ClassroomDTO classroomDTO);

@@ -3,6 +3,7 @@ package com.example.diploma.mapper;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.classroom.ClassroomDTOSearch;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Teacher;
 
@@ -24,6 +25,7 @@ public class ClassroomMapper {
         classroom.setName(classroomDTO.getName());
         classroom.setClassroomTeacherId(teacherId);
         classroom.setCode(classroomCode);
+        classroom.setStatusId(EStatus.ACTIVE.getId());
         classroom.setCreateDate(valueOf(LocalDateTime.now()));
 
         return classroom;

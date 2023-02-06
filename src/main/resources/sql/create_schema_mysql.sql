@@ -218,4 +218,6 @@ values (1, 1, '11');
 
 insert into users (user_id, user_login, user_password, user_status, user_link) values (1,'root','$2a$10$kwkOtZIhVYFWXzThJ3XWjewn5zHCufb0aGy','root','root');
 
+insert into users (user_id, user_login, user_password, user_status, user_link) values (2,'default','default','default','default');
+
 insert into role_user (roles_users_id, role_id, user_id) VALUES (1, 3, 1);

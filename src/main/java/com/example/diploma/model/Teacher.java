@@ -53,7 +53,8 @@ public class Teacher {
         this.position = position;
     }
 
-    public Teacher(String name, String lastName, String patronymic, String email, String qualification, String position, Long statusId, String code, Date createDate) {
+    public Teacher(long userId, String name, String lastName, String patronymic, String email, String qualification, String position, Long statusId, String code, Date createDate, Date closeDate) {
+        this.userId = userId;
         this.name = name;
         this.lastName = lastName;
         this.patronymic = patronymic;
@@ -63,6 +64,7 @@ public class Teacher {
         this.statusId = statusId;
         this.code = code;
         this.createDate = createDate;
+        this.closeDate = closeDate;
     }
 
     @Override
