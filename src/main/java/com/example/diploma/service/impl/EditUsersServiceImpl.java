@@ -47,7 +47,7 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     private final CalendarDao calendarDao;
 
-    private final SheduleRepository scheduleRepository;
+    private final SсheduleRepository scheduleRepository;
 
     private final ScheduleDao scheduleDao;
 
@@ -139,10 +139,9 @@ public class EditUsersServiceImpl implements EditUsersService {
         } else if (calendar == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого времени урока не существует"));
         } else {
-            Shedule schedule = ScheduleMapper.mapScheduleDTOToSchedule(createScheduleDTORequest, calendar.getId(), teacher.getId(), subject.getId(), classroom.getId(), GenerationCodeServiceImpl.generateCode());
+            Schedule schedule = ScheduleMapper.mapScheduleDTOToSchedule(createScheduleDTORequest, calendar.getId(), teacher.getId(), subject.getId(), classroom.getId(), GenerationCodeServiceImpl.generateCode());
 
-            // don`t work, if exist
-            if (scheduleDao.findSchedule(schedule.getCalendarId(), schedule.getClassroomID(), schedule.getDate(), schedule.getSubjectID(), schedule.getTeacherID(), schedule.getWeekDay()) != null) {
+         if (scheduleDao.findSchedule(schedule.getCalendarId(), schedule.getClassroomID(), schedule.getDate(), schedule.getSubjectID(), schedule.getTeacherID(), schedule.getWeekDay()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: Такое расписание уже есть"));
             } else if (scheduleDao.findForTeacher(schedule.getTeacherID(), schedule.getCalendarId(), schedule.getDate()) != null) {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: Учитель занят в это время"));

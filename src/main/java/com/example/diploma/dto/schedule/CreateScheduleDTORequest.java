@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,11 +22,11 @@ public class CreateScheduleDTORequest implements Serializable {
     private String subjectName;
     private int weekDay;
     private int lessonNumber;
-    private Date date;
+    private LocalDate date;
     private int semesterId;
     private String hometask;
 
-    public CreateScheduleDTORequest(String classroomName, String nameTeacher, String lastnameTeacher, String patronymicTeacher, String subjectName, int weekDay, int lessonNumber, Date date, int semesterId, String hometask) {
+    public CreateScheduleDTORequest(String classroomName, String nameTeacher, String lastnameTeacher, String patronymicTeacher, String subjectName, int weekDay, int lessonNumber, LocalDate date, int semesterId, String hometask) {
         this.classroomName = classroomName;
         this.nameTeacher = nameTeacher;
         this.lastnameTeacher = lastnameTeacher;

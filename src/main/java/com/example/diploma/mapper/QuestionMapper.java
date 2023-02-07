@@ -21,7 +21,7 @@ public class QuestionMapper {
 
     public static Question mapToQuestion(CreateQuestionDTORequest question) {
         return new Question (
-                question.getQuestion(), null, true, EStatus.ACTIVE.getId(), GenerationCodeServiceImpl.generateCode(), valueOf(LocalDateTime.now()), null
+                question.getQuestion(), null, true, EStatus.ACTIVE.getId(), GenerationCodeServiceImpl.generateCode(), LocalDateTime.now(), null
         );
     }
 }

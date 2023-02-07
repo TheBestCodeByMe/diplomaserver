@@ -12,7 +12,7 @@ import static java.sql.Timestamp.valueOf;
 public class SubjectMapper {
 
     public static Subject mapSubjectDTOToSubject(CreateSubjectDTORequest createSubjectDTORequest, String subjectCode) {
-        return new Subject(createSubjectDTORequest.getName().toLowerCase(Locale.ROOT), EStatus.ACTIVE.getId(), subjectCode, valueOf(LocalDateTime.now()), null);
+        return new Subject(createSubjectDTORequest.getName().toLowerCase(Locale.ROOT), EStatus.ACTIVE.getId(), subjectCode, LocalDateTime.now(), null);
     }
 
     public static SubjectDTO mapSubjectToSubjectDTO(Subject subject) {

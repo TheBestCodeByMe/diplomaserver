@@ -23,7 +23,7 @@ public class ParentsMapper {
         parent.setPatronymicMom(createPupilDTORequest.getPatronymicMom());
         parent.setCode(parentsCode);
         parent.setStatusId(EStatus.ACTIVE.getId());
-        parent.setCreateDate(valueOf(LocalDateTime.now()));
+        parent.setCreateDate(LocalDateTime.now());
         parent.setCloseDate(null);
 
         return parent;

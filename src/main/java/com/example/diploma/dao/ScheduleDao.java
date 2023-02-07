@@ -1,29 +1,27 @@
 package com.example.diploma.dao;
 
-import com.example.diploma.model.Calendar;
-import com.example.diploma.model.Shedule;
-import com.example.diploma.repo.CalendarRepository;
-import com.example.diploma.repo.SheduleRepository;
+import com.example.diploma.model.Schedule;
+import com.example.diploma.repo.SсheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
 public class ScheduleDao {
 
-    private final SheduleRepository scheduleRepository;
+    private final SсheduleRepository scheduleRepository;
 
-    public Shedule findSchedule(Long calendarId, Long classroomID, Date date, Long subjectID, Long teacherID, Integer weekDay) {
-        return scheduleRepository.findByCalendarIdAndClassroomIDAndDateAndSubjectIDAndTeacherIDAndWeekDay(calendarId, classroomID, date, subjectID, teacherID, weekDay);
+    public Schedule findSchedule(Long calendarId, Long classroomID, LocalDate date, Long subjectID, Long teacherID, Integer weekDay) {
+        return scheduleRepository.findSchedule(calendarId, classroomID, date, subjectID, teacherID, weekDay);
     }
 
-    public Shedule findForTeacher(Long teacherID, Long calendarId, Date date) {
+    public Schedule findForTeacher(Long teacherID, Long calendarId, LocalDate date) {
         return scheduleRepository.findByTeacherIDAndCalendarIdAndDate(teacherID, calendarId, date);
     }
 
-    public Shedule findForClassroom(Long calendarId, Long classroomID, Date date) {
+    public Schedule findForClassroom(Long calendarId, Long classroomID, LocalDate date) {
         return scheduleRepository.findByCalendarIdAndClassroomIDAndDate(calendarId, classroomID, date);
     }
 }

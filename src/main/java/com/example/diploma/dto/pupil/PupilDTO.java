@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class PupilDTO implements Serializable {
     private String name;
     private String lastname;
     private String patronymic;
-    private Date dateOfBirthday;
+    private LocalDate dateOfBirthday;
     private String email;
     private String personalCheck;
     private String nameMom;
@@ -29,7 +30,7 @@ public class PupilDTO implements Serializable {
     private String className;
     private String pupilCode;
 
-    public PupilDTO(String name, String lastname, String patronymic, String pupilCode, Date dateOfBirthday, String email, String personalCheck, String nameMom, String lastnameMom, String patronymicMom, String nameDad, String lastnameDad, String patronymicDad, String className) {
+    public PupilDTO(String name, String lastname, String patronymic, String pupilCode, LocalDate dateOfBirthday, String email, String personalCheck, String nameMom, String lastnameMom, String patronymicMom, String nameDad, String lastnameDad, String patronymicDad, String className) {
         this.name = name;
         this.lastname = lastname;
         this.patronymic = patronymic;

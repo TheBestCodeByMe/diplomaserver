@@ -6,7 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Table(name = "schedule")
 @ToString
-public class Shedule {
+public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="schedule_id")
@@ -29,7 +30,7 @@ public class Shedule {
     @Column(name = "schedule_week_day", nullable = false)
     private int weekDay;
     @Column(name = "schedule_date", nullable = false)
-    private Date date;
+    private LocalDate date;
     @Column(name = "calendar_schedule_id", nullable = false)
     private Long calendarId;
     @Column(name = "schedule_hometask")
@@ -39,11 +40,11 @@ public class Shedule {
     @Column(name = "schedule_code", nullable = false)
     private String code;
     @Column(name = "create_date", nullable = false)
-    private Date createDate;
+    private LocalDateTime createDate ;
     @Column(name = "close_date", nullable = true)
-    private Date closeDate;
+    private LocalDateTime closeDate ;
 
-    public Shedule(Long classroomID, Long subjectID, Long teacherID, int weekDay, Date date, Long calendarId, String hometask) {
+    public Schedule(Long classroomID, Long subjectID, Long teacherID, int weekDay, LocalDate date, Long calendarId, String hometask) {
         this.classroomID = classroomID;
         this.subjectID = subjectID;
         this.teacherID = teacherID;
@@ -57,8 +58,8 @@ public class Shedule {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Shedule shedule = (Shedule) o;
-        return weekDay == shedule.weekDay && Objects.equals(id, shedule.id) && Objects.equals(classroomID, shedule.classroomID) && Objects.equals(subjectID, shedule.subjectID) && Objects.equals(teacherID, shedule.teacherID) && Objects.equals(date, shedule.date) && Objects.equals(calendarId, shedule.calendarId) && Objects.equals(hometask, shedule.hometask) && Objects.equals(statusId, shedule.statusId) && Objects.equals(code, shedule.code) && Objects.equals(createDate, shedule.createDate) && Objects.equals(closeDate, shedule.closeDate);
+        Schedule schedule = (Schedule) o;
+        return weekDay == schedule.weekDay && Objects.equals(id, schedule.id) && Objects.equals(classroomID, schedule.classroomID) && Objects.equals(subjectID, schedule.subjectID) && Objects.equals(teacherID, schedule.teacherID) && Objects.equals(date, schedule.date) && Objects.equals(calendarId, schedule.calendarId) && Objects.equals(hometask, schedule.hometask) && Objects.equals(statusId, schedule.statusId) && Objects.equals(code, schedule.code) && Objects.equals(createDate, schedule.createDate) && Objects.equals(closeDate, schedule.closeDate);
     }
 
     @Override

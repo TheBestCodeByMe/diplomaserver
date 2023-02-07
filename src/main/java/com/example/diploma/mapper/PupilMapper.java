@@ -44,7 +44,7 @@ public class PupilMapper {
         pupil.setPersonalCheck(pupilDTOs.getPersonalCheck());
         pupil.setStatusId(EStatus.ACTIVE.getId());
         pupil.setCode(pupilCode);
-        pupil.setCreateDate(valueOf(LocalDateTime.now()));
+        pupil.setCreateDate(LocalDateTime.now());
         pupil.setCloseDate(null);
         pupil.setUserId(2);
 

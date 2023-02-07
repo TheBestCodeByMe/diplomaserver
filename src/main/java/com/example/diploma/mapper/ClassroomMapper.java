@@ -34,7 +34,7 @@ public class ClassroomMapper {
         classroom.setClassroomTeacherId(teacherId);
         classroom.setCode(classroomCode);
         classroom.setStatusId(EStatus.ACTIVE.getId());
-        classroom.setCreateDate(valueOf(LocalDateTime.now()));
+        classroom.setCreateDate(LocalDateTime.now());
 
         return classroom;
     }

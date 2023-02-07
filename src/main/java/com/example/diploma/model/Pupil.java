@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -29,7 +31,7 @@ public class Pupil {
     @Column(name = "pupil_patronymic", nullable = false)
     private String patronymic;
     @Column(name = "pupil_date_of_birthday", nullable = false)
-    private Date dateOfBirthday;
+    private LocalDate dateOfBirthday;
     @Column(name = "pupil_email", nullable = false)
     private String email;
     @Column(name = "pupil_personal_check", nullable = false)
@@ -43,12 +45,12 @@ public class Pupil {
     @Column(name = "pupil_code", nullable = false)
     private String code;
     @Column(name = "create_date", nullable = false)
-    private Date createDate;
+    private LocalDateTime createDate ;
     @Column(name = "close_date", nullable = true)
-    private Date closeDate;
+    private LocalDateTime closeDate ;
 
 
-    public Pupil(long userId, String name, String lastname, String patronymic, Date dateOfBirthday, String email, String personalCheck, long classroomId, long parentsId) {
+    public Pupil(long userId, String name, String lastname, String patronymic, LocalDate dateOfBirthday, String email, String personalCheck, long classroomId, long parentsId) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;

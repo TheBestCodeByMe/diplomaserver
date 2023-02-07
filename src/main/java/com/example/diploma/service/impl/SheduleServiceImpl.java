@@ -16,7 +16,7 @@ public class SheduleServiceImpl implements SheduleService {
 
     private final PupilRepository pupilRepository;
 
-    private final SheduleRepository sheduleRepository;
+    private final SсheduleRepository sсheduleRepository;
 
     private final SubjectRepository subjectRepository;
 

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,10 +22,10 @@ public class DiaryDTO {
     private String homework;
     private String grade;
     private boolean attendance;
-    private Date dateLesson;
+    private LocalDate dateLesson;
     private String className;
 
-    public DiaryDTO(String namePupil, String lastnamePupil, String patronymicPupil, String subject, String homework, String grade, boolean attendance, Date dateLesson, String className) {
+    public DiaryDTO(String namePupil, String lastnamePupil, String patronymicPupil, String subject, String homework, String grade, boolean attendance, LocalDate dateLesson, String className) {
         this.namePupil = namePupil;
         this.lastnamePupil = lastnamePupil;
         this.patronymicPupil = patronymicPupil;

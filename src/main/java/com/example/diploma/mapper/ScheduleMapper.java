@@ -11,7 +11,7 @@ import static java.sql.Timestamp.valueOf;
 
 public class ScheduleMapper {
 
-    public static ScheduleDTO mapScheduleToScheduleDTO(Shedule schedule, Calendar calendar, Subject subject, Teacher teacher, Classroom classroom) {
+    public static ScheduleDTO mapScheduleToScheduleDTO(Schedule schedule, Calendar calendar, Subject subject, Teacher teacher, Classroom classroom) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         scheduleDTO.setDate(schedule.getDate());
         scheduleDTO.setHometask(schedule.getHometask());
@@ -28,8 +28,8 @@ public class ScheduleMapper {
         return scheduleDTO;
     }
 
-    public static Shedule mapScheduleDTOToSchedule(CreateScheduleDTORequest scheduleDTO, long calendarId, long teacherId, long subjectId, long classroomId, String scheduleCode) {
-        Shedule schedule = new Shedule();
+    public static Schedule mapScheduleDTOToSchedule(CreateScheduleDTORequest scheduleDTO, long calendarId, long teacherId, long subjectId, long classroomId, String scheduleCode) {
+        Schedule schedule = new Schedule();
         schedule.setDate(scheduleDTO.getDate());
         schedule.setHometask(scheduleDTO.getHometask());
         schedule.setWeekDay(scheduleDTO.getWeekDay());
@@ -37,7 +37,7 @@ public class ScheduleMapper {
         schedule.setSubjectID(subjectId);
         schedule.setTeacherID(teacherId);
         schedule.setClassroomID(classroomId);
-        schedule.setCreateDate(valueOf(LocalDateTime.now()));
+        schedule.setCreateDate(LocalDateTime.now());
         schedule.setStatusId(EStatus.ACTIVE.getId());
         schedule.setCode(scheduleCode);
         schedule.setCloseDate(null);
