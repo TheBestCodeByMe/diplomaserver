@@ -31,9 +31,9 @@ public class DiaryValidator {
         DiaryDTOStreamProcessor diaryDTOStreamProcessor = new DiaryDTOStreamProcessor();
         Pupil pupil = new Pupil();
         Classroom classroom = new Classroom();
-        Schedule schedule = new Schedule();
+        Schedule schedule;
         Subject subject = subjectDao.findBySubjectName(createDiaryDTORequest.getSubject());
-
+        diaryDTOStreamProcessor.setResponseEntity(new ResponseEntity<>("Not error: Ок", HttpStatus.OK));
         if(createDiaryDTORequest.getClassName().equals("")){
             pupil = pupilDao.findByFio(createDiaryDTORequest.getNamePupil(), createDiaryDTORequest.getLastnamePupil(), createDiaryDTORequest.getPatronymicPupil());
         } else {

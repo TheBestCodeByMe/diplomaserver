@@ -1,41 +1,28 @@
 package com.example.diploma.service.impl;
 
-import com.example.diploma.dao.ClassroomDao;
-import com.example.diploma.dao.PupilDao;
-import com.example.diploma.dao.ScheduleDao;
-import com.example.diploma.dao.SubjectDao;
+import com.example.diploma.dao.*;
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.*;
 //import com.example.diploma.mapper.Mapper;
-import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.repo.*;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class DiaryServiceImpl implements DiaryService {
 
     private final AttendanceRepository attendanceRepository;
-    //private final AttendanceDao attendanceDao;
+    private final AttendanceDao attendanceDao;
 
-    private final AcademicPerfomanceRepository academicPerfomanceRepository;
-    //private final AcademicPerfomanceDao academicPerfomanceDao;
+    private final AcademicPerformanceRepository academicPerformanceRepository;
+    private final AcademicPerformanceDao academicPerformanceDao;
 
     private final PupilRepository pupilRepository;
     private final PupilDao pupilDao;
@@ -53,15 +40,23 @@ public class DiaryServiceImpl implements DiaryService {
     public DiaryDTOStreamProcessor addAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
         AcademicPerfomance academicPerfomance = new AcademicPerfomance();
 
-        academicPerfomance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
-        academicPerfomance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
-        academicPerfomance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
-        academicPerfomance.setGrade(Integer.parseInt(createDiaryDTORequest.getGrade()));
-        academicPerfomance.setCreateDate(LocalDateTime.now());
-        academicPerfomance.setCloseDate(null);
-        academicPerfomance.setCode(GenerationCodeServiceImpl.generateCode());
-        academicPerfomance.setStatusId(EStatus.ACTIVE.getId());
-        academicPerfomanceRepository.save(academicPerfomance);
+        if(!academicPerformanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId())) {
+            academicPerfomance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
+            academicPerfomance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
+            academicPerfomance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
+            academicPerfomance.setGrade(Integer.parseInt(createDiaryDTORequest.getGrade()));
+            academicPerfomance.setCreateDate(LocalDateTime.now());
+            academicPerfomance.setCloseDate(null);
+            academicPerfomance.setCode(GenerationCodeServiceImpl.generateCode());
+            academicPerfomance.setStatusId(EStatus.ACTIVE.getId());
+            academicPerformanceRepository.save(academicPerfomance);
+            diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Оценка выставлена"));
+        } else {
+            academicPerfomance = academicPerformanceDao.find(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId());
+            academicPerfomance.setGrade(Integer.parseInt(createDiaryDTORequest.getGrade()));
+            academicPerformanceRepository.save(academicPerfomance);
+            diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Оценка обновлена"));
+        }
 
         return diaryDTOStreamProcessor;
     }
@@ -70,36 +65,44 @@ public class DiaryServiceImpl implements DiaryService {
     public DiaryDTOStreamProcessor addAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
         Attendance attendance = new Attendance();
 
-        attendance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
-        attendance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
-        attendance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
-        attendance.setCreateDate(LocalDateTime.now());
-        attendance.setCloseDate(null);
-        attendance.setCode(GenerationCodeServiceImpl.generateCode());
-        attendance.setStatusId(EStatus.ACTIVE.getId());
-        attendanceRepository.save(attendance);
+        if(!attendanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId())) {
+            attendance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
+            attendance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
+            attendance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
+            attendance.setCreateDate(LocalDateTime.now());
+            attendance.setCloseDate(null);
+            attendance.setCode(GenerationCodeServiceImpl.generateCode());
+            attendance.setStatusId(EStatus.ACTIVE.getId());
+            attendanceRepository.save(attendance);
+        } else {
+            attendance = attendanceDao.find(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId());
+            attendance.setStatusId(EStatus.CLOSED.getId());
+            attendanceRepository.save(attendance);
+            diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Посещаемость обновлена"));
+        }
+        diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Посещаемость выставлена"));
 
         return diaryDTOStreamProcessor;
     }
 
     @Override
-    public  DiaryDTOStreamProcessor addSubject( DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
+    public  DiaryDTOStreamProcessor addHomework(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
 
         diaryDTOStreamProcessor.getSchedule().setHometask(createDiaryDTORequest.getHomework());
         scheduleRepository.save(diaryDTOStreamProcessor.getSchedule());
-
+        diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Домашнее задание добавлено"));
         return diaryDTOStreamProcessor;
     }
 
     @Override
     public DiaryDTOStreamProcessor getAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
-        diaryDTOStreamProcessor.setAttendance(attendanceRepository.existsByClassIDAndLessonIDAndPupilID(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        diaryDTOStreamProcessor.setAttendance(attendanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
         return diaryDTOStreamProcessor;
     }
 
     @Override
     public DiaryDTOStreamProcessor getAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
-        diaryDTOStreamProcessor.setAcademicPerformance(academicPerfomanceRepository.existsByClassIDAndLessonIDAndPupilID(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        diaryDTOStreamProcessor.setAcademicPerformance(academicPerformanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
         return diaryDTOStreamProcessor;
     }
 /*

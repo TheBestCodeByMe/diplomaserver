@@ -44,11 +44,11 @@ public class DiaryController {
                 return diaryDTOStreamProcessor.getResponseEntity();
             }
         } else {
-            diaryDTOStreamProcessor = diaryService.addSubject(diaryDTOStreamProcessor, createDiaryDTORequest);
+            diaryDTOStreamProcessor = diaryService.addHomework(diaryDTOStreamProcessor, createDiaryDTORequest);
         }
 
         if (diaryDTOStreamProcessor.getResponseEntity().getStatusCode()!=HttpStatus.BAD_REQUEST) {
-            return ResponseEntity.ok().body("Оценка выставлена");
+            return diaryDTOStreamProcessor.getResponseEntity();
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse(createDiaryDTORequest.getNamePupil()));
         }

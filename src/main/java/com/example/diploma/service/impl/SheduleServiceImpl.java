@@ -12,7 +12,7 @@ public class SheduleServiceImpl implements SheduleService {
 
     private final AttendanceRepository attendanceRepository;
 
-    private final AcademicPerfomanceRepository academicPerfomanceRepository;
+    private final AcademicPerformanceRepository academicPerfomanceRepository;
 
     private final PupilRepository pupilRepository;
 
