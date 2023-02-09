@@ -1,4 +1,4 @@
-package com.example.diploma.dto;
+package com.example.diploma.dto.diary;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -14,7 +13,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 public class DiaryDTO {
-    private Long id;
     private String namePupil;
     private String lastnamePupil;
     private String patronymicPupil;
@@ -41,12 +39,12 @@ public class DiaryDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DiaryDTO diaryDTO = (DiaryDTO) o;
-        return attendance == diaryDTO.attendance && Objects.equals(id, diaryDTO.id) && Objects.equals(namePupil, diaryDTO.namePupil) && Objects.equals(lastnamePupil, diaryDTO.lastnamePupil) && Objects.equals(patronymicPupil, diaryDTO.patronymicPupil) && Objects.equals(subject, diaryDTO.subject) && Objects.equals(homework, diaryDTO.homework) && Objects.equals(grade, diaryDTO.grade) && Objects.equals(dateLesson, diaryDTO.dateLesson) && Objects.equals(className, diaryDTO.className);
+        DiaryDTO createDiaryDTORequest = (DiaryDTO) o;
+        return attendance == createDiaryDTORequest.attendance && Objects.equals(namePupil, createDiaryDTORequest.namePupil) && Objects.equals(lastnamePupil, createDiaryDTORequest.lastnamePupil) && Objects.equals(patronymicPupil, createDiaryDTORequest.patronymicPupil) && Objects.equals(subject, createDiaryDTORequest.subject) && Objects.equals(homework, createDiaryDTORequest.homework) && Objects.equals(grade, createDiaryDTORequest.grade) && Objects.equals(dateLesson, createDiaryDTORequest.dateLesson) && Objects.equals(className, createDiaryDTORequest.className);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, namePupil, lastnamePupil, patronymicPupil, subject, homework, grade, attendance, dateLesson, className);
+        return Objects.hash(namePupil, lastnamePupil, patronymicPupil, subject, homework, grade, attendance, dateLesson, className);
     }
 }

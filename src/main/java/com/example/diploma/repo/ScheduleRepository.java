@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface SсheduleRepository extends JpaRepository<Schedule, Long> {
+public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query("""
             select s from Schedule s
             where s.calendarId = ?1 and s.classroomID = ?2 and s.date = ?3 and s.subjectID = ?4 and s.teacherID = ?5 and s.weekDay = ?6""")

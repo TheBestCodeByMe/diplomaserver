@@ -1,7 +1,7 @@
 package com.example.diploma.dao;
 
 import com.example.diploma.model.Schedule;
-import com.example.diploma.repo.SсheduleRepository;
+import com.example.diploma.repo.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class ScheduleDao {
 
-    private final SсheduleRepository scheduleRepository;
+    private final ScheduleRepository scheduleRepository;
 
     public Schedule findSchedule(Long calendarId, Long classroomID, LocalDate date, Long subjectID, Long teacherID, Integer weekDay) {
         return scheduleRepository.findSchedule(calendarId, classroomID, date, subjectID, teacherID, weekDay);
@@ -24,4 +24,9 @@ public class ScheduleDao {
     public Schedule findForClassroom(Long calendarId, Long classroomID, LocalDate date) {
         return scheduleRepository.findByCalendarIdAndClassroomIDAndDate(calendarId, classroomID, date);
     }
+
+    public Schedule findByDateAndClassroomIDAndSubjectID(LocalDate dateLesson, Long classroomId, Long subjectId) {
+        return scheduleRepository.findByDateAndClassroomIDAndSubjectID(dateLesson, classroomId, subjectId);
+    }
+
 }

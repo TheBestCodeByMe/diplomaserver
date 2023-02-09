@@ -1,21 +1,20 @@
 package com.example.diploma.service;
 
-import com.example.diploma.dto.DiaryDTO;
-import com.example.diploma.model.*;
-
-import java.util.List;
+import com.example.diploma.dto.diary.CreateDiaryDTORequest;
+import com.example.diploma.dto.diary.DiaryDTO;
+import com.example.diploma.stream.DiaryDTOStreamProcessor;
 
 public interface DiaryService {
-/*    DiaryDTO addAcademicPerfomance(DiaryDTO diaryDTO);
+    DiaryDTOStreamProcessor addAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest);
 
-    DiaryDTO addAttendance(DiaryDTO diaryDTO);
+    DiaryDTOStreamProcessor addAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor);
 
-    DiaryDTO addSubject(DiaryDTO diaryDTO);
+    DiaryDTOStreamProcessor addSubject( DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest);
 
-    boolean getAttendance(DiaryDTO diaryDTO);
+    DiaryDTOStreamProcessor getAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor);
 
-    boolean getAcademicPerfomance(DiaryDTO diaryDTO);
-
+    DiaryDTOStreamProcessor getAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor);
+/*
     List<DiaryDTO> getDiaryDTOByUser(Long id);
 
     int getNumbAttendance(Long id);

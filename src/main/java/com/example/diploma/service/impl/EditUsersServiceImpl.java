@@ -47,7 +47,7 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     private final CalendarDao calendarDao;
 
-    private final SсheduleRepository scheduleRepository;
+    private final ScheduleRepository scheduleRepository;
 
     private final ScheduleDao scheduleDao;
 

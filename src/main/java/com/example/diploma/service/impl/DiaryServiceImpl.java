@@ -1,17 +1,28 @@
 package com.example.diploma.service.impl;
 
-import com.example.diploma.dto.DiaryDTO;
+import com.example.diploma.dao.ClassroomDao;
+import com.example.diploma.dao.PupilDao;
+import com.example.diploma.dao.ScheduleDao;
+import com.example.diploma.dao.SubjectDao;
+import com.example.diploma.dto.diary.CreateDiaryDTORequest;
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.*;
 //import com.example.diploma.mapper.Mapper;
+import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.repo.*;
+import com.example.diploma.stream.DiaryDTOStreamProcessor;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,163 +30,94 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class DiaryServiceImpl implements DiaryService {
-/*
+
     private final AttendanceRepository attendanceRepository;
+    //private final AttendanceDao attendanceDao;
 
     private final AcademicPerfomanceRepository academicPerfomanceRepository;
+    //private final AcademicPerfomanceDao academicPerfomanceDao;
 
     private final PupilRepository pupilRepository;
+    private final PupilDao pupilDao;
 
-    private final SheduleRepository sheduleRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final ScheduleDao scheduleDao;
 
     private final SubjectRepository subjectRepository;
+    private final SubjectDao subjectDao;
 
     private final ClassroomRepository classroomRepository;
+    private final ClassroomDao classroomDao;
 
     @Override
-    public DiaryDTO addAcademicPerfomance(DiaryDTO diaryDTO) {
+    public DiaryDTOStreamProcessor addAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
         AcademicPerfomance academicPerfomance = new AcademicPerfomance();
-        Pupil pupil = pupilRepository.findByNameAndLastnameAndPatronymic(diaryDTO.getNamePupil(), diaryDTO.getLastnamePupil(), diaryDTO.getPatronymicPupil());
-        Subject subject = subjectRepository.findBySubjectName(diaryDTO.getSubject());
 
-        if (pupil == null) {
-            diaryDTO.setNamePupil("Ошибка в ФИО ученика");
-            return diaryDTO;
-        } else if (subject == null) {
-            diaryDTO.setNamePupil("Ошибка в названии предмета");
-            return diaryDTO;
-        }
-
-        Shedule shedule = sheduleRepository.findByDateAndClassroomIDAndSubjectID(diaryDTO.getDateLesson(), pupil.getClassroomId(), subject.getId());
-
-        if (shedule == null) {
-            diaryDTO.setNamePupil("Ошибка в дате");
-            return diaryDTO;
-        }
-
-        academicPerfomance.setClassID(pupil.getClassroomId());
-        academicPerfomance.setLessonID(shedule.getId());
-        academicPerfomance.setPupilID(pupil.getId());
-        academicPerfomance.setGrade(Integer.parseInt(diaryDTO.getGrade()));
+        academicPerfomance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
+        academicPerfomance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
+        academicPerfomance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
+        academicPerfomance.setGrade(Integer.parseInt(createDiaryDTORequest.getGrade()));
+        academicPerfomance.setCreateDate(LocalDateTime.now());
+        academicPerfomance.setCloseDate(null);
+        academicPerfomance.setCode(GenerationCodeServiceImpl.generateCode());
+        academicPerfomance.setStatusId(EStatus.ACTIVE.getId());
         academicPerfomanceRepository.save(academicPerfomance);
 
-        diaryDTO.setNamePupil("ок");
-        return diaryDTO;
+        return diaryDTOStreamProcessor;
     }
 
     @Override
-    public DiaryDTO addAttendance(DiaryDTO diaryDTO) {
+    public DiaryDTOStreamProcessor addAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
         Attendance attendance = new Attendance();
-        Pupil pupil = pupilRepository.findByNameAndLastnameAndPatronymic(diaryDTO.getNamePupil(), diaryDTO.getLastnamePupil(), diaryDTO.getPatronymicPupil());
-        Subject subject = subjectRepository.findBySubjectName(diaryDTO.getSubject());
 
-        if (pupil == null) {
-            diaryDTO.setNamePupil("Ошибка в ФИО ученика");
-            return diaryDTO;
-        } else if (subject == null) {
-            diaryDTO.setNamePupil("Ошибка в названии предмета");
-            return diaryDTO;
-        }
-
-        Shedule shedule = sheduleRepository.findByDateAndClassroomIDAndSubjectID(diaryDTO.getDateLesson(), pupil.getClassroomId(), subject.getId());
-
-        if (shedule == null) {
-            diaryDTO.setNamePupil("Ошибка в дате");
-            return diaryDTO;
-        }
-
-        attendance.setPupilID(pupil.getId());
-        attendance.setClassID(pupil.getClassroomId());
-        attendance.setLessonID(shedule.getId());
+        attendance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
+        attendance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
+        attendance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
+        attendance.setCreateDate(LocalDateTime.now());
+        attendance.setCloseDate(null);
+        attendance.setCode(GenerationCodeServiceImpl.generateCode());
+        attendance.setStatusId(EStatus.ACTIVE.getId());
         attendanceRepository.save(attendance);
 
-        diaryDTO.setNamePupil("ок");
-        return diaryDTO;
+        return diaryDTOStreamProcessor;
     }
 
     @Override
-    public DiaryDTO addSubject(DiaryDTO diaryDTO) {
-        Subject subject = subjectRepository.findBySubjectName(diaryDTO.getSubject());
-        Classroom classroom = classroomRepository.findClassroomByName(diaryDTO.getClassName());
+    public  DiaryDTOStreamProcessor addSubject( DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
 
-        if (subject == null) {
-            diaryDTO.setNamePupil("Ошибка в предмете");
-            return diaryDTO;
-        } else if (classroom == null) {
-            diaryDTO.setNamePupil("Ошибка в названии класса");
-            return diaryDTO;
-        }
+        diaryDTOStreamProcessor.getSchedule().setHometask(createDiaryDTORequest.getHomework());
+        scheduleRepository.save(diaryDTOStreamProcessor.getSchedule());
 
-        Shedule shedule = sheduleRepository.findByDateAndClassroomIDAndSubjectID(diaryDTO.getDateLesson(), classroom.getId(), subject.getId());
-
-        if (shedule == null) {
-            diaryDTO.setNamePupil("Ошибка в дате предмета");
-            return diaryDTO;
-        }
-
-        shedule.setHometask(diaryDTO.getHomework());
-        sheduleRepository.save(shedule);
-
-        return diaryDTO;
+        return diaryDTOStreamProcessor;
     }
 
     @Override
-    public boolean getAttendance(DiaryDTO diaryDTO) {
-        Pupil pupil = pupilRepository.findByNameAndLastnameAndPatronymic(diaryDTO.getNamePupil(), diaryDTO.getLastnamePupil(), diaryDTO.getPatronymicPupil());
-        Subject subject = subjectRepository.findBySubjectName(diaryDTO.getSubject());
-        if (pupil == null) {
-            diaryDTO.setNamePupil("Ошибка в ФИО ученика");
-            return false;
-        } else if (subject == null) {
-            diaryDTO.setNamePupil("Ошибка в названии предмета");
-            return false;
-        }
-        Shedule shedule = sheduleRepository.findByDateAndClassroomIDAndSubjectID(diaryDTO.getDateLesson(), pupil.getClassroomId(), subject.getId());
-        if (shedule == null) {
-            diaryDTO.setNamePupil("Ошибка в дате");
-            return false;
-        }
-        return attendanceRepository.existsByClassIDAndLessonIDAndPupilID(pupil.getClassroomId(), shedule.getId(), pupil.getId());
+    public DiaryDTOStreamProcessor getAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
+        diaryDTOStreamProcessor.setAttendance(attendanceRepository.existsByClassIDAndLessonIDAndPupilID(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        return diaryDTOStreamProcessor;
     }
 
     @Override
-    public boolean getAcademicPerfomance(DiaryDTO diaryDTO) {
-        System.out.println("в проверке" + diaryDTO);
-        Pupil pupil = pupilRepository.findByNameAndLastnameAndPatronymic(diaryDTO.getNamePupil(), diaryDTO.getLastnamePupil(), diaryDTO.getPatronymicPupil());
-        Subject subject = subjectRepository.findBySubjectName(diaryDTO.getSubject());
-
-        if (pupil == null) {
-            diaryDTO.setNamePupil("Ошибка в ФИО ученика");
-            return false;
-        } else if (subject == null) {
-            diaryDTO.setNamePupil("Ошибка в названии предмета");
-            return false;
-        }
-
-        Shedule shedule = sheduleRepository.findByDateAndClassroomIDAndSubjectID(diaryDTO.getDateLesson(), pupil.getClassroomId(), subject.getId());
-
-        if (shedule == null) {
-            diaryDTO.setNamePupil("Ошибка в дате");
-            return false;
-        }
-        return academicPerfomanceRepository.existsByClassIDAndLessonIDAndPupilID(pupil.getClassroomId(), shedule.getId(), pupil.getId());
+    public DiaryDTOStreamProcessor getAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
+        diaryDTOStreamProcessor.setAcademicPerformance(academicPerfomanceRepository.existsByClassIDAndLessonIDAndPupilID(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        return diaryDTOStreamProcessor;
     }
-
+/*
     @Override
-    public List<DiaryDTO> getDiaryDTOByUser(Long id) {
+    public List<CreateDiaryDTORequest> getDiaryDTOByUser(Long id) {
         Pupil pupil = pupilRepository.findByUserId(id);
-        List<Shedule> shedules = sheduleRepository.findAllByClassroomID(pupil.getClassroomId());
+        List<Schedule> shedules = scheduleRepository.findAllByClassroomID(pupil.getClassroomId());
         List<Subject> subjects = subjectRepository.findAll();
         List<Attendance> attendances = attendanceRepository.findAllByPupilID(pupil.getId());
         List<AcademicPerfomance> academicPerfomances = academicPerfomanceRepository.findAllByPupilID(pupil.getId());
 
-        List<DiaryDTO> diaryDTOList = new ArrayList<>();
+        List<CreateDiaryDTORequest> createDiaryDTORequestList = new ArrayList<>();
 
         boolean attendanceBoolean = false;
         String grade = "";
 
         for (Shedule shedule : shedules) {
-            DiaryDTO diaryDTO = new DiaryDTO();
+            CreateDiaryDTORequest createDiaryDTORequest = new CreateDiaryDTORequest();
             for (Subject subject : subjects) {
                 if (Objects.equals(shedule.getSubjectID(), subject.getId())) {
                     if (academicPerfomances == null) {
@@ -196,13 +138,13 @@ public class DiaryServiceImpl implements DiaryService {
                     } else {
                         attendanceBoolean = false;
                     }
-                    diaryDTO = Mapper.mapToDiaryDTO(shedule, pupil, classroomRepository.getById(pupil.getClassroomId()), attendanceBoolean, grade, subject);
+                    createDiaryDTORequest = Mapper.mapToDiaryDTO(shedule, pupil, classroomRepository.getById(pupil.getClassroomId()), attendanceBoolean, grade, subject);
                 }
             }
-            diaryDTOList.add(diaryDTO);
+            createDiaryDTORequestList.add(createDiaryDTORequest);
         }
 
-        return diaryDTOList;
+        return createDiaryDTORequestList;
     }
 
     @Override
@@ -214,18 +156,18 @@ public class DiaryServiceImpl implements DiaryService {
 
     // TODO: упростить, как в scheduleController
     @Override
-    public List<DiaryDTO> getDiaryDTOByClass(String classForSearch) {
-        List<DiaryDTO> diaryDTOList = new ArrayList<>();
-        DiaryDTO diaryDTO = new DiaryDTO();
+    public List<CreateDiaryDTORequest> getDiaryDTOByClass(String classForSearch) {
+        List<CreateDiaryDTORequest> createDiaryDTORequestList = new ArrayList<>();
+        CreateDiaryDTORequest createDiaryDTORequest = new CreateDiaryDTORequest();
         Classroom classroom = classroomRepository.findClassroomByName(classForSearch);
         if (classroom == null) {
-            diaryDTO.setNamePupil("Такого класса нет");
-            diaryDTOList.add(diaryDTO);
-            return diaryDTOList;
+            createDiaryDTORequest.setNamePupil("Такого класса нет");
+            createDiaryDTORequestList.add(createDiaryDTORequest);
+            return createDiaryDTORequestList;
         }
 
         List<Pupil> pupilList = pupilRepository.findAllByClassroomId(classroom.getId());
-        List<Shedule> shedules = sheduleRepository.findAllByClassroomID(classroom.getId());
+        List<Shedule> shedules = scheduleRepository.findAllByClassroomID(classroom.getId());
         List<Subject> subjects = subjectRepository.findAll();
 
         boolean attendanceBoolean = false;
@@ -235,7 +177,7 @@ public class DiaryServiceImpl implements DiaryService {
             List<Attendance> attendances = attendanceRepository.findAllByPupilID(pupil.getId());
             List<AcademicPerfomance> academicPerfomances = academicPerfomanceRepository.findAllByPupilID(pupil.getId());
             for (Shedule shedule : shedules) {
-                diaryDTO = new DiaryDTO();
+                createDiaryDTORequest = new CreateDiaryDTORequest();
                 for (Subject subject : subjects) {
                     if (Objects.equals(shedule.getSubjectID(), subject.getId())) {
                         if (academicPerfomances == null) {
@@ -256,14 +198,14 @@ public class DiaryServiceImpl implements DiaryService {
                         } else {
                             attendanceBoolean = false;
                         }
-                        diaryDTO = Mapper.mapToDiaryDTO(shedule, pupil, classroomRepository.getById(pupil.getClassroomId()), attendanceBoolean, grade, subject);
+                        createDiaryDTORequest = Mapper.mapToDiaryDTO(shedule, pupil, classroomRepository.getById(pupil.getClassroomId()), attendanceBoolean, grade, subject);
                     }
                 }
-                diaryDTOList.add(diaryDTO);
+                createDiaryDTORequestList.add(createDiaryDTORequest);
             }
         }
 
-        return diaryDTOList;
+        return createDiaryDTORequestList;
     }
 
     @Override
@@ -284,11 +226,11 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public void saveGradesByUserId(Long userId) {
-        List<DiaryDTO> diaryDTOList = getDiaryDTOByUser(userId);
+        List<CreateDiaryDTORequest> createDiaryDTORequestList = getDiaryDTOByUser(userId);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
-            objectWriter.writeValue(new File("D:\\BSUIR\\6semestr\\CourseWork\\Programm\\diploma\\server\\src\\main\\resources\\" + diaryDTOList.get(0).getLastnamePupil() + "diary.json"), diaryDTOList);
+            objectWriter.writeValue(new File("D:\\BSUIR\\6semestr\\CourseWork\\Programm\\diploma\\server\\src\\main\\resources\\" + createDiaryDTORequestList.get(0).getLastnamePupil() + "diary.json"), createDiaryDTORequestList);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
