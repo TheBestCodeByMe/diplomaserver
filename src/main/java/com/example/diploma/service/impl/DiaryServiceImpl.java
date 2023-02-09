@@ -74,13 +74,13 @@ public class DiaryServiceImpl implements DiaryService {
             attendance.setCode(GenerationCodeServiceImpl.generateCode());
             attendance.setStatusId(EStatus.ACTIVE.getId());
             attendanceRepository.save(attendance);
+            diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Посещаемость выставлена"));
         } else {
             attendance = attendanceDao.find(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId());
             attendance.setStatusId(EStatus.CLOSED.getId());
             attendanceRepository.save(attendance);
             diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Посещаемость обновлена"));
         }
-        diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Посещаемость выставлена"));
 
         return diaryDTOStreamProcessor;
     }

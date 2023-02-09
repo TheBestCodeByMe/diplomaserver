@@ -178,7 +178,7 @@ CREATE TABLE if not exists academic_performance
     lesson_academic_performance_id bigint not null,
     academic_performance_grade     int,
     academic_performance_status_id   bigint  not null,
-    academic_perdormance_code varchar(50) not null unique,
+    academic_performance_code varchar(50) not null unique,
     create_date   date not null,
     close_date    date,
     FOREIGN KEY (academic_performance_status_id) REFERENCES core_entity_statuses_ref(entity_status_id),
