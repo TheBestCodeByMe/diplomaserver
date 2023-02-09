@@ -8,6 +8,8 @@ import com.example.diploma.repo.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class AcademicPerformanceDao {
@@ -20,5 +22,9 @@ public class AcademicPerformanceDao {
 
     public AcademicPerfomance find(Long classId, Long lessonId, Long pupilId){
         return academicPerformanceRepository.findByClassIDAndLessonIDAndPupilIDAndStatusId(classId, lessonId, pupilId, EStatus.ACTIVE.getId());
+    }
+
+    public List<AcademicPerfomance> findAllByPupilID(Long id) {
+        return academicPerformanceRepository.findAllByPupilIDAndStatusId(id, EStatus.ACTIVE.getId());
     }
 }

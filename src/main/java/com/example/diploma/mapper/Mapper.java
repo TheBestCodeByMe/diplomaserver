@@ -71,19 +71,5 @@ public class Mapper {
 
         return calendar;
     }
-
-    public static DiaryDTO mapToDiaryDTO(Shedule shedule, Pupil pupil, Classroom classroom, boolean attendance, String grade, Subject subject) {
-        DiaryDTO diaryDTO = new DiaryDTO();
-        diaryDTO.setNamePupil(pupil.getName());
-        diaryDTO.setLastnamePupil(pupil.getLastname());
-        diaryDTO.setPatronymicPupil(pupil.getPatronymic());
-        diaryDTO.setSubject(subject.getSubjectName());
-        diaryDTO.setHomework(shedule.getHometask());
-        diaryDTO.setGrade(grade);
-        diaryDTO.setAttendance(attendance);
-        diaryDTO.setDateLesson(shedule.getDate());
-        diaryDTO.setClassName(classroom.getName());
-
-        return diaryDTO;
-    }*/
+*/
 }

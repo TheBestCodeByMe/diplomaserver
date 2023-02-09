@@ -1,6 +1,7 @@
 package com.example.diploma.controller;
 
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
+import com.example.diploma.dto.diary.DiaryDTO;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -53,12 +56,12 @@ public class DiaryController {
             return ResponseEntity.badRequest().body(new MessageResponse(createDiaryDTORequest.getNamePupil()));
         }
     }
-/*
+
     @PostMapping("/getByUserId")
     public List<DiaryDTO> getDiaryByUser(@RequestBody String userId) {
         return diaryService.getDiaryDTOByUser(Long.parseLong(userId));
     }
-
+/*
     @PostMapping("/getNumbAttendance")
     public String getNumberAttendance(@RequestBody String userId) {
         return String.valueOf(diaryService.getNumbAttendance(Long.parseLong(userId)));

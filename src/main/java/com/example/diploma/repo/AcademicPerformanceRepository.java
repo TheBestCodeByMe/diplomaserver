@@ -8,5 +8,5 @@ import java.util.List;
 public interface AcademicPerformanceRepository extends JpaRepository<AcademicPerfomance, Long> {
     boolean existsByClassIDAndLessonIDAndPupilIDAndStatusId(Long classId, Long lessonId, Long pupilId, Long statusId);
     AcademicPerfomance findByClassIDAndLessonIDAndPupilIDAndStatusId(Long classId, Long lessonId, Long pupilId, Long statusId);
-    List<AcademicPerfomance> findAllByPupilID(Long pupilId);
+    List<AcademicPerfomance> findAllByPupilIDAndStatusId(Long pupilId, Long statusId);
 }

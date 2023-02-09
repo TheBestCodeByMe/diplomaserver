@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -29,4 +30,7 @@ public class ScheduleDao {
         return scheduleRepository.findByDateAndClassroomIDAndSubjectID(dateLesson, classroomId, subjectId);
     }
 
+    public List<Schedule> findAllByClassroomID(Long classroomId) {
+        return scheduleRepository.findAllByClassroomID(classroomId);
+    }
 }

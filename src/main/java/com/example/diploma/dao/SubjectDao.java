@@ -7,6 +7,8 @@ import com.example.diploma.repo.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class SubjectDao {
@@ -17,4 +19,7 @@ public class SubjectDao {
         return subjectRepository.findBySubjectName(subjectName);
     }
 
+    public List<Subject> findAll() {
+        return subjectRepository.findAll();
+    }
 }
