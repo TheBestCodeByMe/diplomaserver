@@ -1,5 +1,6 @@
 package com.example.diploma.repo;
 
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     Schedule findByTeacherIDAndCalendarIdAndDate(Long teacherId, Long calendarId, LocalDate date);
     Schedule findByCalendarIdAndClassroomIDAndDate(Long calendarId, Long classroomId, LocalDate date);
     Schedule findByDateAndClassroomIDAndSubjectID(LocalDate date, Long classroomId, Long subjectId);
-    List<Schedule> findAllByClassroomID(Long classroomId);
+    List<Schedule> findAllByClassroomIDAndStatusId(Long classroomId, Long statusId);
     List<Schedule> findAllByClassroomIDAndDate(Long classroomId, LocalDate date);
 }

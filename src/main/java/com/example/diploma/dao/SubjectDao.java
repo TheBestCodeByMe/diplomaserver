@@ -1,5 +1,6 @@
 package com.example.diploma.dao;
 
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Subject;
 import com.example.diploma.repo.ClassroomRepository;
@@ -20,6 +21,6 @@ public class SubjectDao {
     }
 
     public List<Subject> findAll() {
-        return subjectRepository.findAll();
+        return subjectRepository.findAllByStatusId(EStatus.ACTIVE.getId());
     }
 }

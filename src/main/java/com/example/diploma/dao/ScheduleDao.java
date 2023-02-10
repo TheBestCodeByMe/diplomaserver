@@ -1,5 +1,6 @@
 package com.example.diploma.dao;
 
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Schedule;
 import com.example.diploma.repo.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,6 @@ public class ScheduleDao {
     }
 
     public List<Schedule> findAllByClassroomID(Long classroomId) {
-        return scheduleRepository.findAllByClassroomID(classroomId);
+        return scheduleRepository.findAllByClassroomIDAndStatusId(classroomId, EStatus.ACTIVE.getId());
     }
 }

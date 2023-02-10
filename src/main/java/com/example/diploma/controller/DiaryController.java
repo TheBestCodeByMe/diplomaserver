@@ -2,6 +2,7 @@ package com.example.diploma.controller;
 
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
 import com.example.diploma.dto.diary.DiaryDTO;
+import com.example.diploma.exception.ResourceNotFoundException;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
@@ -82,13 +83,13 @@ public class DiaryController {
             return ResponseEntity.ok("У ученика ещё нет оценок");
         }
     }
-/*
+
     @GetMapping("/getAllAboutPupil/{classForSearch}")
-    public ResponseEntity<List<DiaryDTO>> getUserById(@PathVariable(value = "classForSearch") String classForSearch)
-            throws ResourceNotFoundException {
-        return ResponseEntity.ok().body(diaryService.getDiaryDTOByClass(classForSearch));
+    public ResponseEntity<?> getDiaryDTOByClass(@PathVariable(value = "classForSearch") String classForSearch) {
+        return diaryService.getDiaryDTOByClass(classForSearch);
     }
 
+/*
     @GetMapping("/getSaveGrades/{userId}")
     public ResponseEntity<String> getSaveDiary(@PathVariable(value = "userId") Long userId)
             throws ResourceNotFoundException {

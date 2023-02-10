@@ -3,6 +3,7 @@ package com.example.diploma.service;
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
 import com.example.diploma.dto.diary.DiaryDTO;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -20,9 +21,9 @@ public interface DiaryService {
     List<DiaryDTO> getDiaryDTOByUser(Long id);
 
     int getNumbAttendance(Long id);
-/*
-    List<DiaryDTO> getDiaryDTOByClass(String classForSearch);
-*/
+
+    ResponseEntity<?> getDiaryDTOByClass(String classForSearch);
+
     double getAverageGrade(Long id);
 /*
     void saveGradesByUserId(Long userId);*/

@@ -4,6 +4,6 @@ import com.example.diploma.model.Classroom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
-    Classroom findClassroomByName(String name);
-    Classroom findClassroomByClassroomTeacherId(Long teacherId);
+    Classroom findClassroomByNameAndStatusId(String name, Long statusId);
+    Classroom findClassroomByClassroomTeacherIdAndStatusId(Long teacherId, Long statusId);
 }
