@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,23 +51,28 @@ public class DiaryController {
             diaryDTOStreamProcessor = diaryService.addHomework(diaryDTOStreamProcessor, createDiaryDTORequest);
         }
 
-        if (diaryDTOStreamProcessor.getResponseEntity().getStatusCode()!=HttpStatus.BAD_REQUEST) {
+        if (diaryDTOStreamProcessor.getResponseEntity().getStatusCode() != HttpStatus.BAD_REQUEST) {
             return diaryDTOStreamProcessor.getResponseEntity();
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse(createDiaryDTORequest.getNamePupil()));
         }
     }
 
-    @PostMapping("/getByUserId")
-    public List<DiaryDTO> getDiaryByUser(@RequestBody String userId) {
-        return diaryService.getDiaryDTOByUser(Long.parseLong(userId));
-    }
-/*
-    @PostMapping("/getNumbAttendance")
-    public String getNumberAttendance(@RequestBody String userId) {
-        return String.valueOf(diaryService.getNumbAttendance(Long.parseLong(userId)));
+    @GetMapping("/getByUserId/{userId}")
+    public ResponseEntity<?> getDiaryByUser(@PathVariable(value = "userId") String userId) {
+        List<DiaryDTO> diaryDTOList = diaryService.getDiaryDTOByUser(Long.parseLong(userId));
+        if (diaryDTOList == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Таких пользователей нет"));
+        } else {
+            return ResponseEntity.ok(diaryDTOList);
+        }
     }
 
+    @GetMapping("/getNumbAttendance/{userId}")
+    public ResponseEntity<?> getNumberAttendance(@PathVariable(value = "userId") String userId) {
+        return ResponseEntity.ok(diaryService.getNumbAttendance(Long.parseLong(userId)));
+    }
+/*
     @PostMapping("/getAverageGrade")
     public String getAvrgGrade(@RequestBody String userId) {
         double avGrade = diaryService.getAverageGrade(Long.parseLong(userId));

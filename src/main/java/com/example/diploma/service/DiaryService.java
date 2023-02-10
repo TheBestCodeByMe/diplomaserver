@@ -18,9 +18,9 @@ public interface DiaryService {
     DiaryDTOStreamProcessor getAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor);
 
     List<DiaryDTO> getDiaryDTOByUser(Long id);
-/*
-    int getNumbAttendance(Long id);
 
+    int getNumbAttendance(Long id);
+/*
     List<DiaryDTO> getDiaryDTOByClass(String classForSearch);
 
     double getAverageGrade(Long id);
