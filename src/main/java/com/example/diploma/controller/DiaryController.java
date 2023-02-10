@@ -72,17 +72,17 @@ public class DiaryController {
     public ResponseEntity<?> getNumberAttendance(@PathVariable(value = "userId") String userId) {
         return ResponseEntity.ok(diaryService.getNumbAttendance(Long.parseLong(userId)));
     }
-/*
-    @PostMapping("/getAverageGrade")
-    public String getAvrgGrade(@RequestBody String userId) {
+
+    @GetMapping("/getAverageGrade/{userId}")
+    public ResponseEntity<?> getAvrgGrade(@PathVariable(value = "userId") String userId) {
         double avGrade = diaryService.getAverageGrade(Long.parseLong(userId));
         if (avGrade != 0) {
-            return String.valueOf(avGrade);
+            return ResponseEntity.ok(avGrade);
         } else {
-            return "У ученика ещё нет оценок";
+            return ResponseEntity.ok("У ученика ещё нет оценок");
         }
     }
-
+/*
     @GetMapping("/getAllAboutPupil/{classForSearch}")
     public ResponseEntity<List<DiaryDTO>> getUserById(@PathVariable(value = "classForSearch") String classForSearch)
             throws ResourceNotFoundException {

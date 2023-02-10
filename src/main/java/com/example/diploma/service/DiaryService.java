@@ -22,8 +22,8 @@ public interface DiaryService {
     int getNumbAttendance(Long id);
 /*
     List<DiaryDTO> getDiaryDTOByClass(String classForSearch);
-
+*/
     double getAverageGrade(Long id);
-
+/*
     void saveGradesByUserId(Long userId);*/
 }

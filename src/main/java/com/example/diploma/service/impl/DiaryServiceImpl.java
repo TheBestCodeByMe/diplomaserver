@@ -224,23 +224,23 @@ public class DiaryServiceImpl implements DiaryService {
 
         return createDiaryDTORequestList;
     }
-
+*/
     @Override
     public double getAverageGrade(Long id) {
         Pupil pupil = pupilRepository.findByUserId(id);
-        List<AcademicPerfomance> academicPerfomanceList = academicPerfomanceRepository.findAllByPupilID(pupil.getId());
+        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilID(pupil.getId());
 
         double sumGrade = 0;
-        for (AcademicPerfomance academicPerfomance : academicPerfomanceList) {
+        for (AcademicPerfomance academicPerfomance : academicPerformanceList) {
             sumGrade += academicPerfomance.getGrade();
         }
         if (sumGrade != 0) {
-            return sumGrade / academicPerfomanceList.size();
+            return sumGrade / academicPerformanceList.size();
         } else {
             return 0;
         }
     }
-
+/*
     @Override
     public void saveGradesByUserId(Long userId) {
         List<CreateDiaryDTORequest> createDiaryDTORequestList = getDiaryDTOByUser(userId);
