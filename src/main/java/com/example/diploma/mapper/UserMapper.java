@@ -1,13 +1,14 @@
 package com.example.diploma.mapper;
 
 import com.example.diploma.dto.*;
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.*;
 import com.example.diploma.enumiration.ERole;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Mapper {
+public class UserMapper {
 /*
      public static User mapUserDTOToUser(UserDTO userDTO) {
         User user = new User();
@@ -17,7 +18,7 @@ public class Mapper {
         role.add(new Role(ERole.ROLE_PUPIL));
         user.setRoles(role);
         user.setPassword(userDTO.getPassword());
-        user.setStatus(userDTO.getStatus());
+        user.setStatus(EStatus.ACTIVE.getId());
         user.setLink(userDTO.getLink());
 
         return user;
@@ -32,13 +33,13 @@ public class Mapper {
 
         return pupil;
     }
-
+*/
     public static UserDTO mapUserToUserDTO(User user, Pupil pupil) {
         UserDTO userDTO = new UserDTO();
         userDTO.setLogin(user.getLogin());
         userDTO.setRole(user.getRoles().toString());
         userDTO.setPassword(user.getPassword());
-        userDTO.setStatus(user.getStatus());
+        userDTO.setStatus(EStatus.getName(user.getStatus()));
         userDTO.setLink(user.getLink());
         userDTO.setEmail(pupil.getEmail());
         userDTO.setLastname(pupil.getLastname());
@@ -53,7 +54,7 @@ public class Mapper {
         userDTO.setLogin(user.getLogin());
         userDTO.setRole(user.getRoles().toString());
         userDTO.setPassword(user.getPassword());
-        userDTO.setStatus(user.getStatus());
+        userDTO.setStatus(EStatus.getName(user.getStatus()));
         userDTO.setLink(user.getLink());
         userDTO.setEmail(teacher.getEmail());
         userDTO.setLastname(teacher.getLastName());
@@ -62,7 +63,7 @@ public class Mapper {
 
         return userDTO;
     }
-
+/*
     public static Calendar mapSheduleDTOToCalendar(SheduleDTO sheduleDTO) {
         Calendar calendar = new Calendar();
         calendar.setLessonNumber(sheduleDTO.getLessonNumber());

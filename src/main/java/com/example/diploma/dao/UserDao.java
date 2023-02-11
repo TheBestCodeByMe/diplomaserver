@@ -20,4 +20,6 @@ public class UserDao {
     public User findByLogin(String login) {
         return userRepository.findByLoginWithinOpt(login);
     }
+
+    public List<User> findAll() {return userRepository.findAllByStatus(EStatus.ACTIVE.getId());}
 }

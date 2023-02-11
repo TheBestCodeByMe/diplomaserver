@@ -12,7 +12,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 public class UserDTO {
-    private Long id;
     private String name;
     private String lastname;
     private String patronymic;
@@ -40,11 +39,11 @@ public class UserDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(id, userDTO.id) && Objects.equals(name, userDTO.name) && Objects.equals(lastname, userDTO.lastname) && Objects.equals(patronymic, userDTO.patronymic) && Objects.equals(email, userDTO.email) && Objects.equals(login, userDTO.login) && Objects.equals(password, userDTO.password) && Objects.equals(role, userDTO.role) && Objects.equals(status, userDTO.status) && Objects.equals(link, userDTO.link);
+        return Objects.equals(name, userDTO.name) && Objects.equals(lastname, userDTO.lastname) && Objects.equals(patronymic, userDTO.patronymic) && Objects.equals(email, userDTO.email) && Objects.equals(login, userDTO.login) && Objects.equals(password, userDTO.password) && Objects.equals(role, userDTO.role) && Objects.equals(status, userDTO.status) && Objects.equals(link, userDTO.link);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastname, patronymic, email, login, password, role, status, link);
+        return Objects.hash(name, lastname, patronymic, email, login, password, role, status, link);
     }
 }

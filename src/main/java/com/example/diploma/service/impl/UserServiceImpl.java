@@ -1,11 +1,14 @@
 package com.example.diploma.service.impl;
 
+import com.example.diploma.dao.PupilDao;
+import com.example.diploma.dao.TeacherDao;
+import com.example.diploma.dao.UserDao;
 import com.example.diploma.dto.UserDTO;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.model.User;
 import com.example.diploma.exception.ResourceNotFoundException;
-import com.example.diploma.mapper.Mapper;
+import com.example.diploma.mapper.UserMapper;
 import com.example.diploma.service.UserService;
 import com.example.diploma.repo.PupilRepository;
 import com.example.diploma.repo.TeacherRepository;
@@ -22,28 +25,31 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserDao userDao;
 
     private final PupilRepository pupilRepository;
+    private final PupilDao pupilDao;
 
-    private final TeacherRepository teacherRepository;/*
+    private final TeacherRepository teacherRepository;
+    private final TeacherDao teacherDao;
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }*/
-/*
+        return userDao.findAll();
+    }
+
     @Override
     public ResponseEntity<UserDTO> getUserById(Long userId)
             throws ResourceNotFoundException {
         Optional<User> user = Optional.ofNullable(userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId)));
-        Pupil pupil = pupilRepository.findByUserId(userId);
-        Teacher teacher = teacherRepository.findByUserId(userId);
+        Pupil pupil = pupilDao.findByUserId(userId);
+        Teacher teacher = teacherDao.findByUserId(userId);
         UserDTO userDTO;
         if(pupil != null){
-            userDTO = Mapper.mapUserToUserDTO(user.get(), pupil);
+            userDTO = UserMapper.mapUserToUserDTO(user.get(), pupil);
         } else {
-            userDTO = Mapper.mapUserTeacherToUserDTO(user.get(), teacher);
+            userDTO = UserMapper.mapUserTeacherToUserDTO(user.get(), teacher);
         }
 
         return ResponseEntity.ok().body(userDTO);
@@ -55,8 +61,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-        Pupil pupil = pupilRepository.findByUserId(userId);
-        Teacher teacher = teacherRepository.findByUserId(userId);
+        Pupil pupil = pupilDao.findByUserId(userId);
+        Teacher teacher = teacherDao.findByUserId(userId);
 
         if(pupil != null){
             pupil.setEmail(userDetails.getEmail());
@@ -73,8 +79,8 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setLogin(userDetails.getLogin());
-
         userRepository.save(user);
+
         return ResponseEntity.ok(userDetails);
-    }*/
+    }
 }

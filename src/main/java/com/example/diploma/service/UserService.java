@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserService {
-/*
+
     List<User> getAllUsers();
 
     ResponseEntity<UserDTO> getUserById(Long userId)
             throws ResourceNotFoundException;
 
     ResponseEntity<UserDTO> updateUser(Long userId,
-                                       UserDTO userDetails) throws ResourceNotFoundException;*/
+                                       UserDTO userDetails) throws ResourceNotFoundException;
 }

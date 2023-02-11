@@ -10,18 +10,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class UserController {
-/*
+
     private final UserService userService;
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(Objects.requireNonNullElse(userService.getAllUsers(), ""));
     }
 
     @GetMapping("/users/{id}")
@@ -34,5 +35,5 @@ public class UserController {
     public ResponseEntity<UserDTO> updateUser(@PathVariable(value = "id") Long userId,
                                            @Validated @RequestBody UserDTO userDetails) throws ResourceNotFoundException {
         return userService.updateUser(userId, userDetails);
-    }*/
+    }
 }
