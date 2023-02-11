@@ -8,10 +8,12 @@ import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
+import com.example.diploma.exception.ResourceNotFoundException;
 import com.example.diploma.model.Teacher;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EditUsersService {
     ResponseEntity<?> createPupil(CreatePupilDTORequest pupilDTO);
@@ -25,10 +27,10 @@ public interface EditUsersService {
     ResponseEntity<?> createScheduleDTO(CreateScheduleDTORequest sheduleDTO);
 
     ResponseEntity<?> createClassroom(ClassroomDTO classroomDTO);
-/*
-    Map<String, Boolean> deleteUser(String login) throws ResourceNotFoundException;
 
-    Map<String, Boolean> blockUser(String login) throws ResourceNotFoundException;
+    boolean deleteUser(String login) throws ResourceNotFoundException;
 
-    Map<String, Boolean> unblockUser(String login);*/
+    boolean blockUser(String login) throws ResourceNotFoundException;
+
+    boolean unblockUser(String login);
 }

@@ -20,6 +20,10 @@ public class TeacherDao {
         return teacherRepository.findByNameAndLastNameAndPatronymic(classroomTeacherName, classroomTeacherLastname, classroomTeacherPatronymic);
     }
 
+    public Teacher findByUserId(Long id) {
+        return teacherRepository.findByUserId(id);
+    }
+
     public List<Teacher> findAll() {
         return teacherRepository.findAllByStatusId(EStatus.ACTIVE.getId());
     }

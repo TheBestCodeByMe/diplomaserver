@@ -8,7 +8,9 @@ import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
+import com.example.diploma.exception.ResourceNotFoundException;
 import com.example.diploma.model.Teacher;
+import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.EditUsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -57,21 +60,31 @@ public class EditUsersController { // TODO: убрать возможность 
     public ResponseEntity<?> createClassroom(@Validated @RequestBody ClassroomDTO classroomDTO) {
         return editUsersService.createClassroom(classroomDTO);
     }
-/*
-    @DeleteMapping("/deleteUser/{login}")
-    public Map<String, Boolean> deleteUser(@PathVariable(value = "login") String login)
-            throws ResourceNotFoundException {
-        return editUsersService.deleteUser(login);
+
+    @GetMapping("/deleteUser/{login}")
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "login") String login) throws ResourceNotFoundException {
+        if (!editUsersService.deleteUser(login)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Введен неверный логин"));
+        } else {
+            return ResponseEntity.ok("Пользователь удален");
+        }
     }
 
-    @PostMapping("/blockUser/{login}")
-    public Map<String, Boolean> blockUser(@PathVariable(value = "login") String login)
-            throws ResourceNotFoundException {
-        return editUsersService.blockUser(login);
+    @GetMapping("/blockUser/{login}")
+    public ResponseEntity<?> blockUser(@PathVariable(value = "login") String login) throws ResourceNotFoundException {
+        if (!editUsersService.blockUser(login)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Введен неверный логин"));
+        } else {
+            return ResponseEntity.ok("Пользователь заблокирован");
+        }
     }
 
-    @PostMapping("/unblockUser/{login}")
-    public Map<String, Boolean> unblockUser(@PathVariable(value = "login") String login) {
-        return editUsersService.unblockUser(login);
-    }*/
+    @GetMapping("/unblockUser/{login}")
+    public ResponseEntity<?> unblockUser(@PathVariable(value = "login") String login) {
+        if (!editUsersService.unblockUser(login)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Введен неверный логин"));
+        } else {
+            return ResponseEntity.ok("Пользователь разблокирован");
+        }
+    }
 }

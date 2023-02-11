@@ -7,8 +7,11 @@ import com.example.diploma.dto.pupil.PupilDTO;
 import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
+import com.example.diploma.enumiration.EStatus;
+import com.example.diploma.exception.ResourceNotFoundException;
 import com.example.diploma.mapper.*;
 import com.example.diploma.model.*;
+import com.example.diploma.model.Calendar;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.EditUsersService;
 import com.example.diploma.repo.*;
@@ -16,15 +19,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class EditUsersServiceImpl implements EditUsersService {
 
     private final UserRepository userRepository;
+    private final UserDao userDao;
 
     private final PupilRepository pupilRepository;
     private final PupilDao pupilDao;
@@ -167,56 +169,49 @@ public class EditUsersServiceImpl implements EditUsersService {
         }
         return ResponseEntity.ok(classroomDTO);
     }
-/*
+
     @Override
-    public Map<String, Boolean> deleteUser(String login)
-            throws ResourceNotFoundException {
-        User user = userRepository.findByLogin(login).orElseThrow(null);
-        Map<String, Boolean> response = new HashMap<>();
+    public boolean deleteUser(String login) {
+        User user = userDao.findByLogin(login);
+        boolean response = false;
         if (user != null) {
-            userRepository.delete(user);
-            response.put("deleted", Boolean.TRUE);
-            Pupil pupil = pupilRepository.findByUserId(user.getId());
-            Teacher teacher = teacherRepository.findByUserId(user.getId());
+            user.setStatus(EStatus.CLOSED.getId());
+            userRepository.save(user);
+            response = true;
+            Pupil pupil = pupilDao.findByUserId(user.getId());
+            Teacher teacher = teacherDao.findByUserId(user.getId());
             if (pupil != null) {
-                pupil.setUserId(0);
+                pupil.setUserId(2);
                 pupilRepository.save(pupil);
             } else if (teacher != null) {
-                teacher.setUserId(0);
+                teacher.setUserId(2);
                 teacherRepository.save(teacher);
             }
-        } else {
-            response.put("notDeleted", Boolean.FALSE);
         }
         return response;
     }
 
     @Override
-    public Map<String, Boolean> blockUser(String login)
-            throws ResourceNotFoundException {
-        User user = userRepository.findByLogin(login).orElseThrow(null);
-        Map<String, Boolean> response = new HashMap<>();
+    public boolean blockUser(String login) {
+        User user = userDao.findByLogin(login);
+        boolean response = false;
         if (user != null) {
-            user.setStatus("block");
+            user.setStatus(EStatus.BANNED.getId());
             userRepository.save(user);
-            response.put("blocked", Boolean.TRUE);
-        } else {
-            response.put("notBlocked", Boolean.FALSE);
+            response = true;
         }
         return response;
     }
 
     @Override
-    public Map<String, Boolean> unblockUser(String login) {
-        User user = userRepository.findByLogin(login).orElseThrow(null);
-        Map<String, Boolean> response = new HashMap<>();
+    public boolean unblockUser(String login) {
+        User user = userDao.findByLogin(login);
+        boolean response = false;
         if (user != null) {
-            user.setStatus("unBlock");
+            user.setStatus(EStatus.ACTIVE.getId());
             userRepository.save(user);
-            response.put("unBlocked", Boolean.TRUE);
-        } else {
-            response.put("notUnBlocked", Boolean.FALSE);
+            response = true;
         }
         return response;
-    }*/
+    }
 }
