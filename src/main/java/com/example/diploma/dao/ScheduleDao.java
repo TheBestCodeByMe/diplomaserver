@@ -6,6 +6,7 @@ import com.example.diploma.repo.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,5 +34,9 @@ public class ScheduleDao {
 
     public List<Schedule> findAllByClassroomID(Long classroomId) {
         return scheduleRepository.findAllByClassroomIDAndStatusId(classroomId, EStatus.ACTIVE.getId());
+    }
+
+    public List<Schedule> findAllByClassroomIDAndDate(Long classroomId, LocalDate date) {
+        return scheduleRepository.findAllByClassroomIDAndDate(classroomId, date);
     }
 }

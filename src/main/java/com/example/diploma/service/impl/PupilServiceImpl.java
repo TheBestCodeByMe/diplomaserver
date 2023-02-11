@@ -13,6 +13,7 @@ import com.example.diploma.repo.ClassroomRepository;
 import com.example.diploma.repo.ParentsRepository;
 import com.example.diploma.repo.PupilRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,10 +27,15 @@ public class PupilServiceImpl implements PupilService {
     private final ClassroomDao classroomDao;
 
     @Override
-    public PupilDTO getPupilByFIO(String userId) {
+    public PupilDTO getPupilByUserId(String userId) {
         Pupil pupil = pupilDao.findByUserId(Long.parseLong(userId));
-        Parents parents = parentsDao.findByParentsId(pupil.getParentsId());
-        Classroom classroom = classroomDao.findByClassroomId(pupil.getClassroomId());
-        return PupilMapper.mapToPupilDTO(pupil, parents, classroom);
+        Parents parents;
+        Classroom classroom;
+        if(pupil!=null) {
+            parents = parentsDao.findByParentsId(pupil.getParentsId());
+            classroom = classroomDao.findByClassroomId(pupil.getClassroomId());
+            return PupilMapper.mapToPupilDTO(pupil, parents, classroom);
+        }
+        return null;
     }
 }

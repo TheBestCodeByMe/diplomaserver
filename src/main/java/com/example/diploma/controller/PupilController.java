@@ -1,9 +1,11 @@
 package com.example.diploma.controller;
 
-import com.example.diploma.dto.pupil.PupilDTO;
 import com.example.diploma.service.PupilService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -12,10 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class PupilController {
 
     private final PupilService pupilService;
-/*
-    @PostMapping("/getByUserId")
-    public PupilDTO getPupilByFIO(@RequestBody String userId) {
-        return pupilService.getPupilByFIO(userId);
+
+    @GetMapping("/getByUserId/{id}")
+    public ResponseEntity<?> getPupilByFIO(@PathVariable(value = "id") String userId) {
+        return ResponseEntity.ok(Objects.requireNonNullElse(pupilService.getPupilByUserId(userId), ""));
     }
-*/
 }

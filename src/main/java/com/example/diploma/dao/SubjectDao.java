@@ -23,4 +23,6 @@ public class SubjectDao {
     public List<Subject> findAll() {
         return subjectRepository.findAllByStatusId(EStatus.ACTIVE.getId());
     }
+
+    public Subject getById(Long id) {return subjectRepository.getById(id);}
 }

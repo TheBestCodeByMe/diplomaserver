@@ -27,4 +27,8 @@ public class TeacherDao {
     public List<Teacher> findAll() {
         return teacherRepository.findAllByStatusId(EStatus.ACTIVE.getId());
     }
+
+    public Teacher getById(Long id) {
+        return teacherRepository.getById(id);
+    }
 }
