@@ -8,6 +8,8 @@ import com.example.diploma.repo.ParentsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ClassroomDao {
@@ -21,4 +23,6 @@ public class ClassroomDao {
     public Classroom findClassroomByName(String name) {return classroomRepository.findClassroomByNameAndStatusId(name, EStatus.ACTIVE.getId());}
 
     public Classroom findClassroomByTeacherId(Long teacherId) {return classroomRepository.findClassroomByClassroomTeacherIdAndStatusId(teacherId, EStatus.ACTIVE.getId());}
+
+    public List<Classroom> findAll() {return classroomRepository.findAllByStatusId(EStatus.ACTIVE.getId());}
 }
