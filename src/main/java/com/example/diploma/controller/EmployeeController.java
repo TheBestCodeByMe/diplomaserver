@@ -3,10 +3,12 @@ package com.example.diploma.controller;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -15,20 +17,19 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-/*
+
     @GetMapping("/getAll")
-    public List<Teacher> getAllTeacher() {
-        return employeeService.getAllTeacher();
+    public ResponseEntity<?> getAllTeacher() {
+        return ResponseEntity.ok(Objects.requireNonNullElse(employeeService.getAllTeacher(), ""));
     }
 
     @PostMapping("/getByFIO")
-    public List<Teacher> getTeacherByFIO(@Validated @RequestBody Teacher teacher) {
-        return employeeService.getTeacherByFIO(teacher);
+    public ResponseEntity<?> getTeacherByFIO(@Validated @RequestBody Teacher teacher) {
+        return ResponseEntity.ok(Objects.requireNonNullElse(employeeService.getTeacherByFIO(teacher), ""));
     }
 
-    @PostMapping("/getByUserId")
-    public Teacher getTeacherByUserId(@RequestBody String userId) {
-        return employeeService.getTeacherByUserId(userId);
+    @GetMapping("/getByUserId/{userId}")
+    public ResponseEntity<?> getTeacherByUserId(@PathVariable(value = "userId") String userId) {
+        return ResponseEntity.ok(Objects.requireNonNullElse(employeeService.getTeacherByUserId(userId), ""));
     }
-}*/
 }
