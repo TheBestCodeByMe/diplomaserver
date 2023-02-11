@@ -11,10 +11,16 @@ import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.repo.*;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -213,16 +219,16 @@ public class DiaryServiceImpl implements DiaryService {
             return 0;
         }
     }
-/*
+
     @Override
     public void saveGradesByUserId(Long userId) {
-        List<CreateDiaryDTORequest> createDiaryDTORequestList = getDiaryDTOByUser(userId);
+        List<DiaryDTO> diaryDTOList = getDiaryDTOByUser(userId);
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
             ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
-            objectWriter.writeValue(new File("D:\\BSUIR\\6semestr\\CourseWork\\Programm\\diploma\\server\\src\\main\\resources\\" + createDiaryDTORequestList.get(0).getLastnamePupil() + "diary.json"), createDiaryDTORequestList);
+            objectWriter.writeValue(new File("D:\\diplomaserver\\src\\main\\resources\\academicPerformances\\" + diaryDTOList.get(0).getLastnamePupil() + "diary.json"), diaryDTOList);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }*/
+    }
 }

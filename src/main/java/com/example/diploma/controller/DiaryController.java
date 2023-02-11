@@ -89,11 +89,10 @@ public class DiaryController {
         return diaryService.getDiaryDTOByClass(classForSearch);
     }
 
-/*
+
     @GetMapping("/getSaveGrades/{userId}")
-    public ResponseEntity<String> getSaveDiary(@PathVariable(value = "userId") Long userId)
-            throws ResourceNotFoundException {
+    public ResponseEntity<?> getSaveDiary(@PathVariable(value = "userId") Long userId) {
         diaryService.saveGradesByUserId(userId);
-        return ResponseEntity.ok().body("okeyy");
-    }*/
+        return ResponseEntity.ok().body("Сохранено в папку resources!");
+    }
 }
