@@ -1,11 +1,14 @@
 package com.example.diploma.dao;
 
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Parents;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.repo.ParentsRepository;
 import com.example.diploma.repo.PupilRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,4 +27,6 @@ public class ParentsDao {
     public Parents findByCode(String code) {
         return parentsRepository.findByCode(code);
     }
+
+    public List<Parents> findAll() {return parentsRepository.findAllByStatusId(EStatus.ACTIVE.getId());}
 }

@@ -10,4 +10,5 @@ public interface PupilRepository extends JpaRepository<Pupil, Long> {
     Pupil findByNameAndLastnameAndPatronymic(String name, String lastname, String patronymic);
     Pupil findByUserId(Long userId);
     List<Pupil> findAllByClassroomIdAndStatusId(Long classroomId, Long statusId);
+    List<Pupil> findAllByStatusId(Long statusId);
 }

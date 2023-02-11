@@ -28,4 +28,8 @@ public class PupilDao {
     public List<Pupil> findAllByClassroomId(Long id) {
         return pupilRepository.findAllByClassroomIdAndStatusId(id, EStatus.ACTIVE.getId());
     }
+
+    public List<Pupil> findAll() {
+        return pupilRepository.findAllByStatusId(EStatus.ACTIVE.getId());
+    }
 }

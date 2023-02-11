@@ -3,6 +3,7 @@ package com.example.diploma.service.impl;
 import com.example.diploma.dao.*;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
+import com.example.diploma.dto.pupil.PupilDTO;
 import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -24,31 +27,24 @@ public class EditUsersServiceImpl implements EditUsersService {
     private final UserRepository userRepository;
 
     private final PupilRepository pupilRepository;
-
     private final PupilDao pupilDao;
 
     private final ParentsRepository parentsRepository;
-
     private final ParentsDao parentsDao;
 
+    private final ClassroomRepository classroomRepository;
     private final ClassroomDao classroomDao;
 
-    private final ClassroomRepository classroomRepository;
-
     private final TeacherRepository teacherRepository;
-
     private final TeacherDao teacherDao;
 
     private final SubjectRepository subjectRepository;
-
     private final SubjectDao subjectDao;
 
     private final CalendarRepository calendarRepository;
-
     private final CalendarDao calendarDao;
 
     private final ScheduleRepository scheduleRepository;
-
     private final ScheduleDao scheduleDao;
 
     @Override
@@ -81,12 +77,12 @@ public class EditUsersServiceImpl implements EditUsersService {
             return ResponseEntity.ok(PupilMapper.mapToPupilDTO(pupilRepository.save(pupil), parents, classroom));
         }
     }
-/*
+
     @Override
     public List<PupilDTO> getAllPupilDTO() {
-        List<Pupil> pupils = pupilRepository.findAll();
-        List<Parents> parents = parentsRepository.findAll();
-        List<Classroom> classrooms = classroomRepository.findAll();
+        List<Pupil> pupils = pupilDao.findAll();
+        List<Parents> parents = parentsDao.findAll();
+        List<Classroom> classrooms = classroomDao.findAll();
 
         List<PupilDTO> pupilDTOS = new ArrayList<>();
 
@@ -95,7 +91,7 @@ public class EditUsersServiceImpl implements EditUsersService {
                 if (pupil.getParentsId() == parent.getId()) {
                     for (Classroom classroom : classrooms) {
                         if (pupil.getClassroomId() == classroom.getId()) {
-                            Mapper.mapToPupilDTO(pupil, parent, classroom);
+                            pupilDTOS.add(PupilMapper.mapToPupilDTO(pupil, parent, classroom));
                         }
                     }
                 }
@@ -104,7 +100,7 @@ public class EditUsersServiceImpl implements EditUsersService {
 
         return pupilDTOS;//userRepository.findAll();
     }
-*/
+
     @Override
     public ResponseEntity<?> createTeacher(CreateTeacherDTORequest teacherDTO) {
         if (teacherRepository.findByNameAndLastNameAndPatronymic(teacherDTO.getName(), teacherDTO.getLastName(), teacherDTO.getPatronymic()) == null) {

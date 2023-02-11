@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Objects;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200") // убрать)))
 @RequestMapping("/api/v1/editUsers")
@@ -29,12 +32,12 @@ public class EditUsersController { // TODO: убрать возможность 
         return editUsersService.createPupil(pupilDTO);
     }
 
-    /*
-            @GetMapping("/showPupilDTO")
-            public List<PupilDTO> getAllPupilDTO() {
-                return editUsersService.getAllPupilDTO();
-            }
-        */
+    @GetMapping("/showPupilDTO")
+    public ResponseEntity<?> getAllPupilDTO() {
+        List<PupilDTO> pupilDTOList = editUsersService.getAllPupilDTO();
+        return ResponseEntity.ok(Objects.requireNonNullElse(pupilDTOList, ""));
+    }
+
     @PostMapping("/createTeacher")
     public ResponseEntity<?> createTeacher(@Validated @RequestBody CreateTeacherDTORequest teacherDTO) {
         return editUsersService.createTeacher(teacherDTO);
