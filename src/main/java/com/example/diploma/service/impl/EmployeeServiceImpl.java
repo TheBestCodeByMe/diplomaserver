@@ -1,6 +1,8 @@
 package com.example.diploma.service.impl;
 
 import com.example.diploma.dao.TeacherDao;
+import com.example.diploma.dto.teacher.TeacherDTO;
+import com.example.diploma.mapper.TeacherMapper;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.service.EmployeeService;
 import com.example.diploma.repo.TeacherRepository;
@@ -17,19 +19,32 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final TeacherDao teacherDao;
 
     @Override
-    public List<Teacher> getAllTeacher() {
-        return teacherDao.findAll();
+    public List<TeacherDTO> getAllTeacher() {
+        List<TeacherDTO> teacherDTOList = new ArrayList<>();
+        List<Teacher> teacherList = teacherDao.findAll();
+        for (Teacher teacher : teacherList) {
+            teacherDTOList.add(TeacherMapper.mapToTeacherDto(teacher));
+        }
+        return teacherDTOList;
     }
 
     @Override
-    public List<Teacher> getTeacherByFIO(Teacher teacher) {
-        List<Teacher> teacherList = new ArrayList<>();
-        teacherList.add(teacherDao.findByFio(teacher.getName(), teacher.getLastName(), teacher.getPatronymic()));
-        return teacherList;
+    public List<TeacherDTO> getTeacherByFIO(Teacher teacher) {
+        List<TeacherDTO> teacherDTOList = new ArrayList<>();
+        Teacher searchedTeacher = teacherDao.findByFio(teacher.getName(), teacher.getLastName(), teacher.getPatronymic());
+        if (searchedTeacher != null) {
+            teacherDTOList.add(TeacherMapper.mapToTeacherDto(searchedTeacher));
+        }
+        return teacherDTOList;
     }
 
     @Override
-    public Teacher getTeacherByUserId(String userId) {
-        return teacherDao.findByUserId(Long.parseLong(userId));
+    public TeacherDTO getTeacherByUserId(String userId) {
+        Teacher teacher = teacherDao.findByUserId(Long.parseLong(userId));
+        if (teacher != null) {
+            return TeacherMapper.mapToTeacherDto(teacher);
+        } else {
+            return null;
+        }
     }
 }

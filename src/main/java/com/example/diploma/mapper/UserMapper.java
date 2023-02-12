@@ -37,8 +37,8 @@ public class UserMapper {
     public static UserDTO mapUserToUserDTO(User user, Pupil pupil) {
         UserDTO userDTO = new UserDTO();
         userDTO.setLogin(user.getLogin());
+        userDTO.setPassword("******");
         userDTO.setRole(user.getRoles().toString());
-        userDTO.setPassword(user.getPassword());
         userDTO.setStatus(EStatus.getName(user.getStatus()));
         userDTO.setLink(user.getLink());
         userDTO.setEmail(pupil.getEmail());
@@ -53,7 +53,7 @@ public class UserMapper {
         UserDTO userDTO = new UserDTO();
         userDTO.setLogin(user.getLogin());
         userDTO.setRole(user.getRoles().toString());
-        userDTO.setPassword(user.getPassword());
+        userDTO.setPassword("******");
         userDTO.setStatus(EStatus.getName(user.getStatus()));
         userDTO.setLink(user.getLink());
         userDTO.setEmail(teacher.getEmail());

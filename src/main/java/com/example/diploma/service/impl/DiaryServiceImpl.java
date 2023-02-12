@@ -223,12 +223,14 @@ public class DiaryServiceImpl implements DiaryService {
     @Override
     public void saveGradesByUserId(Long userId) {
         List<DiaryDTO> diaryDTOList = getDiaryDTOByUser(userId);
-        try {
-            ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
-            ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
-            objectWriter.writeValue(new File("D:\\diplomaserver\\src\\main\\resources\\academicPerformances\\" + diaryDTOList.get(0).getLastnamePupil() + "diary.json"), diaryDTOList);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if(diaryDTOList != null) {
+            try {
+                ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+                ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
+                objectWriter.writeValue(new File("D:\\diplomaserver\\src\\main\\resources\\academicPerformances\\" + diaryDTOList.get(0).getLastnamePupil() + "diary.json"), diaryDTOList);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

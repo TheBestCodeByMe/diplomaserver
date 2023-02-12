@@ -1,13 +1,14 @@
 package com.example.diploma.service;
 
+import com.example.diploma.dto.teacher.TeacherDTO;
 import com.example.diploma.model.Teacher;
 
 import java.util.List;
 
 public interface EmployeeService {
-    List<Teacher> getAllTeacher();
+    List<TeacherDTO> getAllTeacher();
 
-    List<Teacher> getTeacherByFIO(Teacher teacher);
+    List<TeacherDTO> getTeacherByFIO(Teacher teacher);
 
-    Teacher getTeacherByUserId(String userId);
+    TeacherDTO getTeacherByUserId(String userId);
 }
