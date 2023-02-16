@@ -1,16 +1,23 @@
 package com.example.diploma;
 
+import com.example.diploma.dao.ClassroomDao;
 import com.example.diploma.dao.PupilDao;
+import com.example.diploma.dao.SubjectDao;
+import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.dto.subject.CreateSubjectDTORequest;
+import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
 import com.example.diploma.mapper.PupilMapper;
 import com.example.diploma.mapper.TeacherMapper;
 import com.example.diploma.model.Pupil;
+import com.example.diploma.model.Subject;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.repo.PupilRepository;
+import com.example.diploma.repo.SubjectRepository;
 import com.example.diploma.service.PupilService;
 import com.example.diploma.service.impl.EditUsersServiceImpl;
 import com.example.diploma.service.impl.EmployeeServiceImpl;
@@ -36,6 +43,7 @@ class BasicTests {
     com.example.diploma.model.Pupil pupil;
     CreateTeacherDTORequest createTeacherDTORequest;
     Teacher teacher;
+    CreateSubjectDTORequest createSubjectDTORequest;
 
     @BeforeEach
     void init() {
@@ -44,6 +52,7 @@ class BasicTests {
         pupil = PupilMapper.mapPupilDTOToPupil(createPupilDTORequest, "0");
         createTeacherDTORequest = new CreateTeacherDTORequest("name", "lastname", "patronymic", "email", "qualification", "position");
         teacher = TeacherMapper.mapDtoToTeacher(createTeacherDTORequest, "0");
+        createSubjectDTORequest = new CreateSubjectDTORequest("math");
     }
 
     @Autowired
@@ -84,8 +93,20 @@ class BasicTests {
 
     @Autowired
     PupilDao pupilDao;
+    @Autowired
+    ClassroomDao classroomDao;
+
 
     @Order(5)
+    @Test
+    void createClassroom() {
+        if (classroomDao.findClassroomByName(classroomDTO.getName()) == null) {
+            ResponseEntity<ClassroomDTO> classroomDTOResponseEntity = (ResponseEntity<ClassroomDTO>) editUsersService.createClassroom(classroomDTO);
+            Assertions.assertEquals(classroomDTO.getName(), Objects.requireNonNull(classroomDTOResponseEntity.getBody().getName()));
+        }
+    }
+
+    @Order(6)
     @Test
     void createPupil() {
         if (pupilDao.findByFio(createPupilDTORequest.getName(), createPupilDTORequest.getLastname(), createPupilDTORequest.getPatronymic()) == null) {
@@ -97,12 +118,47 @@ class BasicTests {
     @Autowired
     PupilServiceImpl pupilService;
 
-    @Order(6)
+    @Order(7)
     @Test
     void getPupilByUserId() {
-        PupilDTO pupilDTO = pupilService.getPupilByUserId(String.valueOf(pupil.getUserId()));
-        Assertions.assertEquals(pupil.getName(), pupilDTO.getName());
+        PupilDTO pupilDTO = pupilService.getPupilByUserId("2");
+        Assertions.assertEquals(createPupilDTORequest.getName(), pupilDTO.getName());
     }
 
-    
+    @Order(8)
+    @Test
+    void getClassroom() {
+        Assertions.assertEquals(classroomDTO.getName(),
+                classroomDao.findClassroomByName(classroomDTO.getName()).getName());
+    }
+
+    @Autowired
+    TeacherDao teacherDao;
+
+    @Order(9)
+    @Test
+    void getClassroomByTeacher() {
+        Long classroomTeacherId = classroomDao.findClassroomByName(classroomDTO.getName()).getClassroomTeacherId();
+        Teacher teacherRes = teacherDao.findByFio(classroomDTO.getClassroomTeacherName(), classroomDTO.getClassroomTeacherLastname(), classroomDTO.getClassroomTeacherPatronymic());
+        Assertions.assertEquals(classroomTeacherId, teacherRes.getId());
+    }
+
+    @Autowired
+    SubjectDao subjectDao;
+
+    @Order(10)
+    @Test
+    void createSubject() {
+        if (subjectDao.findBySubjectName(createSubjectDTORequest.getName()) == null) {
+            ResponseEntity<SubjectDTO> subjectDTOResponseEntity = (ResponseEntity<SubjectDTO>) editUsersService.createSubject(createSubjectDTORequest);
+            Assertions.assertEquals(createSubjectDTORequest.getName(), Objects.requireNonNull(subjectDTOResponseEntity.getBody().getName()));
+        }
+    }
+
+    @Order(11)
+    @Test
+    void getSubject() {
+        Subject subjectResponse = subjectDao.findBySubjectName(createSubjectDTORequest.getName());
+        Assertions.assertNotNull(subjectResponse);
+    }
 }
