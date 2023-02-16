@@ -173,7 +173,7 @@ class BasicTests {
     @Order(11)
     @Test
     void getCalendar() {
-        Calendar calendarRes = calendarDao.findByLessonNumberAndWeekDay(calendar.getLessonNumber(), calendar.getWeekDay();
+        Calendar calendarRes = calendarDao.findByLessonNumberAndWeekDay(calendar.getLessonNumber(), calendar.getWeekDay());
         Assertions.assertNotNull(calendarRes);
     }
 
