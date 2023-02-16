@@ -1,27 +1,28 @@
 package com.example.diploma;
 
-import com.example.diploma.dao.ClassroomDao;
-import com.example.diploma.dao.PupilDao;
-import com.example.diploma.dao.SubjectDao;
-import com.example.diploma.dao.TeacherDao;
+import com.example.diploma.dao.*;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
 import com.example.diploma.mapper.PupilMapper;
 import com.example.diploma.mapper.TeacherMapper;
+import com.example.diploma.model.Calendar;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Subject;
 import com.example.diploma.model.Teacher;
+import com.example.diploma.repo.CalendarRepository;
 import com.example.diploma.repo.PupilRepository;
 import com.example.diploma.repo.SubjectRepository;
 import com.example.diploma.service.PupilService;
 import com.example.diploma.service.impl.EditUsersServiceImpl;
 import com.example.diploma.service.impl.EmployeeServiceImpl;
 import com.example.diploma.service.impl.PupilServiceImpl;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,6 +45,8 @@ class BasicTests {
     CreateTeacherDTORequest createTeacherDTORequest;
     Teacher teacher;
     CreateSubjectDTORequest createSubjectDTORequest;
+    Calendar calendar;
+    CreateScheduleDTORequest createScheduleDTORequest;
 
     @BeforeEach
     void init() {
@@ -53,6 +56,8 @@ class BasicTests {
         createTeacherDTORequest = new CreateTeacherDTORequest("name", "lastname", "patronymic", "email", "qualification", "position");
         teacher = TeacherMapper.mapDtoToTeacher(createTeacherDTORequest, "0");
         createSubjectDTORequest = new CreateSubjectDTORequest("math");
+        calendar = new Calendar(1, 1, 1);
+        createScheduleDTORequest = new CreateScheduleDTORequest(classroomDTO.getName(), createTeacherDTORequest.getName(), createTeacherDTORequest.getLastName(), createTeacherDTORequest.getPatronymic(), createSubjectDTORequest.getName(), calendar.getWeekDay(), calendar.getSemesterID(), LocalDate.now(), calendar.getLessonNumber(), "Paragraph 77165");
     }
 
     @Autowired
@@ -158,6 +163,32 @@ class BasicTests {
     @Order(11)
     @Test
     void getSubject() {
+        Subject subjectResponse = subjectDao.findBySubjectName(createSubjectDTORequest.getName());
+        Assertions.assertNotNull(subjectResponse);
+    }
+
+    @Autowired
+    CalendarDao calendarDao;
+
+    @Order(11)
+    @Test
+    void getCalendar() {
+        Calendar calendarRes = calendarDao.findByLessonNumberAndWeekDay(calendar.getLessonNumber(), calendar.getWeekDay();
+        Assertions.assertNotNull(calendarRes);
+    }
+
+    @Order(12)
+    @Test
+    void createSchedule() {
+        if (subjectDao.findBySubjectName(createSubjectDTORequest.getName()) == null) {
+            ResponseEntity<SubjectDTO> subjectDTOResponseEntity = (ResponseEntity<SubjectDTO>) editUsersService.createSubject(createSubjectDTORequest);
+            Assertions.assertEquals(createSubjectDTORequest.getName(), Objects.requireNonNull(subjectDTOResponseEntity.getBody().getName()));
+        }
+    }
+
+    @Order(13)
+    @Test
+    void getSchedule() {
         Subject subjectResponse = subjectDao.findBySubjectName(createSubjectDTORequest.getName());
         Assertions.assertNotNull(subjectResponse);
     }
