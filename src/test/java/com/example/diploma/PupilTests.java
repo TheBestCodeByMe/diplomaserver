@@ -2,25 +2,44 @@ package com.example.diploma;
 
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.dto.teacher.TeacherDTO;
-import com.example.diploma.service.EditUsersService;
+import com.example.diploma.model.User;
+import com.example.diploma.repo.PupilRepository;
+import com.example.diploma.repo.UserRepository;
 import com.example.diploma.service.impl.EditUsersServiceImpl;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
-@SpringBootTest
-class TeacherTests {
+import static org.mockito.Mockito.lenient;
 
-    @Autowired
+@ExtendWith(MockitoExtension.class)
+class PupilTests {
+
+    //@Autowired
+    @Mock
     EditUsersServiceImpl editUsersService;
+
+    @Mock
+    PupilRepository pupilRepository;
+
+    @Mock
+    UserRepository userRepository;
+
+    CreateTeacherDTORequest createTeacherDTORequest;
+
+    @BeforeEach
+    void init() {
+        createTeacherDTORequest = new CreateTeacherDTORequest("name", "lastname", "patronymic", "email", "qualification", "position");
+    }
 
     @Test
     void createTeacher() {
-        CreateTeacherDTORequest createTeacherDTORequest = new CreateTeacherDTORequest("name", "lastname", "patronymic", "email", "qualification", "position");
         ResponseEntity<TeacherDTO> teacherDTO = (ResponseEntity<TeacherDTO>) editUsersService.createTeacher(createTeacherDTORequest);
         Assertions.assertEquals("qualification", teacherDTO.getBody().getQualification());
     }
