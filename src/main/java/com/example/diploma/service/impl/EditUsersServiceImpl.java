@@ -114,7 +114,7 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     @Override
     public ResponseEntity<?> createSubject(CreateSubjectDTORequest createSubjectDTORequest) {
-        if (subjectDao.findBySubjectName(createSubjectDTORequest.getName().toLowerCase(Locale.ROOT)) == null) {
+        if (subjectDao.findBySubjectName(createSubjectDTORequest.getName().toLowerCase()) == null) {
             Subject subject = subjectRepository.save(SubjectMapper.mapSubjectDTOToSubject(createSubjectDTORequest, GenerationCodeServiceImpl.generateCode()));
             return ResponseEntity.ok(SubjectMapper.mapSubjectToSubjectDTO(subject));
         }
