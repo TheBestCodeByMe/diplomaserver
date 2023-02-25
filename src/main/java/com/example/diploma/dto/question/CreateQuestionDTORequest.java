@@ -1,4 +1,4 @@
-package com.example.diploma.dto;
+package com.example.diploma.dto.question;
 
 import lombok.*;
 

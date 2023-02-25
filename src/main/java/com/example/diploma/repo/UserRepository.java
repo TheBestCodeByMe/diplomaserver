@@ -19,6 +19,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByLogin(String login);
     @Query("select u from User u where u.login = ?1")
     User findByLoginWithinOpt(String login);
+
+    @Query(value = "select r.role_name from users u, role r, role_user ru where u.user_id = ru.user_id and r.role_id = ru.role_id and u.user_id = ?1", nativeQuery = true)
+    String findRoleName(Long userId);
+
     Boolean existsByLogin(String login);
     List<User> findAllByStatus(Long statusId);
     //@Query("select u.* from users u, role r, role_user ur where u.user_id = ur.user_id and r.role_id = ur.role_id and r.role_name = :role")

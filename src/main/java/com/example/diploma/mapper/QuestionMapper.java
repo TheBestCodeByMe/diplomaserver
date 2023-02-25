@@ -1,14 +1,12 @@
 package com.example.diploma.mapper;
 
-import com.example.diploma.dto.*;
+import com.example.diploma.dto.question.CreateQuestionDTORequest;
+import com.example.diploma.dto.question.QuestionDTOResponse;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.*;
 import com.example.diploma.service.impl.GenerationCodeServiceImpl;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 import static java.sql.Timestamp.valueOf;
 

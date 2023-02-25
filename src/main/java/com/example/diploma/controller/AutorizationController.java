@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -92,29 +93,36 @@ public class AutorizationController {
         if (userRepository.existsByLogin(signupRequest.getLogin())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is exist"));
+                    .body(new MessageResponse("Error: Такой логин уже существует"));
         }
 
+        System.out.println(signupRequest);
         Pupil pupil = pupilRepository.findByNameAndLastnameAndPatronymic(signupRequest.getName(), signupRequest.getLastname(), signupRequest.getPatronymic());
         Teacher teacher = teacherRepository.findByNameAndLastNameAndPatronymic(signupRequest.getName(), signupRequest.getLastname(), signupRequest.getPatronymic());
+
+        if(pupil==null && teacher == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: ФИО введено неверно"));
+        }
 
         if (signupRequest.getRole().equals("pupil")) {
             if (pupil == null) {
                 return ResponseEntity
                         .badRequest()
-                        .body(new MessageResponse("Error: Pupil is not exist"));
+                        .body(new MessageResponse("Error: Такого ученика не существует"));
             }
         } else if (signupRequest.getRole().equals("teacher") || signupRequest.getRole().equals("Director")) {
             if (teacher == null) {
                 return ResponseEntity
                         .badRequest()
-                        .body(new MessageResponse("Error: Teacher is not exist"));
+                        .body(new MessageResponse("Error: Такого учителя не существует"));
             }
         }
 
         User user = new User(signupRequest.getLogin(),
                 passwordEncoder.encode(signupRequest.getPassword()),
-                EStatus.getId(signupRequest.getStatus()));
+                EStatus.ACTIVE.getId());
 
         Set<String> reqRoles = signupRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -122,7 +130,7 @@ public class AutorizationController {
         if (reqRoles == null) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Your role is null"));
+                    .body(new MessageResponse("Error: Такой роли не существует"));
 /*            Role userRole = roleRepository
                     .findByName(ERole.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
@@ -133,13 +141,13 @@ public class AutorizationController {
                     case "pupil" -> {
                         Role adminRole = roleRepository
                                 .findByName(ERole.ROLE_PUPIL)
-                                .orElseThrow(() -> new RuntimeException("Error, Role Pupil is not found"));
+                                .orElseThrow(() -> new RuntimeException("Error: роль Pupil не найдена"));
                         roles.add(adminRole);
                     }
                     case "teacher" -> {
                         Role modRole = roleRepository
                                 .findByName(ERole.ROLE_TEACHER)
-                                .orElseThrow(() -> new RuntimeException("Error, Role Teacher is not found"));
+                                .orElseThrow(() -> new RuntimeException("Error: роль Teacher не найдена"));
                         roles.add(modRole);
                     }
                 }
@@ -148,11 +156,9 @@ public class AutorizationController {
         user.setRoles(roles);
         userRepository.save(user);
         User userForId = userRepository.findByLogin(user.getLogin()).orElse(null);
+        String roleId = userRepository.findRoleName(userForId.getId());
 
-        Set<Role> role = new HashSet<>();
-        role.add(new Role(ERole.ROLE_PUPIL));
-
-        if (userForId.getRoles().equals(role)) {
+        if (Objects.equals(roleId, ERole.ROLE_PUPIL.name())) {
             pupil.setUserId(userForId.getId());
             pupil.setEmail(signupRequest.getEmail());
             pupilRepository.save(pupil);

@@ -1,8 +1,7 @@
 package com.example.diploma.controller;
 
-import com.example.diploma.dto.CreateQuestionDTORequest;
-import com.example.diploma.dto.QuestionDTOResponse;
-import com.example.diploma.model.Question;
+import com.example.diploma.dto.question.CreateQuestionDTORequest;
+import com.example.diploma.dto.question.QuestionDTOResponse;
 import com.example.diploma.service.AskQuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
