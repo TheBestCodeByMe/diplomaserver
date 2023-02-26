@@ -1,5 +1,6 @@
 package com.example.diploma.service;
 
+import com.example.diploma.dto.AllUserDTO;
 import com.example.diploma.dto.UserDTO;
 import com.example.diploma.model.User;
 import com.example.diploma.exception.ResourceNotFoundException;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    List<AllUserDTO> getAllUsers();
 
     ResponseEntity<UserDTO> getUserById(Long userId)
             throws ResourceNotFoundException;

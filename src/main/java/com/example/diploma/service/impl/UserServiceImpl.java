@@ -3,6 +3,7 @@ package com.example.diploma.service.impl;
 import com.example.diploma.dao.PupilDao;
 import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dao.UserDao;
+import com.example.diploma.dto.AllUserDTO;
 import com.example.diploma.dto.UserDTO;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Teacher;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +36,16 @@ public class UserServiceImpl implements UserService {
     private final TeacherDao teacherDao;
 
     @Override
-    public List<User> getAllUsers() {
-        return userDao.findAll();
+    public List<AllUserDTO> getAllUsers() {
+        List<AllUserDTO> userDTOList = new ArrayList<>();
+        List<User> userList = userDao.findAll();
+
+        for (User user:
+               userList) {
+            userDTOList.add(UserMapper.mapUserToAllUserDTO(user));
+        }
+
+       return userDTOList;
     }
 
     @Override

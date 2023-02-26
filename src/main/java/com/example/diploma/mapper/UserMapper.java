@@ -63,6 +63,13 @@ public class UserMapper {
 
         return userDTO;
     }
+
+    public static AllUserDTO mapUserToAllUserDTO(User user) {
+        AllUserDTO userDTO = new AllUserDTO();
+        userDTO.setLogin(user.getLogin());
+        userDTO.setStatus(EStatus.getName(user.getStatus()));
+        return userDTO;
+    }
 /*
     public static Calendar mapSheduleDTOToCalendar(SheduleDTO sheduleDTO) {
         Calendar calendar = new Calendar();
