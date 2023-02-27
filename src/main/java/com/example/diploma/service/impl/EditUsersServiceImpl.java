@@ -73,7 +73,7 @@ public class EditUsersServiceImpl implements EditUsersService {
                     pupil.setParentsId(newParents.getId());
                 }
             } else {
-                return ResponseEntity.badRequest().body("Error: Такого класса не существует");
+                return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого класса не существует"));
             }
 
             return ResponseEntity.ok(PupilMapper.mapToPupilDTO(pupilRepository.save(pupil), parents, classroom));
