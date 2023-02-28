@@ -99,7 +99,6 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public  DiaryDTOStreamProcessor addHomework(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
-
         diaryDTOStreamProcessor.getSchedule().setHometask(createDiaryDTORequest.getHomework());
         scheduleRepository.save(diaryDTOStreamProcessor.getSchedule());
         diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Домашнее задание добавлено"));

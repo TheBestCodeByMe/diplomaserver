@@ -24,7 +24,7 @@ public class DiaryController {
     private final DiaryService diaryService;
     private final DiaryValidator diaryValidator;
 
-    @PostMapping("/addAttendanceAndAcademicPerfomance")
+    @PostMapping("/addAttendanceAndAcademicPerformance")
     public ResponseEntity<?> addAttendanceAndAcademicPerformance(@RequestBody CreateDiaryDTORequest createDiaryDTORequest) {
         DiaryDTOStreamProcessor diaryDTOStreamProcessor = diaryValidator.validate(createDiaryDTORequest);
 
@@ -53,9 +53,9 @@ public class DiaryController {
         }
 
         if (diaryDTOStreamProcessor.getResponseEntity().getStatusCode() != HttpStatus.BAD_REQUEST) {
-            return diaryDTOStreamProcessor.getResponseEntity();
+            return ResponseEntity.ok("Выставлено");
         } else {
-            return ResponseEntity.badRequest().body(new MessageResponse(createDiaryDTORequest.getNamePupil()));
+            return ResponseEntity.badRequest().body(new MessageResponse(diaryDTOStreamProcessor.getResponseEntity().toString()));
         }
     }
 
@@ -93,6 +93,6 @@ public class DiaryController {
     @GetMapping("/getSaveGrades/{userId}")
     public ResponseEntity<?> getSaveDiary(@PathVariable(value = "userId") Long userId) {
         diaryService.saveGradesByUserId(userId);
-        return ResponseEntity.ok().body("Сохранено в папку resources!");
+        return ResponseEntity.ok("Сохранено в папку resources!");
     }
 }
