@@ -6,6 +6,7 @@ import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
 import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
+import com.example.diploma.dto.subject.SubjectDTO;
 import com.example.diploma.dto.teacher.CreateTeacherDTORequest;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.exception.ResourceNotFoundException;
@@ -119,6 +120,14 @@ public class EditUsersServiceImpl implements EditUsersService {
             return ResponseEntity.ok(SubjectMapper.mapSubjectToSubjectDTO(subject));
         }
         return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой предмет уже есть"));
+    }
+
+    @Override
+    public ResponseEntity<?> getSubjects() {
+        Collection<Subject> subjects = subjectRepository.findAllByStatusId(EStatus.ACTIVE.getId());
+        Collection<SubjectDTO> subjectDTOS = new ArrayList<>();
+        subjects.forEach(subject -> subjectDTOS.add(SubjectMapper.mapSubjectToSubjectDTO(subject)));
+        return ResponseEntity.ok(subjectDTOS);
     }
 
     @Override

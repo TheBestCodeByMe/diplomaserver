@@ -51,6 +51,11 @@ public class EditUsersController { // TODO: убрать возможность 
         return editUsersService.createSubject(subject);
     }
 
+    @GetMapping("/getSubjects")
+    public ResponseEntity<?> getSubjects() {
+        return editUsersService.getSubjects();
+    }
+
     @PostMapping("/createScheduleDTO")
     public ResponseEntity<?> createScheduleDTO(@Validated @RequestBody CreateScheduleDTORequest scheduleDTO) {
         return editUsersService.createScheduleDTO(scheduleDTO);

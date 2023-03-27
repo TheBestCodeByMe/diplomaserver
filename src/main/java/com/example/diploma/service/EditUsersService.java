@@ -24,6 +24,8 @@ public interface EditUsersService {
 
     ResponseEntity<?> createSubject(CreateSubjectDTORequest subject);
 
+    ResponseEntity<?> getSubjects();
+
     ResponseEntity<?> createScheduleDTO(CreateScheduleDTORequest sheduleDTO);
 
     ResponseEntity<?> createClassroom(ClassroomDTO classroomDTO);
