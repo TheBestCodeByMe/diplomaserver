@@ -19,4 +19,9 @@ public class PupilController {
     public ResponseEntity<?> getPupilByFIO(@PathVariable(value = "id") String userId) {
         return ResponseEntity.ok(Objects.requireNonNullElse(pupilService.getPupilByUserId(userId), ""));
     }
+
+    @GetMapping("/getByClass/{class}")
+    public ResponseEntity<?> getPupilsByClassName(@PathVariable(value = "class") String classname) {
+        return ResponseEntity.ok(Objects.requireNonNullElse(pupilService.getPupilsByClassName(classname), ""));
+    }
 }

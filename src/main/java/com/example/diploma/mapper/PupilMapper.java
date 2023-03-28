@@ -2,6 +2,7 @@ package com.example.diploma.mapper;
 
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.dto.pupil.PupilInClassDTO;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.Classroom;
 import com.example.diploma.model.Parents;
@@ -49,5 +50,16 @@ public class PupilMapper {
         pupil.setUserId(2);
 
         return pupil;
+    }
+
+    public static PupilInClassDTO mapToPupilInClassDTO(Pupil pupils, Classroom classrooms) {
+        PupilInClassDTO pupilDTOS = new PupilInClassDTO();
+        pupilDTOS.setName(pupils.getName());
+        pupilDTOS.setLastname(pupils.getLastname());
+        pupilDTOS.setPatronymic(pupils.getPatronymic());
+        pupilDTOS.setClassName(classrooms.getName());
+        pupilDTOS.setPupilCode(pupils.getCode());
+
+        return pupilDTOS;
     }
 }
