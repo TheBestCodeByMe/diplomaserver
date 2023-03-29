@@ -1,6 +1,7 @@
 package com.example.diploma.mapper;
 
 import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
+import com.example.diploma.dto.schedule.ScheduleDatesDTO;
 import com.example.diploma.dto.schedule.ScheduleDTO;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.*;
@@ -43,5 +44,15 @@ public class ScheduleMapper {
         schedule.setCloseDate(null);
 
         return schedule;
+    }
+
+    public static ScheduleDatesDTO mapScheduleToDatesDTO(Schedule schedule, int semesterId) {
+        ScheduleDatesDTO scheduleDatesDTO = new ScheduleDatesDTO();
+        scheduleDatesDTO.setDate(schedule.getDate());
+        scheduleDatesDTO.setHometask(schedule.getHometask());
+        scheduleDatesDTO.setScheduleCode(schedule.getCode());
+        scheduleDatesDTO.setSemester(semesterId);
+
+        return scheduleDatesDTO;
     }
 }

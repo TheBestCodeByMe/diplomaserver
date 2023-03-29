@@ -20,8 +20,8 @@ public class PupilController {
         return ResponseEntity.ok(Objects.requireNonNullElse(pupilService.getPupilByUserId(userId), ""));
     }
 
-    @GetMapping("/getByClass/{class}")
-    public ResponseEntity<?> getPupilsByClassName(@PathVariable(value = "class") String classname) {
+    @GetMapping("/getByClass/{classname}")
+    public ResponseEntity<?> getPupilsByClassName(@PathVariable(value = "classname") String classname) {
         return ResponseEntity.ok(Objects.requireNonNullElse(pupilService.getPupilsByClassName(classname), ""));
     }
 }

@@ -2,11 +2,12 @@ package com.example.diploma.service.impl;
 
 
 import com.example.diploma.dao.*;
+import com.example.diploma.dto.schedule.ScheduleDatesDTO;
 import com.example.diploma.dto.schedule.ScheduleDTO;
+import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.mapper.ScheduleMapper;
 import com.example.diploma.model.*;
 import com.example.diploma.service.ScheduleService;
-import com.example.diploma.repo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,26 +19,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private final AttendanceRepository attendanceRepository;
-
-    private final AcademicPerformanceRepository academicPerfomanceRepository;
-
-    private final PupilRepository pupilRepository;
     private final PupilDao pupilDao;
 
-    private final ScheduleRepository scheduleRepository;
     private final ScheduleDao scheduleDao;
 
-    private final SubjectRepository subjectRepository;
     private final SubjectDao subjectDao;
 
-    private final ClassroomRepository classroomRepository;
     private final ClassroomDao classroomDao;
 
-    private final TeacherRepository teacherRepository;
     private final TeacherDao teacherDao;
 
-    private final CalendarRepository calendarRepository;
     private final CalendarDao calendarDao;
 
     @Override
@@ -57,5 +48,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleDTOList.add(scheduleDTO);
         }
         return scheduleDTOList;
+    }
+
+    @Override
+    public List<ScheduleDatesDTO> getDatesBySubjectAndClass(String subject, String classname, Long userId, int semesterId) {
+        List<Schedule> scheduleList = scheduleDao.findByClassAndSubjectAndTeacher(userId, classname, subject, EStatus.ACTIVE, semesterId);
+        List<ScheduleDatesDTO> scheduleDatesDTOList = new ArrayList<>();
+
+        scheduleList.forEach(schedule -> { scheduleDatesDTOList.add(ScheduleMapper.mapScheduleToDatesDTO(schedule, semesterId)); });
+        return scheduleDatesDTOList;
     }
 }

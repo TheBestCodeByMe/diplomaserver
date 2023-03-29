@@ -22,4 +22,9 @@ public class ScheduleController {
     public ResponseEntity<?> getScheduleByIdAndDate(@PathVariable(value = "userId") Long userId, @PathVariable(value = "date") String date) {
         return ResponseEntity.ok(Objects.requireNonNullElse(scheduleService.getScheduleDTOByIdAndDate(userId, date), "Расписания на этот день нет"));
     }
+
+    @GetMapping("/dates/{subj}/{classname}/{user}/{sem}")
+    public ResponseEntity<?> getScheduleBySubjectAndClass(@PathVariable(value = "sem") int semesterId, @PathVariable(value = "user") Long userId, @PathVariable(value = "subj") String subject, @PathVariable(value = "classname") String classname) {
+        return ResponseEntity.ok(Objects.requireNonNullElse(scheduleService.getDatesBySubjectAndClass(subject, classname, userId, semesterId), "Уроки по этому предмету еще не назначены"));
+    }
 }
