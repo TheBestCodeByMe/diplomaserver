@@ -1,8 +1,7 @@
 package com.example.diploma.service.impl;
 
 import com.example.diploma.dao.*;
-import com.example.diploma.dto.diary.CreateDiaryDTORequest;
-import com.example.diploma.dto.diary.DiaryDTO;
+import com.example.diploma.dto.diary.*;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.mapper.DiaryMapper;
 import com.example.diploma.model.*;
@@ -232,4 +231,59 @@ public class DiaryServiceImpl implements DiaryService {
             }
         }
     }
+
+    @Override
+    public ResponseEntity<?> getDiariesByClassAndSubject(String classname, String subject) {
+        DiaryBySubjectDTOResponse diaryBySubjectDTOResponse = new DiaryBySubjectDTOResponse();
+        List<DiaryBySubjectDTOList> diaryBySubjectDTOList = new ArrayList<>();
+        List<DiaryBySubjectDTO> diaryBySubjectDTOs = new ArrayList<>();
+        Classroom classroom = classroomDao.findClassroomByName(classname);
+        if (classroom == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого класса нет"));
+        }
+
+        List<Pupil> pupilList = pupilDao.findAllByClassroomId(classroom.getId());
+        List<Schedule> schedules = scheduleDao.findAllByClassroomID(classroom.getId());
+        List<Subject> subjects = subjectDao.findAll();
+
+        for (Pupil pupil : pupilList) {
+            List<Attendance> attendances = attendanceDao.findAllByPupilID(pupil.getId());
+            List<AcademicPerfomance> academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
+            for (Schedule schedule : schedules) {
+                diaryBySubjectDTOList.add(getAttendanceAndGrade(pupil, academicPerformances, subjects, schedule, attendances));
+            }
+        }
+
+        return diaryBySubjectDTOResponse;
+    }
+/*
+    private DiaryDTO getAttendanceAndGrade(Pupil pupil, List<AcademicPerfomance> academicPerformances, List<Subject> subjects, Schedule schedule, List<Attendance> attendances){
+        DiaryDTO diaryDTO = new DiaryDTO();
+        String grade = "";
+        boolean isAttendance = false;
+
+        for (Subject subject : subjects) {
+            if (Objects.equals(schedule.getSubjectID(), subject.getId())) {
+                if (academicPerformances == null) {
+                    grade = "";
+                } else {
+                    for (AcademicPerfomance academicPerfomance : academicPerformances) {
+                        if (Objects.equals(academicPerfomance.getLessonID(), schedule.getId())) {
+                            grade = String.valueOf(academicPerfomance.getGrade());
+                        } else {
+                            grade = "";
+                        }
+                    }
+                }
+                if (attendances != null) {
+                    for (Attendance attendance : attendances) {
+                        isAttendance = Objects.equals(schedule.getId(), attendance.getLessonID());
+                    }
+                }
+                diaryDTO = DiaryMapper.mapToDiaryDTO(schedule, pupil, classroomRepository.getById(pupil.getClassroomId()), isAttendance, grade, subject);
+            }
+        }
+
+        return diaryDTO;
+    }*/
 }

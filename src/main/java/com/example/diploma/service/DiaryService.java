@@ -1,6 +1,8 @@
 package com.example.diploma.service;
 
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
+import com.example.diploma.dto.diary.DiaryBySubjectDTO;
+import com.example.diploma.dto.diary.DiaryBySubjectDTOResponse;
 import com.example.diploma.dto.diary.DiaryDTO;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
 import org.springframework.http.ResponseEntity;
@@ -27,4 +29,6 @@ public interface DiaryService {
     double getAverageGrade(Long id);
 
     void saveGradesByUserId(Long userId);
+
+    ResponseEntity<?> getDiariesByClassAndSubject(String classname, String subject);
 }

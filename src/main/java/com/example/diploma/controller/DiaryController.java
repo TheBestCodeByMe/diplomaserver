@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -89,10 +90,14 @@ public class DiaryController {
         return diaryService.getDiaryDTOByClass(classForSearch);
     }
 
-
     @GetMapping("/getSaveGrades/{userId}")
     public ResponseEntity<?> getSaveDiary(@PathVariable(value = "userId") Long userId) {
         diaryService.saveGradesByUserId(userId);
         return ResponseEntity.ok("Сохранено в папку resources!");
+    }
+
+    @GetMapping("/getDiaries/{classname}/{subject}")
+    public ResponseEntity<?> getDiaryByClassAndSubject(@PathVariable(value = "classname") String classname, @PathVariable(value = "subject") String subject) {
+        return diaryService.getDiariesByClassAndSubject(classname, subject);
     }
 }
