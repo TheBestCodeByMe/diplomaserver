@@ -144,9 +144,14 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public int getNumbAttendance(Long id) {
-        Pupil pupil = pupilDao.findByUserId(id);
-        List<Attendance> attendance = attendanceDao.findAllByPupilID(pupil.getId());
+    public int getNumbAttendance(Long id, Boolean flag) {
+        Long pupilId;
+        if(flag){
+            pupilId = id;
+        } else {
+            pupilId = pupilDao.findByUserId(id).getId();
+        }
+        List<Attendance> attendance = attendanceDao.findAllByPupilID(pupilId);
         return attendance.size();
     }
 
@@ -204,9 +209,14 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public double getAverageGrade(Long id) {
-        Pupil pupil = pupilRepository.findByUserId(id);
-        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilID(pupil.getId());
+    public double getAverageGrade(Long id, Boolean flag) {
+        Long pupilId;
+        if (flag) {
+            pupilId = id;
+        } else {
+            pupilId = pupilRepository.findByUserId(id).getId();
+        }
+        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilID(pupilId);
 
         double sumGrade = 0;
         for (AcademicPerfomance academicPerfomance : academicPerformanceList) {
@@ -216,6 +226,18 @@ public class DiaryServiceImpl implements DiaryService {
             return sumGrade / academicPerformanceList.size();
         } else {
             return 0;
+        }
+    }
+
+    @Override
+    public int getSemesterGrade(double grade) {
+        String[] a = String.valueOf(grade).split("[.]");
+        int _int = Integer.parseInt(a[0]);
+        int _franc = Integer.parseInt(String.valueOf(a[1].charAt(0)));
+        if (_franc>=5) {
+            return ++_int;
+        } else {
+            return _int;
         }
     }
 
@@ -235,9 +257,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public ResponseEntity<?> getDiariesByClassAndSubject(String classname, String subject) {
-        DiaryBySubjectDTOResponse diaryBySubjectDTOResponse = new DiaryBySubjectDTOResponse();
         List<DiaryBySubjectDTOList> diaryBySubjectDTOList = new ArrayList<>();
-        List<DiaryBySubjectDTO> diaryBySubjectDTOs = new ArrayList<>();
         Classroom classroom = classroomDao.findClassroomByName(classname);
         if (classroom == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого класса нет"));
@@ -250,13 +270,14 @@ public class DiaryServiceImpl implements DiaryService {
         for (Pupil pupil : pupilList) {
             List<Attendance> attendances = attendanceDao.findAllByPupilID(pupil.getId());
             List<AcademicPerfomance> academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
-            diaryBySubjectDTOs.addAll(getAttendanceAndGrade(academicPerformances, subjects, schedules, attendances));
+            double avGrade = getAverageGrade(pupil.getId(), true);
+            diaryBySubjectDTOList.add(new DiaryBySubjectDTOList(pupil.getName(), pupil.getLastname(), pupil.getPatronymic(), getAttendanceAndGrade(pupil, academicPerformances, subjects, schedules, attendances), avGrade, getNumbAttendance(pupil.getId(), true), getSemesterGrade(avGrade)));
         }
 
-        return diaryBySubjectDTOResponse;
+        return ResponseEntity.ok(Objects.requireNonNullElse(new DiaryBySubjectDTOResponse(subject, classname, diaryBySubjectDTOList), ""));
     }
 
-    private Collection<DiaryBySubjectDTO> getAttendanceAndGrade(List<AcademicPerfomance> academicPerformances, List<Subject> subjects, List<Schedule> schedules, List<Attendance> attendances) {
+    private Collection<DiaryBySubjectDTO> getAttendanceAndGrade(Pupil pupil, List<AcademicPerfomance> academicPerformances, List<Subject> subjects, List<Schedule> schedules, List<Attendance> attendances) {
         Collection<DiaryBySubjectDTO> diaryDTO = new ArrayList<>();
         String grade = "";
         boolean isAttendance = false;
@@ -268,7 +289,7 @@ public class DiaryServiceImpl implements DiaryService {
                         grade = "";
                     } else {
                         for (AcademicPerfomance academicPerfomance : academicPerformances) {
-                            if (Objects.equals(academicPerfomance.getLessonID(), schedule.getId())) {
+                            if (Objects.equals(academicPerfomance.getLessonID(), schedule.getId()) && academicPerfomance.getPupilID().equals(pupil.getId())) {
                                 grade = String.valueOf(academicPerfomance.getGrade());
                             } else {
                                 grade = "";
@@ -277,7 +298,9 @@ public class DiaryServiceImpl implements DiaryService {
                     }
                     if (attendances != null) {
                         for (Attendance attendance : attendances) {
-                            isAttendance = Objects.equals(schedule.getId(), attendance.getLessonID());
+                            if (attendance.getPupilID().equals(pupil.getId())) {
+                                isAttendance = Objects.equals(schedule.getId(), attendance.getLessonID());
+                            }
                         }
                     }
                     diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, isAttendance, grade));

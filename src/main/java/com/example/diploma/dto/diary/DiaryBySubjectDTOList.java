@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,12 +18,12 @@ public class DiaryBySubjectDTOList {
     private String namePupil;
     private String lastnamePupil;
     private String patronymicPupil;
-    private List<DiaryBySubjectDTO> diary;
+    private Collection<DiaryBySubjectDTO> diary;
     private double averageScore;
     private int countAttendances;
     private int semesterGrade;
 
-    public DiaryBySubjectDTOList(String namePupil, String lastnamePupil, String patronymicPupil, List<DiaryBySubjectDTO> diary, double averageScore, int countAttendances, int semesterGrade) {
+    public DiaryBySubjectDTOList(String namePupil, String lastnamePupil, String patronymicPupil, Collection<DiaryBySubjectDTO> diary, double averageScore, int countAttendances, int semesterGrade) {
         this.namePupil = namePupil;
         this.lastnamePupil = lastnamePupil;
         this.patronymicPupil = patronymicPupil;

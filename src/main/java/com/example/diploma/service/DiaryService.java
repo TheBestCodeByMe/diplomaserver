@@ -22,11 +22,13 @@ public interface DiaryService {
 
     List<DiaryDTO> getDiaryDTOByUser(Long id);
 
-    int getNumbAttendance(Long id);
+    int getNumbAttendance(Long id, Boolean flag);
+
+    int getSemesterGrade(double grade);
 
     ResponseEntity<?> getDiaryDTOByClass(String classForSearch);
 
-    double getAverageGrade(Long id);
+    double getAverageGrade(Long id, Boolean flag);
 
     void saveGradesByUserId(Long userId);
 

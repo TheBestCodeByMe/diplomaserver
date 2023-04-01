@@ -72,12 +72,12 @@ public class DiaryController {
 
     @GetMapping("/getNumbAttendance/{userId}")
     public ResponseEntity<?> getNumberAttendance(@PathVariable(value = "userId") String userId) {
-        return ResponseEntity.ok(diaryService.getNumbAttendance(Long.parseLong(userId)));
+        return ResponseEntity.ok(diaryService.getNumbAttendance(Long.parseLong(userId), false));
     }
 
     @GetMapping("/getAverageGrade/{userId}")
     public ResponseEntity<?> getAvrgGrade(@PathVariable(value = "userId") String userId) {
-        double avGrade = diaryService.getAverageGrade(Long.parseLong(userId));
+        double avGrade = diaryService.getAverageGrade(Long.parseLong(userId), false);
         if (avGrade != 0) {
             return ResponseEntity.ok(avGrade);
         } else {
