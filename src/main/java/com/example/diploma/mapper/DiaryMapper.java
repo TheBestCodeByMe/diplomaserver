@@ -2,6 +2,7 @@ package com.example.diploma.mapper;
 
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.classroom.ClassroomDTOSearch;
+import com.example.diploma.dto.diary.DiaryBySubjectDTO;
 import com.example.diploma.dto.diary.DiaryDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
@@ -22,6 +23,15 @@ public class DiaryMapper {
         diaryDTO.setAttendance(attendance);
         diaryDTO.setDateLesson(schedule.getDate());
         diaryDTO.setClassName(classroom.getName());
+
+        return diaryDTO;
+    }
+
+    public static DiaryBySubjectDTO mapToDiaryBySubjectDTO(Schedule schedule, boolean attendance, String grade) {
+        DiaryBySubjectDTO diaryDTO = new DiaryBySubjectDTO();
+        diaryDTO.setGrade(grade);
+        diaryDTO.setAttendance(attendance);
+        diaryDTO.setDateLesson(schedule.getDate());
 
         return diaryDTO;
     }

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +52,7 @@ public class DiaryServiceImpl implements DiaryService {
     public DiaryDTOStreamProcessor addAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
         AcademicPerfomance academicPerfomance = new AcademicPerfomance();
 
-        if(!academicPerformanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId())) {
+        if (!academicPerformanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId())) {
             academicPerfomance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
             academicPerfomance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
             academicPerfomance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
@@ -76,7 +77,7 @@ public class DiaryServiceImpl implements DiaryService {
     public DiaryDTOStreamProcessor addAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
         Attendance attendance = new Attendance();
 
-        if(!attendanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId())) {
+        if (!attendanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId())) {
             attendance.setPupilID(diaryDTOStreamProcessor.getPupil().getId());
             attendance.setClassID(diaryDTOStreamProcessor.getPupil().getClassroomId());
             attendance.setLessonID(diaryDTOStreamProcessor.getSchedule().getId());
@@ -97,7 +98,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public  DiaryDTOStreamProcessor addHomework(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
+    public DiaryDTOStreamProcessor addHomework(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
         diaryDTOStreamProcessor.getSchedule().setHometask(createDiaryDTORequest.getHomework());
         scheduleRepository.save(diaryDTOStreamProcessor.getSchedule());
         diaryDTOStreamProcessor.setResponseEntity(ResponseEntity.ok().body("Домашнее задание добавлено"));
@@ -125,7 +126,7 @@ public class DiaryServiceImpl implements DiaryService {
         List<Attendance> attendances;
         List<AcademicPerfomance> academicPerformances;
 
-        if(pupil == null) {
+        if (pupil == null) {
             return null;
         } else {
             schedules = scheduleDao.findAllByClassroomID(pupil.getClassroomId());
@@ -172,7 +173,7 @@ public class DiaryServiceImpl implements DiaryService {
         return ResponseEntity.ok(diaryDTOList);
     }
 
-    private DiaryDTO getAttendanceAndGrade(Pupil pupil, List<AcademicPerfomance> academicPerformances, List<Subject> subjects, Schedule schedule, List<Attendance> attendances){
+    private DiaryDTO getAttendanceAndGrade(Pupil pupil, List<AcademicPerfomance> academicPerformances, List<Subject> subjects, Schedule schedule, List<Attendance> attendances) {
         DiaryDTO diaryDTO = new DiaryDTO();
         String grade = "";
         boolean isAttendance = false;
@@ -221,7 +222,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Override
     public void saveGradesByUserId(Long userId) {
         List<DiaryDTO> diaryDTOList = getDiaryDTOByUser(userId);
-        if(diaryDTOList != null) {
+        if (diaryDTOList != null) {
             try {
                 ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
                 ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
@@ -249,41 +250,41 @@ public class DiaryServiceImpl implements DiaryService {
         for (Pupil pupil : pupilList) {
             List<Attendance> attendances = attendanceDao.findAllByPupilID(pupil.getId());
             List<AcademicPerfomance> academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
-            for (Schedule schedule : schedules) {
-                diaryBySubjectDTOList.add(getAttendanceAndGrade(pupil, academicPerformances, subjects, schedule, attendances));
-            }
+            diaryBySubjectDTOs.addAll(getAttendanceAndGrade(academicPerformances, subjects, schedules, attendances));
         }
 
         return diaryBySubjectDTOResponse;
     }
-/*
-    private DiaryDTO getAttendanceAndGrade(Pupil pupil, List<AcademicPerfomance> academicPerformances, List<Subject> subjects, Schedule schedule, List<Attendance> attendances){
-        DiaryDTO diaryDTO = new DiaryDTO();
+
+    private Collection<DiaryBySubjectDTO> getAttendanceAndGrade(List<AcademicPerfomance> academicPerformances, List<Subject> subjects, List<Schedule> schedules, List<Attendance> attendances) {
+        Collection<DiaryBySubjectDTO> diaryDTO = new ArrayList<>();
         String grade = "";
         boolean isAttendance = false;
 
         for (Subject subject : subjects) {
-            if (Objects.equals(schedule.getSubjectID(), subject.getId())) {
-                if (academicPerformances == null) {
-                    grade = "";
-                } else {
-                    for (AcademicPerfomance academicPerfomance : academicPerformances) {
-                        if (Objects.equals(academicPerfomance.getLessonID(), schedule.getId())) {
-                            grade = String.valueOf(academicPerfomance.getGrade());
-                        } else {
-                            grade = "";
+            for (Schedule schedule : schedules) {
+                if (Objects.equals(schedule.getSubjectID(), subject.getId())) {
+                    if (academicPerformances == null) {
+                        grade = "";
+                    } else {
+                        for (AcademicPerfomance academicPerfomance : academicPerformances) {
+                            if (Objects.equals(academicPerfomance.getLessonID(), schedule.getId())) {
+                                grade = String.valueOf(academicPerfomance.getGrade());
+                            } else {
+                                grade = "";
+                            }
                         }
                     }
-                }
-                if (attendances != null) {
-                    for (Attendance attendance : attendances) {
-                        isAttendance = Objects.equals(schedule.getId(), attendance.getLessonID());
+                    if (attendances != null) {
+                        for (Attendance attendance : attendances) {
+                            isAttendance = Objects.equals(schedule.getId(), attendance.getLessonID());
+                        }
                     }
+                    diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, isAttendance, grade));
                 }
-                diaryDTO = DiaryMapper.mapToDiaryDTO(schedule, pupil, classroomRepository.getById(pupil.getClassroomId()), isAttendance, grade, subject);
             }
         }
 
         return diaryDTO;
-    }*/
+    }
 }
