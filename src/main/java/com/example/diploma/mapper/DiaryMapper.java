@@ -27,7 +27,7 @@ public class DiaryMapper {
         return diaryDTO;
     }
 
-    public static DiaryBySubjectDTO mapToDiaryBySubjectDTO(Schedule schedule, boolean attendance, String grade) {
+    public static DiaryBySubjectDTO mapToDiaryBySubjectDTO(Schedule schedule, boolean attendance, int grade) {
         DiaryBySubjectDTO diaryDTO = new DiaryBySubjectDTO();
         diaryDTO.setGrade(grade);
         diaryDTO.setAttendance(attendance);

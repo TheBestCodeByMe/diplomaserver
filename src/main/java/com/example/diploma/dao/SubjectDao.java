@@ -20,6 +20,10 @@ public class SubjectDao {
         return subjectRepository.findBySubjectName(subjectName);
     }
 
+    public Subject findBySubjectCode(String subjectCode) {
+        return subjectRepository.findByCode(subjectCode);
+    }
+
     public List<Subject> findAll() {
         return subjectRepository.findAllByStatusId(EStatus.ACTIVE.getId());
     }
