@@ -48,7 +48,7 @@ public class ScheduleMapper {
 
     public static ScheduleDatesDTO mapScheduleToDatesDTO(Schedule schedule, int semesterId) {
         ScheduleDatesDTO scheduleDatesDTO = new ScheduleDatesDTO();
-        scheduleDatesDTO.setDate(schedule.getDate());
+        scheduleDatesDTO.setDateSchedule(schedule.getDate());
         scheduleDatesDTO.setHometask(schedule.getHometask());
         scheduleDatesDTO.setScheduleCode(schedule.getCode());
         scheduleDatesDTO.setSemester(semesterId);

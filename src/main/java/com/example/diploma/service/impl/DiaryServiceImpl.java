@@ -208,6 +208,7 @@ public class DiaryServiceImpl implements DiaryService {
         return diaryDTO;
     }
 
+    // TODO: change on selected subject
     @Override
     public double getAverageGrade(Long id, Boolean flag) {
         Long pupilId;

@@ -14,13 +14,13 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 public class ScheduleDatesDTO implements Serializable {
-    private LocalDate date;
+    private LocalDate dateSchedule;
     private int semester;
     private String hometask;
     private String scheduleCode;
 
-    public ScheduleDatesDTO(LocalDate date, int semester, String hometask, String scheduleCode) {
-        this.date = date;
+    public ScheduleDatesDTO(LocalDate dateSchedule, int semester, String hometask, String scheduleCode) {
+        this.dateSchedule = dateSchedule;
         this.semester = semester;
         this.hometask = hometask;
         this.scheduleCode = scheduleCode;
@@ -31,11 +31,11 @@ public class ScheduleDatesDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScheduleDatesDTO that = (ScheduleDatesDTO) o;
-        return semester == that.semester && Objects.equals(date, that.date) && Objects.equals(hometask, that.hometask) && Objects.equals(scheduleCode, that.scheduleCode);
+        return semester == that.semester && Objects.equals(dateSchedule, that.dateSchedule) && Objects.equals(hometask, that.hometask) && Objects.equals(scheduleCode, that.scheduleCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, semester, hometask, scheduleCode);
+        return Objects.hash(dateSchedule, semester, hometask, scheduleCode);
     }
 }
