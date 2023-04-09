@@ -51,11 +51,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<ScheduleDatesDTO> getDatesBySubjectAndClass(String subject, String classname, Long userId, int semesterId) {
-        List<Schedule> scheduleList = scheduleDao.findByClassAndSubjectAndTeacher(userId, classname, subject, EStatus.ACTIVE, semesterId);
+    public List<ScheduleDatesDTO> getDatesBySubjectAndClass(String subjectCode, String classname, Long userId, int semesterId) {
+        List<Schedule> scheduleList = scheduleDao.findByClassAndSubjectAndTeacher(userId, classname, subjectCode, EStatus.ACTIVE, semesterId);
         List<ScheduleDatesDTO> scheduleDatesDTOList = new ArrayList<>();
-
         scheduleList.forEach(schedule -> { scheduleDatesDTOList.add(ScheduleMapper.mapScheduleToDatesDTO(schedule, semesterId)); });
         return scheduleDatesDTOList;
+    }
+
+    @Override
+    public List<Schedule> getSchedulesBySubjectAndClass(String subjectCode, String classname, Long userId, int semesterId) {
+        return scheduleDao.findByClassAndSubjectAndTeacher(userId, classname, subjectCode, EStatus.ACTIVE, semesterId);
     }
 }

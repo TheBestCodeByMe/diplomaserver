@@ -18,15 +18,17 @@ public class DiaryBySubjectDTOList {
     private String namePupil;
     private String lastnamePupil;
     private String patronymicPupil;
+    private String pupilCode;
     private Collection<DiaryBySubjectDTO> diary;
     private double averageScore;
     private int countAttendances;
     private int semesterGrade;
 
-    public DiaryBySubjectDTOList(String namePupil, String lastnamePupil, String patronymicPupil, Collection<DiaryBySubjectDTO> diary, double averageScore, int countAttendances, int semesterGrade) {
+    public DiaryBySubjectDTOList(String namePupil, String lastnamePupil, String patronymicPupil, String pupilCode, Collection<DiaryBySubjectDTO> diary, double averageScore, int countAttendances, int semesterGrade) {
         this.namePupil = namePupil;
         this.lastnamePupil = lastnamePupil;
         this.patronymicPupil = patronymicPupil;
+        this.pupilCode = pupilCode;
         this.diary = diary;
         this.averageScore = averageScore;
         this.countAttendances = countAttendances;
@@ -38,11 +40,11 @@ public class DiaryBySubjectDTOList {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DiaryBySubjectDTOList that = (DiaryBySubjectDTOList) o;
-        return Double.compare(that.averageScore, averageScore) == 0 && countAttendances == that.countAttendances && semesterGrade == that.semesterGrade && Objects.equals(namePupil, that.namePupil) && Objects.equals(lastnamePupil, that.lastnamePupil) && Objects.equals(patronymicPupil, that.patronymicPupil) && Objects.equals(diary, that.diary);
+        return Double.compare(that.averageScore, averageScore) == 0 && countAttendances == that.countAttendances && semesterGrade == that.semesterGrade && Objects.equals(namePupil, that.namePupil) && Objects.equals(lastnamePupil, that.lastnamePupil) && Objects.equals(patronymicPupil, that.patronymicPupil) && Objects.equals(pupilCode, that.pupilCode) && Objects.equals(diary, that.diary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(namePupil, lastnamePupil, patronymicPupil, diary, averageScore, countAttendances, semesterGrade);
+        return Objects.hash(namePupil, lastnamePupil, patronymicPupil, pupilCode, diary, averageScore, countAttendances, semesterGrade);
     }
 }

@@ -27,4 +27,9 @@ public class AcademicPerformanceDao {
     public List<AcademicPerfomance> findAllByPupilID(Long id) {
         return academicPerformanceRepository.findAllByPupilIDAndStatusId(id, EStatus.ACTIVE.getId());
     }
+
+
+    public List<AcademicPerfomance> findAllByPupilIDAndClassroomId(Long id, Long classId) {
+        return academicPerformanceRepository.findAllByPupilIDAndStatusIdAndClassID(id, EStatus.ACTIVE.getId(), classId);
+    }
 }

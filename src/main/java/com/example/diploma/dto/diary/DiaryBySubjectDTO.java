@@ -16,11 +16,13 @@ public class DiaryBySubjectDTO {
     private int grade;
     private boolean attendance;
     private LocalDate dateLesson;
+    private String scheduleCode;
 
-    public DiaryBySubjectDTO(int grade, boolean attendance, LocalDate dateLesson) {
+    public DiaryBySubjectDTO(int grade, boolean attendance, LocalDate dateLesson, String scheduleCode) {
         this.grade = grade;
         this.attendance = attendance;
         this.dateLesson = dateLesson;
+        this.scheduleCode = scheduleCode;
     }
 
     @Override
@@ -28,11 +30,11 @@ public class DiaryBySubjectDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DiaryBySubjectDTO that = (DiaryBySubjectDTO) o;
-        return grade == that.grade && attendance == that.attendance && Objects.equals(dateLesson, that.dateLesson);
+        return grade == that.grade && attendance == that.attendance && Objects.equals(dateLesson, that.dateLesson) && Objects.equals(scheduleCode, that.scheduleCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(grade, attendance, dateLesson);
+        return Objects.hash(grade, attendance, dateLesson, scheduleCode);
     }
 }

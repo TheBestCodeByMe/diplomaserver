@@ -45,11 +45,17 @@ public class PupilServiceImpl implements PupilService {
     }
 
     @Override
-    public List<PupilInClassDTO> getPupilsByClassName(String classname) {
+    public List<PupilInClassDTO> getPupilDTOsByClassName(String classname) {
         Classroom classroom = classroomDao.findClassroomByName(classname);
         List<Pupil> pupils = pupilDao.findAllByClassroomId(classroom.getId());
         List<PupilInClassDTO> pupilDtos = new ArrayList<>();
         pupils.forEach(pupil -> pupilDtos.add(PupilMapper.mapToPupilInClassDTO(pupil, classroom)));
         return pupilDtos;
+    }
+
+    @Override
+    public List<Pupil> getPupilsByClassname(String classname) {
+        Classroom classroom = classroomDao.findClassroomByName(classname);
+        return pupilDao.findAllByClassroomId(classroom.getId());
     }
 }

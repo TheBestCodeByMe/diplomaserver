@@ -210,14 +210,14 @@ public class DiaryServiceImpl implements DiaryService {
 
     // TODO: change on selected subject
     @Override
-    public double getAverageGrade(Long id, Boolean flag) {
+    public double getAverageGrade(Long id, Boolean flag, Long classId) {
         Long pupilId;
         if (flag) {
             pupilId = id;
         } else {
             pupilId = pupilRepository.findByUserId(id).getId();
         }
-        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilID(pupilId);
+        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilIDAndClassroomId(pupilId, classId);
 
         double sumGrade = 0;
         for (AcademicPerfomance academicPerfomance : academicPerformanceList) {
@@ -271,8 +271,8 @@ public class DiaryServiceImpl implements DiaryService {
         for (Pupil pupil : pupilList) {
             List<Attendance> attendances = attendanceDao.findAllByPupilID(pupil.getId());
             List<AcademicPerfomance> academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
-            double avGrade = getAverageGrade(pupil.getId(), true);
-            diaryBySubjectDTOList.add(new DiaryBySubjectDTOList(pupil.getName(), pupil.getLastname(), pupil.getPatronymic(), getDiaries(pupil, academicPerformances, subject, schedules, attendances), avGrade, getNumbAttendance(pupil.getId(), true), getSemesterGrade(avGrade)));
+            double avGrade = getAverageGrade(pupil.getId(), true, pupil.getClassroomId());
+            diaryBySubjectDTOList.add(new DiaryBySubjectDTOList(pupil.getName(), pupil.getLastname(), pupil.getPatronymic(), pupil.getCode(), getDiaries(pupil, academicPerformances, subject, schedules, attendances), avGrade, getNumbAttendance(pupil.getId(), true), getSemesterGrade(avGrade)));
         }
 
         return ResponseEntity.ok(Objects.requireNonNullElse(new DiaryBySubjectDTOResponse(subject.getSubjectName(), classname, diaryBySubjectDTOList), ""));

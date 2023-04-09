@@ -1,10 +1,17 @@
 package com.example.diploma.controller;
 
+import com.example.diploma.dao.SubjectDao;
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
+import com.example.diploma.dto.diary.DiaryBySubjectDTORequest;
 import com.example.diploma.dto.diary.DiaryDTO;
-import com.example.diploma.exception.ResourceNotFoundException;
+import com.example.diploma.model.Pupil;
+import com.example.diploma.model.Schedule;
+import com.example.diploma.model.Subject;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
+import com.example.diploma.service.GradebookService;
+import com.example.diploma.service.PupilService;
+import com.example.diploma.service.ScheduleService;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
 import com.example.diploma.validator.DiaryValidator;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -23,7 +30,47 @@ import java.util.Objects;
 public class DiaryController {
 
     private final DiaryService diaryService;
+    private final PupilService pupilService;
+    private final GradebookService gradebookService;
     private final DiaryValidator diaryValidator;
+    private final ScheduleService scheduleService;
+    private final SubjectDao subjectDao;
+
+    // Optimaze and take all with one request
+    @PostMapping("/saveGradebooks")
+    public ResponseEntity<?> addGradebooks(@RequestBody DiaryBySubjectDTORequest diariesBySubjectRequest, @RequestBody Long teacherId) {
+        List<Pupil> pupilList = pupilService.getPupilsByClassname(diariesBySubjectRequest.getClassname());
+        Subject subject = subjectDao.findBySubjectName(diariesBySubjectRequest.getSubject());
+        List<Schedule> scheduleList = scheduleService.getSchedulesBySubjectAndClass(subject.getCode(), diariesBySubjectRequest.getClassname(), teacherId, 1);
+        List<String> result = new ArrayList<>();
+
+        diariesBySubjectRequest.getDiaries().forEach(pupilDto -> {
+            Pupil pupil = pupilList.stream().filter(it -> it.getCode().equals(pupilDto.getPupilCode())).findFirst().get();
+            pupilDto.getDiary().forEach(diary -> {
+                Schedule schedule = scheduleList.stream().filter(it -> it.getCode().equals(diary.getScheduleCode())).findFirst().get();
+                if (diary.isAttendance()) {
+                    if (!gradebookService.getAcademicPerformance(pupil, schedule)) {
+                        result.add(gradebookService.addAttendance(pupil, schedule));
+                    } else {
+                        result.add("Error: Оценка у ученика " + pupil.getName() + " " + pupil.getLastname() + " уже выставлена, то есть он был в этот день");
+                    }
+                } else if (diary.getGrade() != 0) {
+                    if (!gradebookService.getAttendance(pupil, schedule)) {
+                        result.add(gradebookService.addAcademicPerformance(pupil, schedule, diary));
+                    } else {
+                        result.add("Error: Этого ученика " + pupil.getName() + " " + pupil.getLastname() + " не было в этот день");
+                    }
+                }
+            });
+        });
+
+        if(result.stream().anyMatch(it -> it.contains("Error")))
+        {
+            return ResponseEntity.badRequest().body(result);
+        } else {
+            return ResponseEntity.ok(result);
+        }
+    }
 
     @PostMapping("/addAttendanceAndAcademicPerformance")
     public ResponseEntity<?> addAttendanceAndAcademicPerformance(@RequestBody CreateDiaryDTORequest createDiaryDTORequest) {
@@ -77,7 +124,7 @@ public class DiaryController {
 
     @GetMapping("/getAverageGrade/{userId}")
     public ResponseEntity<?> getAvrgGrade(@PathVariable(value = "userId") String userId) {
-        double avGrade = diaryService.getAverageGrade(Long.parseLong(userId), false);
+        double avGrade = diaryService.getAverageGrade(Long.parseLong(userId), false, 0L);
         if (avGrade != 0) {
             return ResponseEntity.ok(avGrade);
         } else {

@@ -28,7 +28,7 @@ public interface DiaryService {
 
     ResponseEntity<?> getDiaryDTOByClass(String classForSearch);
 
-    double getAverageGrade(Long id, Boolean flag);
+    double getAverageGrade(Long id, Boolean flag, Long classId);
 
     void saveGradesByUserId(Long userId);
 

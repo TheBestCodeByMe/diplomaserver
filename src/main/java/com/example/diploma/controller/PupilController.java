@@ -22,6 +22,6 @@ public class PupilController {
 
     @GetMapping("/getByClass/{classname}")
     public ResponseEntity<?> getPupilsByClassName(@PathVariable(value = "classname") String classname) {
-        return ResponseEntity.ok(Objects.requireNonNullElse(pupilService.getPupilsByClassName(classname), ""));
+        return ResponseEntity.ok(Objects.requireNonNullElse(pupilService.getPupilDTOsByClassName(classname), ""));
     }
 }

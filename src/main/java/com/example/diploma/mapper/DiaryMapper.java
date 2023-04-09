@@ -32,6 +32,7 @@ public class DiaryMapper {
         diaryDTO.setGrade(grade);
         diaryDTO.setAttendance(attendance);
         diaryDTO.setDateLesson(schedule.getDate());
+        diaryDTO.setScheduleCode(schedule.getCode());
 
         return diaryDTO;
     }

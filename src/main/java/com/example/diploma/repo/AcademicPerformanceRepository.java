@@ -9,4 +9,5 @@ public interface AcademicPerformanceRepository extends JpaRepository<AcademicPer
     boolean existsByClassIDAndLessonIDAndPupilIDAndStatusId(Long classId, Long lessonId, Long pupilId, Long statusId);
     AcademicPerfomance findByClassIDAndLessonIDAndPupilIDAndStatusId(Long classId, Long lessonId, Long pupilId, Long statusId);
     List<AcademicPerfomance> findAllByPupilIDAndStatusId(Long pupilId, Long statusId);
+    List<AcademicPerfomance> findAllByPupilIDAndStatusIdAndClassID(Long pupilId, Long statusId, Long classId);
 }

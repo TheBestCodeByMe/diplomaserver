@@ -6,14 +6,11 @@ import com.example.diploma.dao.ScheduleDao;
 import com.example.diploma.dao.SubjectDao;
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
 import com.example.diploma.model.*;
-import com.example.diploma.repo.*;
-import com.example.diploma.service.DiaryService;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 @RequiredArgsConstructor
