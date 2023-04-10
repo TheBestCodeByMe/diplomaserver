@@ -1,12 +1,14 @@
 package com.example.diploma.controller;
 
 import com.example.diploma.dao.SubjectDao;
+import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
 import com.example.diploma.dto.diary.DiaryBySubjectDTORequest;
 import com.example.diploma.dto.diary.DiaryDTO;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Schedule;
 import com.example.diploma.model.Subject;
+import com.example.diploma.model.Teacher;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.service.GradebookService;
@@ -35,14 +37,25 @@ public class DiaryController {
     private final DiaryValidator diaryValidator;
     private final ScheduleService scheduleService;
     private final SubjectDao subjectDao;
+    private final TeacherDao teacherDao;
 
-    // Optimaze and take all with one request
-    @PostMapping("/saveGradebooks")
-    public ResponseEntity<?> addGradebooks(@RequestBody DiaryBySubjectDTORequest diariesBySubjectRequest, @RequestBody Long teacherId) {
+    // Optimize and take all with one request
+    @PostMapping("/saveGradebooks/{userId}")
+    public ResponseEntity<?> addGradebooks(@RequestBody DiaryBySubjectDTORequest diariesBySubjectRequest, @PathVariable(value = "userId") Long userId) {
+        System.out.println("+++++++++++++++++++++++I am here");
+        System.out.println(diariesBySubjectRequest);
+        System.out.println(userId);
+        Teacher teacher = teacherDao.findByUserId(userId);
         List<Pupil> pupilList = pupilService.getPupilsByClassname(diariesBySubjectRequest.getClassname());
         Subject subject = subjectDao.findBySubjectName(diariesBySubjectRequest.getSubject());
-        List<Schedule> scheduleList = scheduleService.getSchedulesBySubjectAndClass(subject.getCode(), diariesBySubjectRequest.getClassname(), teacherId, 1);
+        List<Schedule> scheduleList = scheduleService.getSchedulesBySubjectAndClass(subject.getCode(), diariesBySubjectRequest.getClassname(), teacher.getId(), 1);
         List<String> result = new ArrayList<>();
+
+        System.out.println(teacher);
+        System.out.println(pupilList);
+        System.out.println(subject);
+        System.out.println(scheduleList);
+        System.out.println();
 
         diariesBySubjectRequest.getDiaries().forEach(pupilDto -> {
             Pupil pupil = pupilList.stream().filter(it -> it.getCode().equals(pupilDto.getPupilCode())).findFirst().get();
@@ -64,8 +77,8 @@ public class DiaryController {
             });
         });
 
-        if(result.stream().anyMatch(it -> it.contains("Error")))
-        {
+        System.out.println("----------------"+result);
+        if (result.stream().anyMatch(it -> it.contains("Error"))) {
             return ResponseEntity.badRequest().body(result);
         } else {
             return ResponseEntity.ok(result);
