@@ -271,6 +271,7 @@ public class DiaryServiceImpl implements DiaryService {
         for (Pupil pupil : pupilList) {
             List<Attendance> attendances = attendanceDao.findAllByPupilID(pupil.getId());
             List<AcademicPerfomance> academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
+            System.out.println(academicPerformances);
             double avGrade = getAverageGrade(pupil.getId(), true, pupil.getClassroomId());
             diaryBySubjectDTOList.add(new DiaryBySubjectDTOList(pupil.getName(), pupil.getLastname(), pupil.getPatronymic(), pupil.getCode(), getDiaries(pupil, academicPerformances, subject, schedules, attendances), avGrade, getNumbAttendance(pupil.getId(), true), getSemesterGrade(avGrade)));
         }
@@ -280,32 +281,46 @@ public class DiaryServiceImpl implements DiaryService {
 
     private Collection<DiaryBySubjectDTO> getDiaries(Pupil pupil, List<AcademicPerfomance> academicPerformances, Subject subject, List<Schedule> schedules, List<Attendance> attendances) {
         Collection<DiaryBySubjectDTO> diaryDTO = new ArrayList<>();
-        String grade = "0";
-        boolean isAttendance = false;
+        String grade;
 
         for (Schedule schedule : schedules) {
             if (Objects.equals(schedule.getSubjectID(), subject.getId())) {
                 if (academicPerformances == null) {
-                    grade = "0";
+                    if (attendances == null) {
+                        System.out.println("1");
+                        grade = "0";
+                        diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, false, Integer.parseInt(grade)));
+                    } else {
+                        System.out.println("2");
+                        grade = "0";
+                        diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, true, Integer.parseInt(grade)));
+                    }
                 } else {
                     for (AcademicPerfomance academicPerfomance : academicPerformances) {
                         if (Objects.equals(academicPerfomance.getLessonID(), schedule.getId()) && academicPerfomance.getPupilID().equals(pupil.getId())) {
                             grade = String.valueOf(academicPerfomance.getGrade());
+                            diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, false, Integer.parseInt(grade)));
                         } else {
-                            grade = "0";
+                            if (!attendances.isEmpty()) {
+                                System.out.println(attendances);
+                                for (Attendance attendance : attendances) {
+                                    if (attendance.getPupilID().equals(pupil.getId()) && Objects.equals(schedule.getId(), attendance.getLessonID()) && diaryDTO.stream().noneMatch(it -> Objects.equals(it.getScheduleCode(), schedule.getCode()))) {
+                                        grade = "0";
+                                        diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, true, Integer.parseInt(grade)));
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                if (attendances != null) {
-                    for (Attendance attendance : attendances) {
-                        if (attendance.getPupilID().equals(pupil.getId())) {
-                            isAttendance = Objects.equals(schedule.getId(), attendance.getLessonID());
-                        }
-                    }
-                }
-                diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, isAttendance, Integer.parseInt(grade)));
             }
         }
+
+        schedules.forEach(schedule -> {
+            if(diaryDTO.stream().noneMatch(it -> Objects.equals(it.getScheduleCode(), schedule.getCode()))) {
+                diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, false, 0));
+            }
+        });
 
         return diaryDTO;
     }

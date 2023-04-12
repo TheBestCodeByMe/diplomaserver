@@ -17,6 +17,7 @@ import com.example.diploma.service.ScheduleService;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
 import com.example.diploma.validator.DiaryValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.flogger.Flogger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,20 +43,10 @@ public class DiaryController {
     // Optimize and take all with one request
     @PostMapping("/saveGradebooks/{userId}")
     public ResponseEntity<?> addGradebooks(@RequestBody DiaryBySubjectDTORequest diariesBySubjectRequest, @PathVariable(value = "userId") Long userId) {
-        System.out.println("+++++++++++++++++++++++I am here");
-        System.out.println(diariesBySubjectRequest);
-        System.out.println(userId);
-        Teacher teacher = teacherDao.findByUserId(userId);
         List<Pupil> pupilList = pupilService.getPupilsByClassname(diariesBySubjectRequest.getClassname());
         Subject subject = subjectDao.findBySubjectName(diariesBySubjectRequest.getSubject());
-        List<Schedule> scheduleList = scheduleService.getSchedulesBySubjectAndClass(subject.getCode(), diariesBySubjectRequest.getClassname(), teacher.getId(), 1);
+        List<Schedule> scheduleList = scheduleService.getSchedulesBySubjectAndClass(subject.getCode(), diariesBySubjectRequest.getClassname(), userId, 1);
         List<String> result = new ArrayList<>();
-
-        System.out.println(teacher);
-        System.out.println(pupilList);
-        System.out.println(subject);
-        System.out.println(scheduleList);
-        System.out.println();
 
         diariesBySubjectRequest.getDiaries().forEach(pupilDto -> {
             Pupil pupil = pupilList.stream().filter(it -> it.getCode().equals(pupilDto.getPupilCode())).findFirst().get();
@@ -68,7 +59,9 @@ public class DiaryController {
                         result.add("Error: Оценка у ученика " + pupil.getName() + " " + pupil.getLastname() + " уже выставлена, то есть он был в этот день");
                     }
                 } else if (diary.getGrade() != 0) {
+                    System.out.println(diary.getGrade());
                     if (!gradebookService.getAttendance(pupil, schedule)) {
+                        System.out.println(gradebookService.getAttendance(pupil, schedule));
                         result.add(gradebookService.addAcademicPerformance(pupil, schedule, diary));
                     } else {
                         result.add("Error: Этого ученика " + pupil.getName() + " " + pupil.getLastname() + " не было в этот день");
@@ -77,7 +70,6 @@ public class DiaryController {
             });
         });
 
-        System.out.println("----------------"+result);
         if (result.stream().anyMatch(it -> it.contains("Error"))) {
             return ResponseEntity.badRequest().body(result);
         } else {

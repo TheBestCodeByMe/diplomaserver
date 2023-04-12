@@ -42,7 +42,7 @@ public class GradebookServiceImpl implements GradebookService {
     @Override
     public String addAcademicPerformance(Pupil pupil, Schedule schedule, DiaryBySubjectDTO diaryBySubjectDTO) {
         AcademicPerfomance academicPerfomance = new AcademicPerfomance();
-
+        System.out.println("popo");
         if (!academicPerformanceDao.isExist(pupil.getClassroomId(), schedule.getId(), pupil.getId())) {
             academicPerfomance.setClassID(pupil.getClassroomId());
             academicPerfomance.setLessonID(schedule.getId());
@@ -53,14 +53,18 @@ public class GradebookServiceImpl implements GradebookService {
             academicPerfomance.setCode(GenerationCodeServiceImpl.generateCode());
             academicPerfomance.setStatusId(ACTIVE.getId());
             academicPerformanceRepository.save(academicPerfomance);
+            System.out.println("done" + academicPerfomance);
             return "Оценка выставлена";
         } else {
             academicPerfomance = academicPerformanceDao.find(pupil.getClassroomId(), schedule.getId(), pupil.getId());
+            System.out.println(academicPerfomance.getGrade() + " "+ diaryBySubjectDTO.getGrade());
             if (academicPerfomance.getGrade() != diaryBySubjectDTO.getGrade()) {
                 academicPerfomance.setGrade(diaryBySubjectDTO.getGrade());
                 academicPerformanceRepository.save(academicPerfomance);
+                System.out.println("done" + academicPerfomance);
                 return "Оценка обновлена";
             }
+            System.out.println("(((((((((((");
             return "";
         }
     }
