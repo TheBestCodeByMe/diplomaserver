@@ -42,7 +42,6 @@ public class DiaryServiceImpl implements DiaryService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleDao scheduleDao;
 
-    private final SubjectRepository subjectRepository;
     private final SubjectDao subjectDao;
 
     private final ClassroomRepository classroomRepository;
