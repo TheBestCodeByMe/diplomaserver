@@ -20,11 +20,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import static java.time.LocalDate.parse;
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 @Service
 @RequiredArgsConstructor
@@ -130,6 +135,39 @@ public class DiaryServiceImpl implements DiaryService {
         } else {
             schedules = scheduleDao.findAllByClassroomID(pupil.getClassroomId());
             subjects = subjectDao.findAll();
+            attendances = attendanceDao.findAllByPupilID(pupil.getId());
+            academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
+        }
+        List<DiaryDTO> diaryDtoList = new ArrayList<>();
+
+        for (Schedule schedule : schedules) {
+            diaryDtoList.add(getAttendanceAndGrade(pupil, academicPerformances, subjects, schedule, attendances));
+        }
+
+        return diaryDtoList;
+    }
+
+    @Override
+    public List<DiaryDTO> getDiaryDTOByParam(Long id, String param, int sem, boolean flag) {
+        Pupil pupil = pupilDao.findByUserId(id);
+
+        List<Schedule> schedules;
+        List<Subject> subjects = new ArrayList<>();
+        List<Attendance> attendances;
+        List<AcademicPerfomance> academicPerformances;
+
+        if (pupil == null) {
+            return null;
+        } else {
+            if (flag) {
+                DateTimeFormatter formatter = ofPattern("dd.MM.yyyy");
+                LocalDate date = parse(param, formatter);
+                schedules = scheduleDao.findAllByClassDateSem(pupil.getClassroomId(), date, sem);
+                subjects = subjectDao.findAll();
+            } else {
+                subjects.add(subjectDao.findBySubjectCode(param));
+                schedules = scheduleDao.findAllByClassSemSubj(pupil.getClassroomId(), sem, subjects.get(0).getId());
+            }
             attendances = attendanceDao.findAllByPupilID(pupil.getId());
             academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
         }
@@ -316,7 +354,7 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         schedules.forEach(schedule -> {
-            if(diaryDTO.stream().noneMatch(it -> Objects.equals(it.getScheduleCode(), schedule.getCode()))) {
+            if (diaryDTO.stream().noneMatch(it -> Objects.equals(it.getScheduleCode(), schedule.getCode()))) {
                 diaryDTO.add(DiaryMapper.mapToDiaryBySubjectDTO(schedule, false, 0));
             }
         });

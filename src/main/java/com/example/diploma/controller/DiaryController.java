@@ -40,7 +40,7 @@ public class DiaryController {
     private final SubjectDao subjectDao;
     private final TeacherDao teacherDao;
 
-    // Optimize and take all with one request
+    // TODO: Optimize and take all with one request
     @PostMapping("/saveGradebooks/{userId}")
     public ResponseEntity<?> addGradebooks(@RequestBody DiaryBySubjectDTORequest diariesBySubjectRequest, @PathVariable(value = "userId") Long userId) {
         List<Pupil> pupilList = pupilService.getPupilsByClassname(diariesBySubjectRequest.getClassname());
@@ -115,6 +115,17 @@ public class DiaryController {
     @GetMapping("/getByUserId/{userId}")
     public ResponseEntity<?> getDiaryByUser(@PathVariable(value = "userId") String userId) {
         List<DiaryDTO> diaryDTOList = diaryService.getDiaryDTOByUser(Long.parseLong(userId));
+        if (diaryDTOList == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Таких пользователей нет"));
+        } else {
+            return ResponseEntity.ok(diaryDTOList);
+        }
+    }
+
+    // if flag==true param = date else param = subj
+    @GetMapping("/by/user-date-subject/get/{userId}/{param}/{flag}/{sem}")
+    public ResponseEntity<?> getDiaryByUserAndDate(@PathVariable(value = "userId") String userId, @PathVariable(value = "param") String param, @PathVariable(value = "flag") boolean flag, @PathVariable(value = "sem") int semesterId) {
+        List<DiaryDTO> diaryDTOList = diaryService.getDiaryDTOByParam(Long.parseLong(userId), param, semesterId, flag);
         if (diaryDTOList == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Таких пользователей нет"));
         } else {

@@ -22,6 +22,8 @@ public interface DiaryService {
 
     List<DiaryDTO> getDiaryDTOByUser(Long id);
 
+    List<DiaryDTO> getDiaryDTOByParam(Long id, String param, int sem, boolean flag);
+
     int getNumbAttendance(Long id, Boolean flag);
 
     int getSemesterGrade(double grade);

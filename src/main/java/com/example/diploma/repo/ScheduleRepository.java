@@ -32,4 +32,22 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             and s.calendarId = cal.id
             and cal.semesterID = ?5""")
     List<Schedule> findDatesDto(Long userId, String subjectCode, String classroomName, Long statusId, int semesterId);
+
+    @Query(value = """
+            select s from Schedule s, Calendar cal
+            where s.subjectID = ?1
+                and s.classroomID = ?2
+                and s.statusId = ?3
+                and s.calendarId = cal.id
+                and cal.semesterID = ?4""")
+    List<Schedule> findByClassSemSubj(Long subjectId, Long classroomId, Long statusId, int sem);
+
+    @Query(value = """
+            select s from Schedule s, Calendar cal
+            where s.date = ?1
+                and s.classroomID = ?2
+                and s.statusId = ?3
+                and s.calendarId = cal.id
+                and cal.semesterID = ?4""")
+    List<Schedule> findAllByClassDateSem(LocalDate date, Long classroomId, Long statusId, int sem);
 }
