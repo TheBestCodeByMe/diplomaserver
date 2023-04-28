@@ -3,8 +3,6 @@ package com.example.diploma.dao;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.AcademicPerfomance;
 import com.example.diploma.repo.AcademicPerformanceRepository;
-import com.example.diploma.repo.AcademicPerformanceRepository;
-import com.example.diploma.repo.AttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +27,7 @@ public class AcademicPerformanceDao {
     }
 
 
-    public List<AcademicPerfomance> findAllByPupilIDAndClassroomId(Long id, Long classId) {
-        return academicPerformanceRepository.findAllByPupilIDAndStatusIdAndClassID(id, EStatus.ACTIVE.getId(), classId);
+    public List<AcademicPerfomance> findAllByPupilIDAndClassroomId(Long id, Long classId, int sem) {
+        return academicPerformanceRepository.findAllByPupilStatusClassSem(id, EStatus.ACTIVE.getId(), classId, sem);
     }
 }

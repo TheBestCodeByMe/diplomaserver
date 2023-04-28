@@ -5,10 +5,8 @@ import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dto.diary.CreateDiaryDTORequest;
 import com.example.diploma.dto.diary.DiaryBySubjectDTORequest;
 import com.example.diploma.dto.diary.DiaryDTO;
-import com.example.diploma.model.Pupil;
-import com.example.diploma.model.Schedule;
-import com.example.diploma.model.Subject;
-import com.example.diploma.model.Teacher;
+import com.example.diploma.enumiration.EStatus;
+import com.example.diploma.model.*;
 import com.example.diploma.pojo.MessageResponse;
 import com.example.diploma.service.DiaryService;
 import com.example.diploma.service.GradebookService;
@@ -53,18 +51,23 @@ public class DiaryController {
             pupilDto.getDiary().forEach(diary -> {
                 Schedule schedule = scheduleList.stream().filter(it -> it.getCode().equals(diary.getScheduleCode())).findFirst().get();
                 if (diary.isAttendance()) {
-                    if (!gradebookService.getAcademicPerformance(pupil, schedule)) {
-                        result.add(gradebookService.addAttendance(pupil, schedule));
-                    } else {
-                        result.add("Error: Оценка у ученика " + pupil.getName() + " " + pupil.getLastname() + " уже выставлена, то есть он был в этот день");
+                    AcademicPerfomance academicPerfomance = gradebookService.getAcademicPerformance(pupil, schedule);
+                    if (academicPerfomance != null) {
+                        diaryService.updateAcademicPerformanceStatus(academicPerfomance, EStatus.CLOSED);
                     }
-                } else if (diary.getGrade() != 0) {
-                    System.out.println(diary.getGrade());
-                    if (!gradebookService.getAttendance(pupil, schedule)) {
-                        System.out.println(gradebookService.getAttendance(pupil, schedule));
+                    result.add(gradebookService.addAttendance(pupil, schedule));
+                } else {
+                    Attendance attendance = gradebookService.getAttendance(pupil, schedule);
+                    if (attendance != null) {
+                        diaryService.updateAttendanceStatus(attendance, EStatus.CLOSED);
+                    }
+                    if (diary.getGrade() != 0) {
                         result.add(gradebookService.addAcademicPerformance(pupil, schedule, diary));
                     } else {
-                        result.add("Error: Этого ученика " + pupil.getName() + " " + pupil.getLastname() + " не было в этот день");
+                        AcademicPerfomance academicPerfomance = gradebookService.getAcademicPerformance(pupil, schedule);
+                        if (academicPerfomance != null) {
+                            diaryService.updateAcademicPerformanceStatus(academicPerfomance, EStatus.CLOSED);
+                        }
                     }
                 }
             });
@@ -87,20 +90,14 @@ public class DiaryController {
 
         if (createDiaryDTORequest.isAttendance()) {
             diaryDTOStreamProcessor = diaryService.getAcademicPerformance(diaryDTOStreamProcessor);
-            if (!diaryDTOStreamProcessor.isAcademicPerformance()) {
-                diaryDTOStreamProcessor = diaryService.addAttendance(diaryDTOStreamProcessor);
-            } else {
-                diaryDTOStreamProcessor.setResponseEntity(new ResponseEntity<>("Error: Оценка у ученика уже выставлена, то есть он был в этот день", HttpStatus.BAD_REQUEST));
-                return diaryDTOStreamProcessor.getResponseEntity();
+            if (diaryDTOStreamProcessor.isAcademicPerform()) {
+                diaryService.updateAcademicPerformanceStatus(diaryDTOStreamProcessor.getAcademicPerformance(), EStatus.CLOSED);
             }
+            diaryDTOStreamProcessor = diaryService.addAttendance(diaryDTOStreamProcessor);
         } else if (createDiaryDTORequest.getClassName().equals("")) {
             diaryDTOStreamProcessor = diaryService.getAttendance(diaryDTOStreamProcessor);
-            if (!diaryDTOStreamProcessor.isAttendance()) {
-                diaryDTOStreamProcessor = diaryService.addAcademicPerformance(diaryDTOStreamProcessor, createDiaryDTORequest);
-            } else {
-                diaryDTOStreamProcessor.setResponseEntity(new ResponseEntity<>("Error: Этого ученика не было в этот день", HttpStatus.BAD_REQUEST));
-                return diaryDTOStreamProcessor.getResponseEntity();
-            }
+            diaryService.updateAttendanceStatus(diaryDTOStreamProcessor.getAttendance(), EStatus.CLOSED);
+            diaryDTOStreamProcessor = diaryService.addAcademicPerformance(diaryDTOStreamProcessor, createDiaryDTORequest);
         } else {
             diaryDTOStreamProcessor = diaryService.addHomework(diaryDTOStreamProcessor, createDiaryDTORequest);
         }
@@ -138,9 +135,9 @@ public class DiaryController {
         return ResponseEntity.ok(diaryService.getNumbAttendance(Long.parseLong(userId), false));
     }
 
-    @GetMapping("/getAverageGrade/{userId}")
-    public ResponseEntity<?> getAvrgGrade(@PathVariable(value = "userId") String userId) {
-        double avGrade = diaryService.getAverageGrade(Long.parseLong(userId), false, 0L);
+    @GetMapping("/getAverageGrade/{userId}/{sem}")
+    public ResponseEntity<?> getAvrgGrade(@PathVariable(value = "userId") String userId, @PathVariable(value = "sem") int sem) {
+        double avGrade = diaryService.getAverageGrade(Long.parseLong(userId), false, 0L, sem);
         if (avGrade != 0) {
             return ResponseEntity.ok(avGrade);
         } else {

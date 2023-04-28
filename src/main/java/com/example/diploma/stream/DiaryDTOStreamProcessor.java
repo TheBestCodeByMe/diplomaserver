@@ -1,9 +1,6 @@
 package com.example.diploma.stream;
 
-import com.example.diploma.model.Classroom;
-import com.example.diploma.model.Pupil;
-import com.example.diploma.model.Schedule;
-import com.example.diploma.model.Subject;
+import com.example.diploma.model.*;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 
@@ -20,7 +17,9 @@ public class DiaryDTOStreamProcessor {
     private Subject subject;
     private Schedule schedule;
     private Classroom classroom;
-    private boolean academicPerformance;
-    private boolean attendance;
+    private boolean isAcademicPerform;
+    private AcademicPerfomance academicPerformance;
+    private boolean attend;
+    private Attendance attendance;
     private ResponseEntity<?> responseEntity;
 }

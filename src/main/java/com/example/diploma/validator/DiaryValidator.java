@@ -39,11 +39,11 @@ public class DiaryValidator {
 
         if (pupil == null) {
             diaryDTOStreamProcessor.setResponseEntity(new ResponseEntity<>("Error: Ошибка в ФИО ученика", HttpStatus.BAD_REQUEST));
-            diaryDTOStreamProcessor.setAcademicPerformance(false);
+            diaryDTOStreamProcessor.setAcademicPerform(false);
             return diaryDTOStreamProcessor;
         } else if (subject == null) {
             diaryDTOStreamProcessor.setResponseEntity(new ResponseEntity<>("Error: Ошибка в названии предмета", HttpStatus.BAD_REQUEST));
-            diaryDTOStreamProcessor.setAcademicPerformance(false);
+            diaryDTOStreamProcessor.setAcademicPerform(false);
             return diaryDTOStreamProcessor;
         }
 
@@ -55,7 +55,7 @@ public class DiaryValidator {
 
         if (schedule == null) {
             diaryDTOStreamProcessor.setResponseEntity(new ResponseEntity<>("Error: Ошибка в дате занятия", HttpStatus.BAD_REQUEST));
-            diaryDTOStreamProcessor.setAcademicPerformance(false);
+            diaryDTOStreamProcessor.setAcademicPerform(false);
             return diaryDTOStreamProcessor;
         }
         diaryDTOStreamProcessor.setSchedule(schedule);

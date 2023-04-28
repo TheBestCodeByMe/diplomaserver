@@ -78,6 +78,18 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
+    public void updateAcademicPerformanceStatus(AcademicPerfomance academicPerfomance, EStatus status) {
+            academicPerfomance.setStatusId(status.getId());
+            academicPerformanceRepository.save(academicPerfomance);
+    }
+
+    @Override
+    public void updateAttendanceStatus(Attendance attendance, EStatus status) {
+        attendance.setStatusId(status.getId());
+        attendanceRepository.save(attendance);
+    }
+
+    @Override
     public DiaryDTOStreamProcessor addAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
         Attendance attendance = new Attendance();
 
@@ -111,13 +123,15 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public DiaryDTOStreamProcessor getAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
-        diaryDTOStreamProcessor.setAttendance(attendanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        diaryDTOStreamProcessor.setAttendance(attendanceDao.find(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        diaryDTOStreamProcessor.setAttend(diaryDTOStreamProcessor.getAttendance()!=null);
         return diaryDTOStreamProcessor;
     }
 
     @Override
     public DiaryDTOStreamProcessor getAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
-        diaryDTOStreamProcessor.setAcademicPerformance(academicPerformanceDao.isExist(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        diaryDTOStreamProcessor.setAcademicPerformance(academicPerformanceDao.find(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
+        diaryDTOStreamProcessor.setAcademicPerform(diaryDTOStreamProcessor.getAcademicPerformance() != null);
         return diaryDTOStreamProcessor;
     }
 
@@ -247,15 +261,20 @@ public class DiaryServiceImpl implements DiaryService {
 
     // TODO: change on selected subject
     @Override
-    public double getAverageGrade(Long id, Boolean flag, Long classId) {
+    public double getAverageGrade(Long id, Boolean flag, Long classId, int sem) {
+        System.out.println(id + " " + flag + " " + classId);
         Long pupilId;
+        Pupil pupil;
         if (flag) {
             pupilId = id;
         } else {
-            pupilId = pupilRepository.findByUserId(id).getId();
+            pupil = pupilRepository.findByUserId(id);
+            pupilId = pupil.getId();
+            classId = pupil.getClassroomId();
         }
-        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilIDAndClassroomId(pupilId, classId);
+        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilIDAndClassroomId(pupilId, classId, sem);
 
+        System.out.println("++++++++"+academicPerformanceList);
         double sumGrade = 0;
         for (AcademicPerfomance academicPerfomance : academicPerformanceList) {
             sumGrade += academicPerfomance.getGrade();
@@ -309,7 +328,7 @@ public class DiaryServiceImpl implements DiaryService {
             List<Attendance> attendances = attendanceDao.findAllByPupilID(pupil.getId());
             List<AcademicPerfomance> academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
             System.out.println(academicPerformances);
-            double avGrade = getAverageGrade(pupil.getId(), true, pupil.getClassroomId());
+            double avGrade = getAverageGrade(pupil.getId(), true, pupil.getClassroomId(), 1); // TODO: поменять, брать с фронта или проверять по датам
             diaryBySubjectDTOList.add(new DiaryBySubjectDTOList(pupil.getName(), pupil.getLastname(), pupil.getPatronymic(), pupil.getCode(), getDiaries(pupil, academicPerformances, subject, schedules, attendances), avGrade, getNumbAttendance(pupil.getId(), true), getSemesterGrade(avGrade)));
         }
 

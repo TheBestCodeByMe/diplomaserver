@@ -4,6 +4,9 @@ import com.example.diploma.dto.diary.CreateDiaryDTORequest;
 import com.example.diploma.dto.diary.DiaryBySubjectDTO;
 import com.example.diploma.dto.diary.DiaryBySubjectDTOResponse;
 import com.example.diploma.dto.diary.DiaryDTO;
+import com.example.diploma.enumiration.EStatus;
+import com.example.diploma.model.AcademicPerfomance;
+import com.example.diploma.model.Attendance;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
 import org.springframework.http.ResponseEntity;
 
@@ -13,6 +16,10 @@ public interface DiaryService {
     DiaryDTOStreamProcessor addAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest);
 
     DiaryDTOStreamProcessor addAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor);
+
+    void updateAcademicPerformanceStatus(AcademicPerfomance academicPerfomance, EStatus status);
+
+    void updateAttendanceStatus(Attendance attendance, EStatus status);
 
     DiaryDTOStreamProcessor addHomework(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest);
 
@@ -30,7 +37,7 @@ public interface DiaryService {
 
     ResponseEntity<?> getDiaryDTOByClass(String classForSearch);
 
-    double getAverageGrade(Long id, Boolean flag, Long classId);
+    double getAverageGrade(Long id, Boolean flag, Long classId, int sem);
 
     void saveGradesByUserId(Long userId);
 
