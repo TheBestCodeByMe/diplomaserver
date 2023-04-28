@@ -79,8 +79,8 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public void updateAcademicPerformanceStatus(AcademicPerfomance academicPerfomance, EStatus status) {
-            academicPerfomance.setStatusId(status.getId());
-            academicPerformanceRepository.save(academicPerfomance);
+        academicPerfomance.setStatusId(status.getId());
+        academicPerformanceRepository.save(academicPerfomance);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Override
     public DiaryDTOStreamProcessor getAttendance(DiaryDTOStreamProcessor diaryDTOStreamProcessor) {
         diaryDTOStreamProcessor.setAttendance(attendanceDao.find(diaryDTOStreamProcessor.getPupil().getClassroomId(), diaryDTOStreamProcessor.getSchedule().getId(), diaryDTOStreamProcessor.getPupil().getId()));
-        diaryDTOStreamProcessor.setAttend(diaryDTOStreamProcessor.getAttendance()!=null);
+        diaryDTOStreamProcessor.setAttend(diaryDTOStreamProcessor.getAttendance() != null);
         return diaryDTOStreamProcessor;
     }
 
@@ -135,6 +135,7 @@ public class DiaryServiceImpl implements DiaryService {
         return diaryDTOStreamProcessor;
     }
 
+    // TODO: херня
     @Override
     public List<DiaryDTO> getDiaryDTOByUser(Long id) {
         Pupil pupil = pupilDao.findByUserId(id);
@@ -185,6 +186,9 @@ public class DiaryServiceImpl implements DiaryService {
             attendances = attendanceDao.findAllByPupilID(pupil.getId());
             academicPerformances = academicPerformanceDao.findAllByPupilID(pupil.getId());
         }
+        System.out.println("===================");
+        System.out.println(attendances);
+        System.out.println(academicPerformances);
         List<DiaryDTO> diaryDtoList = new ArrayList<>();
 
         for (Schedule schedule : schedules) {
@@ -231,28 +235,29 @@ public class DiaryServiceImpl implements DiaryService {
 
     private DiaryDTO getAttendanceAndGrade(Pupil pupil, List<AcademicPerfomance> academicPerformances, List<Subject> subjects, Schedule schedule, List<Attendance> attendances) {
         DiaryDTO diaryDTO = new DiaryDTO();
-        String grade = "";
-        boolean isAttendance = false;
 
         for (Subject subject : subjects) {
             if (Objects.equals(schedule.getSubjectID(), subject.getId())) {
-                if (academicPerformances == null) {
-                    grade = "";
-                } else {
+                if (academicPerformances != null) {
                     for (AcademicPerfomance academicPerfomance : academicPerformances) {
                         if (Objects.equals(academicPerfomance.getLessonID(), schedule.getId())) {
-                            grade = String.valueOf(academicPerfomance.getGrade());
-                        } else {
-                            grade = "";
+                            if (attendances != null) {
+                                if (attendances.stream().anyMatch(it -> Objects.equals(it.getLessonID(), schedule.getId()))) {
+                                    return DiaryMapper.mapToDiaryDTO(schedule, pupil, classroomRepository.getById(pupil.getClassroomId()), true, String.valueOf(academicPerfomance.getGrade()), subject);
+                                } else {
+                                    return DiaryMapper.mapToDiaryDTO(schedule, pupil, classroomRepository.getById(pupil.getClassroomId()), false, String.valueOf(academicPerfomance.getGrade()), subject);
+                                }
+                            }
                         }
                     }
                 }
                 if (attendances != null) {
-                    for (Attendance attendance : attendances) {
-                        isAttendance = Objects.equals(schedule.getId(), attendance.getLessonID());
+                    if(attendances.stream().anyMatch(it -> Objects.equals(it.getLessonID(), schedule.getId())))
+                    {
+                        return DiaryMapper.mapToDiaryDTO(schedule, pupil, classroomRepository.getById(pupil.getClassroomId()), true, "", subject);
                     }
                 }
-                diaryDTO = DiaryMapper.mapToDiaryDTO(schedule, pupil, classroomRepository.getById(pupil.getClassroomId()), isAttendance, grade, subject);
+                diaryDTO = DiaryMapper.mapToDiaryDTO(schedule, pupil, classroomRepository.getById(pupil.getClassroomId()), false, "", subject);
             }
         }
 
@@ -274,7 +279,7 @@ public class DiaryServiceImpl implements DiaryService {
         }
         List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilIDAndClassroomId(pupilId, classId, sem);
 
-        System.out.println("++++++++"+academicPerformanceList);
+        System.out.println("++++++++" + academicPerformanceList);
         double sumGrade = 0;
         for (AcademicPerfomance academicPerfomance : academicPerformanceList) {
             sumGrade += academicPerfomance.getGrade();
