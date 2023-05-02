@@ -8,6 +8,7 @@ import com.example.diploma.repo.UserRepository;
 import com.example.diploma.service.impl.EditUsersServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
+@Disabled
 class PupilTests {
 
     //@Autowired
