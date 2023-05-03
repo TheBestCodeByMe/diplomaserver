@@ -267,7 +267,6 @@ public class DiaryServiceImpl implements DiaryService {
     // TODO: change on selected subject
     @Override
     public double getAverageGrade(Long id, Boolean flag, Long classId, int sem) {
-        System.out.println(id + " " + flag + " " + classId);
         Long pupilId;
         Pupil pupil;
         if (flag) {
@@ -275,11 +274,9 @@ public class DiaryServiceImpl implements DiaryService {
         } else {
             pupil = pupilRepository.findByUserId(id);
             pupilId = pupil.getId();
-            classId = pupil.getClassroomId();
         }
-        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilIDAndClassroomId(pupilId, classId, sem);
+        List<AcademicPerfomance> academicPerformanceList = academicPerformanceDao.findAllByPupilIDAndSem(pupilId, sem);
 
-        System.out.println("++++++++" + academicPerformanceList);
         double sumGrade = 0;
         for (AcademicPerfomance academicPerfomance : academicPerformanceList) {
             sumGrade += academicPerfomance.getGrade();

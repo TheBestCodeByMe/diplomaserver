@@ -30,11 +30,6 @@ public class AnalyticController {
 
     @GetMapping("/by/user/get/{userId}/{sem}")
     public ResponseEntity<?> getAnalyticPageByUser(@PathVariable(value = "userId") String userId, @PathVariable(value = "sem") String sem) {
-        analyticService.getAnalyticPage(Long.parseLong(userId), Integer.parseInt(sem));
-        //if (diaryDTOList == null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Таких пользователей нет"));
-        //} else {
-        //    return ResponseEntity.ok(diaryDTOList);
-        //}
+        return ResponseEntity.ok(analyticService.getAnalyticPage(Long.parseLong(userId), Integer.parseInt(sem)));
     }
 }

@@ -10,13 +10,17 @@ import java.util.List;
 
 public interface AcademicPerformanceRepository extends JpaRepository<AcademicPerfomance, Long> {
     boolean existsByClassIDAndLessonIDAndPupilIDAndStatusId(Long classId, Long lessonId, Long pupilId, Long statusId);
+
     AcademicPerfomance findByClassIDAndLessonIDAndPupilIDAndStatusId(Long classId, Long lessonId, Long pupilId, Long statusId);
+
     List<AcademicPerfomance> findAllByPupilIDAndStatusId(Long pupilId, Long statusId);
 
-    @Query("select a from AcademicPerfomance a, Schedule s, Calendar c where a.pupilID = ?1 and a.statusId = ?2 and a.lessonID = s.id and s.calendarId = c.id and c.semesterID = ?4")
+    @Query(value = "select a from AcademicPerfomance a, Schedule s, Calendar c where a.pupilID = ?1 and a.statusId = ?2 and a.lessonID = s.id and s.calendarId = c.id and c.semesterID = ?3")
     List<AcademicPerfomance> findAllByPupilStatusSem(Long pupilId, Long statusId, int sem);
-    @Query("select a from AcademicPerfomance a, Schedule s, Calendar c where a.classID = ?1 and a.statusId = ?2 and a.lessonID = s.id and s.calendarId = c.id and c.semesterID = ?4")
+
+    @Query(value = "select a from AcademicPerfomance a, Schedule s, Calendar c where a.classID = ?1 and a.statusId = ?2 and a.lessonID = s.id and s.calendarId = c.id and c.semesterID = ?3")
     List<AcademicPerfomance> findAllByClassStatusSem(Long classId, Long statusId, int sem);
+}
 
 //    @Query(value = """
 //            select s.schedule_date as date, AVG(a.academic_performance_grade) as averageGrade
