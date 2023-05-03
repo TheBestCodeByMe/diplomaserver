@@ -1,39 +1,19 @@
 package com.example.diploma.service.impl;
 
 import com.example.diploma.dao.*;
-import com.example.diploma.dto.analytic.AcademicPerformanceInClassDTO;
-import com.example.diploma.dto.analytic.AcademicPerformanceInMonthDTO;
-import com.example.diploma.dto.analytic.AnalyticDTOResponse;
-import com.example.diploma.dto.analytic.AttendanceInMonthDTO;
-import com.example.diploma.dto.diary.*;
+import com.example.diploma.dto.analytic.*;
 import com.example.diploma.enumiration.EStatus;
-import com.example.diploma.mapper.DiaryMapper;
 import com.example.diploma.model.*;
-import com.example.diploma.pojo.MessageResponse;
-import com.example.diploma.repo.*;
 import com.example.diploma.service.AnalyticService;
 import com.example.diploma.service.DiaryService;
-import com.example.diploma.stream.DiaryDTOStreamProcessor;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-
-import static java.time.LocalDate.parse;
-import static java.time.format.DateTimeFormatter.ofPattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +33,9 @@ public class AnalyticServiceImpl implements AnalyticService {
 
     private final DiaryService diaryService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     // TODO: do this method
     @Override
     public AnalyticDTOResponse getAnalyticPage(Long userId, int sem) {
@@ -60,6 +43,37 @@ public class AnalyticServiceImpl implements AnalyticService {
         List<AcademicPerformanceInClassDTO> academicPerformanceInClassDTO = new ArrayList<>();
         List<AcademicPerformanceInMonthDTO> academicPerformanceInMonthDTO = new ArrayList<>();
         List<AttendanceInMonthDTO> attendanceInMonthDTO = new ArrayList<>();
+
+        Pupil pupil = pupilDao.findByUserId(userId);
+        List<Attendance> attendanceList = attendanceDao.findAllByPupilID(pupil.getId(), sem);
+        List<AcademicPerfomance> academicPerfomanceList = academicPerformanceDao.findAllByPupilID(pupil.getId());
+        List<Schedule> scheduleList = scheduleDao.findAllByClassroomID(pupil.getClassroomId());
+        List<Attendance> attendanceClassList = attendanceDao.findAllByClassID(pupil.getClassroomId(), sem);
+        List<AcademicPerfomance> academicPerfomanceClassList = academicPerformanceDao.findAllByClassSem(pupil.getClassroomId(), sem);
+
+        int excellentStudents = 0;
+        int goodLevel = 0;
+        int satisfactorilyLevel = 0;
+        int lowLevel = 0;
+
+        scheduleList.stream().forEach(schedule -> {
+            academicPerfomanceClassList.forEach(academicPerfomance -> {
+                if(academicPerfomance.getGrade()>8) {excellentStudents++}
+                if (academicPerfomance.getGrade()<=8||academicPerfomance.getGrade()>=6) {goodLevel++}
+                if (academicPerfomance.getGrade()==4||academicPerfomance.getGrade()==5) {satisfactorilyLevel++}
+                if (academicPerfomance.getGrade()<4) {lowLevel++}
+            });
+        });
+
+        academicPerformanceInClassDTO.add(AcademicPerformanceInClassDTO("Отлично", excellentStudents));
+        academicPerformanceInClassDTO.add(AcademicPerformanceInClassDTO("Хорошо", goodLevel));
+        academicPerformanceInClassDTO.add(AcademicPerformanceInClassDTO("Удовлетворительно", satisfactorilyLevel));
+        academicPerformanceInClassDTO.add(AcademicPerformanceInClassDTO("Неудовлетворительно", lowLevel));
+
+/*        List<AcademicPerformanceInMonthDTODB> academicPerformanceInMonthDB = academicPerformanceDao.findAllBy(userId, EStatus.ACTIVE.getId(), pupil.getClassroomId(), sem);
+
+        List<AcademicPerformanceInMonthDTODB> usersdto = academicPerformanceDao.findAllBy(userId, EStatus.ACTIVE.getId(), pupil.getClassroomId(), sem).stream().map(userprojection -> modelMapper.map(userprojection, AcademicPerformanceInMonthDTODB.class))
+                .collect(Collectors.toList());*/
 
         analyticDTOResponse.setAcademicPerformanceInMonthDTOList(academicPerformanceInMonthDTO);
         analyticDTOResponse.setAcademicPerformanceInClassDTOList(academicPerformanceInClassDTO);

@@ -28,4 +28,12 @@ public class AttendanceDao {
     public List<Attendance> findAllByPupilID(Long id) {
         return attendanceRepository.findAllByPupilIDAndStatusId(id, EStatus.ACTIVE.getId());
     }
+
+    public List<Attendance> findAllByPupilID(Long id, int sem) {
+        return attendanceRepository.findAllByPupilIDStatusIdAndSem(id, EStatus.ACTIVE.getId(), sem);
+    }
+
+    public List<Attendance> findAllByClassID(Long id, int sem) {
+        return attendanceRepository.findAllByClassIDStatusIdAndSem(id, EStatus.ACTIVE.getId(), sem);
+    }
 }

@@ -8,10 +8,7 @@ import com.example.diploma.dto.diary.DiaryDTO;
 import com.example.diploma.enumiration.EStatus;
 import com.example.diploma.model.*;
 import com.example.diploma.pojo.MessageResponse;
-import com.example.diploma.service.DiaryService;
-import com.example.diploma.service.GradebookService;
-import com.example.diploma.service.PupilService;
-import com.example.diploma.service.ScheduleService;
+import com.example.diploma.service.*;
 import com.example.diploma.stream.DiaryDTOStreamProcessor;
 import com.example.diploma.validator.DiaryValidator;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +26,15 @@ import java.util.List;
 public class AnalyticController {
 
     private final DiaryService diaryService;
+    private final AnalyticService analyticService;
 
-    @GetMapping("/by/user/get/{userId}")
-    public ResponseEntity<?> getAnalyticPageByUser(@PathVariable(value = "userId") String userId) {
-        List<DiaryDTO> diaryDTOList = diaryService.getDiaryDTOByUser(Long.parseLong(userId));
-        if (diaryDTOList == null) {
+    @GetMapping("/by/user/get/{userId}/{sem}")
+    public ResponseEntity<?> getAnalyticPageByUser(@PathVariable(value = "userId") String userId, @PathVariable(value = "sem") String sem) {
+        analyticService.getAnalyticPage(Long.parseLong(userId), Integer.parseInt(sem));
+        //if (diaryDTOList == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Таких пользователей нет"));
-        } else {
-            return ResponseEntity.ok(diaryDTOList);
-        }
+        //} else {
+        //    return ResponseEntity.ok(diaryDTOList);
+        //}
     }
 }
