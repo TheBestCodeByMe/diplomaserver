@@ -50,6 +50,7 @@ public class EditUsersServiceImpl implements EditUsersService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleDao scheduleDao;
 
+    // TODO: сохраняет дважды родителей
     @Override
     public ResponseEntity<?> createPupil(CreatePupilDTORequest createPupilDTORequest) {
         Pupil pupil = PupilMapper.mapPupilDTOToPupil(createPupilDTORequest, GenerationCodeServiceImpl.generateCode());
