@@ -53,6 +53,7 @@ public class EditUsersServiceImpl implements EditUsersService {
     // TODO: сохраняет дважды родителей
     @Override
     public ResponseEntity<?> createPupil(CreatePupilDTORequest createPupilDTORequest) {
+        System.out.println("123456789");
         Pupil pupil = PupilMapper.mapPupilDTOToPupil(createPupilDTORequest, GenerationCodeServiceImpl.generateCode());
         Parents parents = ParentsMapper.mapPupilDTOToParents(createPupilDTORequest, GenerationCodeServiceImpl.generateCode());
         Classroom classroom = ClassroomMapper.mapCreatePupilDTOToClassroom(createPupilDTORequest);
@@ -61,12 +62,9 @@ public class EditUsersServiceImpl implements EditUsersService {
         if (pupilDao.findByFio(pupil.getName(), pupil.getLastname(), pupil.getPatronymic()) != null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой учащийся уже существует"));
         } else {
-
             if (classroomFromDB != null) {
                 pupil.setClassroomId(classroomFromDB.getId());
-
                 Parents parent = parentsDao.findByFIO(parents.getNameDad(), parents.getLastnameDad(), parents.getPatronymicDad(), parents.getNameMom(), parents.getLastnameMom(), parents.getPatronymicMom());
-
                 if (parent != null) {
                     pupil.setParentsId(parent.getId());
                 } else {
@@ -77,7 +75,6 @@ public class EditUsersServiceImpl implements EditUsersService {
             } else {
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого класса не существует"));
             }
-
             return ResponseEntity.ok(PupilMapper.mapToPupilDTO(pupilRepository.save(pupil), parents, classroom));
         }
     }
