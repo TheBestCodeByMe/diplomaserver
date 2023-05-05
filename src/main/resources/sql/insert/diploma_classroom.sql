@@ -1,0 +1,5 @@
+INSERT INTO diploma.classroom (classroom_id, teacher_classroom_id, classroom_name, classroom_status_id, classroom_code, create_date, close_date) VALUES (12, 10, '11 А', 1, '1675690168106', '2023-02-06', null);
+INSERT INTO diploma.classroom (classroom_id, teacher_classroom_id, classroom_name, classroom_status_id, classroom_code, create_date, close_date) VALUES (67, 62, '11 Б', 1, '1677431785637', '2023-02-26', null);
+INSERT INTO diploma.classroom (classroom_id, teacher_classroom_id, classroom_name, classroom_status_id, classroom_code, create_date, close_date) VALUES (68, 63, '11 В', 1, '1677432078374', '2023-02-26', null);
+INSERT INTO diploma.classroom (classroom_id, teacher_classroom_id, classroom_name, classroom_status_id, classroom_code, create_date, close_date) VALUES (96, 64, '8 А', 1, '1683301804531', '2023-05-05', null);
+INSERT INTO diploma.classroom (classroom_id, teacher_classroom_id, classroom_name, classroom_status_id, classroom_code, create_date, close_date) VALUES (108, 1, '9 А', 1, '1683310674959', '2023-05-05', null);
