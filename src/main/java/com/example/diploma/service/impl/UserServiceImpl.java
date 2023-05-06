@@ -5,6 +5,8 @@ import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dao.UserDao;
 import com.example.diploma.dto.AllUserDTO;
 import com.example.diploma.dto.UserDTO;
+import com.example.diploma.dto.pupilsAndTeachersDto.TeacherPupilDTO;
+import com.example.diploma.dto.pupilsAndTeachersDto.TeacherPupilDTOResponse;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.model.User;

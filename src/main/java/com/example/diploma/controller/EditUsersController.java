@@ -3,6 +3,7 @@ package com.example.diploma.controller;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.dto.pupilsAndTeachersDto.TeacherPupilDTOResponse;
 import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
@@ -28,7 +29,6 @@ import java.util.Objects;
 public class EditUsersController { // TODO: убрать возможность нескольких добавлений пользователя к ученику/учителю
 
     private final EditUsersService editUsersService;
-
 
     @PostMapping("/createPupilDTO")
     public ResponseEntity<?> createPupil(@Validated @RequestBody CreatePupilDTORequest pupilDTO) {
@@ -91,5 +91,10 @@ public class EditUsersController { // TODO: убрать возможность 
         } else {
             return ResponseEntity.ok("Пользователь разблокирован");
         }
+    }
+
+    @GetMapping("/pupils/teachers/get")
+    public ResponseEntity<TeacherPupilDTOResponse> getPupilsTeachers() {
+        return ResponseEntity.ok(editUsersService.getPupilsTeachers());
     }
 }

@@ -3,6 +3,7 @@ package com.example.diploma.service;
 import com.example.diploma.dto.classroom.ClassroomDTO;
 import com.example.diploma.dto.pupil.CreatePupilDTORequest;
 import com.example.diploma.dto.pupil.PupilDTO;
+import com.example.diploma.dto.pupilsAndTeachersDto.TeacherPupilDTOResponse;
 import com.example.diploma.dto.schedule.CreateScheduleDTORequest;
 import com.example.diploma.dto.subject.CreateSubjectDTORequest;
 import com.example.diploma.dto.subject.SubjectDTO;
@@ -35,4 +36,6 @@ public interface EditUsersService {
     boolean blockUser(String login) throws ResourceNotFoundException;
 
     boolean unblockUser(String login);
+
+    TeacherPupilDTOResponse getPupilsTeachers();
 }
