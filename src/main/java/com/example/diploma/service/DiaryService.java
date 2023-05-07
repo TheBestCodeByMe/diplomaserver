@@ -41,5 +41,5 @@ public interface DiaryService {
 
     void saveGradesByUserId(Long userId);
 
-    ResponseEntity<?> getDiariesByClassAndSubject(String classname, String subject);
+    ResponseEntity<?> getDiariesByClassAndSubject(String classname, String subject, Long userId, int sem);
 }

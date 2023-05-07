@@ -23,7 +23,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
      */
     @Query(value = """
             select s from Schedule s, Classroom c, Subject sub, Teacher t, Calendar cal
-            where c.classroomTeacherId = t.id and t.userId = ?1
+            where s.teacherID = t.id and t.userId = ?1
             and s.subjectID = sub.id
             and sub.code = ?2
             and c.id = s.classroomID
@@ -41,6 +41,16 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
                 and s.calendarId = cal.id
                 and cal.semesterID = ?4""")
     List<Schedule> findByClassSemSubj(Long subjectId, Long classroomId, Long statusId, int sem);
+
+    @Query(value = """
+            select s from Schedule s, Calendar cal
+            where s.subjectID = ?1
+                and s.classroomID = ?2
+                and s.statusId = ?3
+                and s.calendarId = cal.id
+                and cal.semesterID = ?4
+                and s.teacherID = ?5""")
+    List<Schedule> findByClassSemSubjTeacher(Long subjectId, Long classroomId, Long statusId, int sem, Long teacherId);
 
     @Query(value = """
             select s from Schedule s, Calendar cal

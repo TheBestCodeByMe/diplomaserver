@@ -39,6 +39,10 @@ public class ScheduleDao {
         return scheduleRepository.findByClassSemSubj(subjectId, classroomId, EStatus.ACTIVE.getId(), sem);
     }
 
+    public List<Schedule> findAllByClassSemSubjTeacher(Long classroomId, int sem, Long subjectId, Long teacherId) {
+        return scheduleRepository.findByClassSemSubjTeacher(subjectId, classroomId, EStatus.ACTIVE.getId(), sem, teacherId);
+    }
+
     public List<Schedule> findAllByClassroomIDAndDate(Long classroomId, LocalDate date) {
         return scheduleRepository.findAllByClassroomIDAndDate(classroomId, date);
     }

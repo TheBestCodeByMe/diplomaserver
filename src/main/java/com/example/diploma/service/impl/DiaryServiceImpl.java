@@ -52,6 +52,8 @@ public class DiaryServiceImpl implements DiaryService {
     private final ClassroomRepository classroomRepository;
     private final ClassroomDao classroomDao;
 
+    private final TeacherDao teacherDao;
+
     @Override
     public DiaryDTOStreamProcessor addAcademicPerformance(DiaryDTOStreamProcessor diaryDTOStreamProcessor, CreateDiaryDTORequest createDiaryDTORequest) {
         AcademicPerfomance academicPerfomance = new AcademicPerfomance();
@@ -314,17 +316,19 @@ public class DiaryServiceImpl implements DiaryService {
         }
     }
 
+    // TODO: add sem to params
     @Override
-    public ResponseEntity<?> getDiariesByClassAndSubject(String classname, String subjectCode) {
+    public ResponseEntity<?> getDiariesByClassAndSubject(String classname, String subjectCode, Long userId, int sem) {
         List<DiaryBySubjectDTOList> diaryBySubjectDTOList = new ArrayList<>();
         Classroom classroom = classroomDao.findClassroomByName(classname);
+        Subject subject = subjectDao.findBySubjectCode(subjectCode);
+        Teacher teacher = teacherDao.findByUserId(userId);
         if (classroom == null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Такого класса нет"));
         }
 
         List<Pupil> pupilList = pupilDao.findAllByClassroomId(classroom.getId());
-        List<Schedule> schedules = scheduleDao.findAllByClassroomID(classroom.getId());
-        Subject subject = subjectDao.findBySubjectCode(subjectCode);
+        List<Schedule> schedules = scheduleDao.findAllByClassSemSubjTeacher(classroom.getId(), sem, subject.getId(), teacher.getId());
 
         for (Pupil pupil : pupilList) {
             List<Attendance> attendances = attendanceDao.findAllByPupilID(pupil.getId());

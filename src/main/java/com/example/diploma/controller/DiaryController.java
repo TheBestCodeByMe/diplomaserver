@@ -156,8 +156,8 @@ public class DiaryController {
         return ResponseEntity.ok("Сохранено в папку resources!");
     }
 
-    @GetMapping("/getDiaries/{classname}/{subject}")
-    public ResponseEntity<?> getDiaryByClassAndSubject(@PathVariable(value = "classname") String classname, @PathVariable(value = "subject") String subject) {
-        return diaryService.getDiariesByClassAndSubject(classname, subject);
+    @GetMapping("/getDiaries/{classname}/{subject}/{userId}/{sem}")
+    public ResponseEntity<?> getDiaryByClassAndSubject(@PathVariable(value = "classname") String classname, @PathVariable(value = "subject") String subject, @PathVariable(value = "userId") Long userId, @PathVariable(value = "sem") int sem) {
+        return diaryService.getDiariesByClassAndSubject(classname, subject, userId, sem);
     }
 }
