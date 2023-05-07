@@ -21,5 +21,7 @@ public class UserDao {
         return userRepository.findByLoginWithinOpt(login);
     }
 
-    public List<User> findAll() {return userRepository.findAllByStatus(EStatus.ACTIVE.getId());}
+    public List<User> findAllActive() {return userRepository.findAllByStatus(EStatus.ACTIVE.getId());}
+
+    public List<User> findAll() {return userRepository.findAll();}
 }

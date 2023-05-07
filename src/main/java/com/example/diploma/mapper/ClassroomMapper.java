@@ -30,7 +30,7 @@ public class ClassroomMapper {
 
     public static Classroom mapClassroomDTOToClassroom(ClassroomDTO classroomDTO, long teacherId, String classroomCode) {
         Classroom classroom = new Classroom();
-        classroom.setName(classroomDTO.getName());
+        classroom.setName(classroomDTO.getName().trim());
         classroom.setClassroomTeacherId(teacherId);
         classroom.setCode(classroomCode);
         classroom.setStatusId(EStatus.ACTIVE.getId());

@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface UserService {
 
+    List<AllUserDTO> getAllActiveUsers();
+
     List<AllUserDTO> getAllUsers();
 
     ResponseEntity<UserDTO> getUserById(Long userId)

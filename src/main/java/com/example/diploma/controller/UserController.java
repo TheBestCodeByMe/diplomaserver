@@ -21,6 +21,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
+    public ResponseEntity<?> getAllActiveUsers() {
+        return ResponseEntity.ok(Objects.requireNonNullElse(userService.getAllActiveUsers(), ""));
+    }
+
+    @GetMapping("/all/users/get")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(Objects.requireNonNullElse(userService.getAllUsers(), ""));
     }

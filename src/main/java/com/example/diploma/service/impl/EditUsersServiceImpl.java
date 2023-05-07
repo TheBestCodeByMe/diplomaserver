@@ -115,7 +115,7 @@ public class EditUsersServiceImpl implements EditUsersService {
 
     @Override
     public ResponseEntity<?> createSubject(CreateSubjectDTORequest createSubjectDTORequest) {
-        if (subjectDao.findBySubjectName(createSubjectDTORequest.getName().toLowerCase()) == null) {
+        if (subjectDao.findBySubjectName(createSubjectDTORequest.getName().toLowerCase().trim()) == null) {
             Subject subject = subjectRepository.save(SubjectMapper.mapSubjectDTOToSubject(createSubjectDTORequest, GenerationCodeServiceImpl.generateCode()));
             return ResponseEntity.ok(SubjectMapper.mapSubjectToSubjectDTO(subject));
         }
@@ -164,7 +164,7 @@ public class EditUsersServiceImpl implements EditUsersService {
     public ResponseEntity<?> createClassroom(ClassroomDTO classroomDTO) {
         Teacher teacher = teacherDao.findByFio(classroomDTO.getClassroomTeacherName(), classroomDTO.getClassroomTeacherLastname(), classroomDTO.getClassroomTeacherPatronymic());
 
-        if (classroomDao.findClassroomByName(classroomDTO.getName()) != null) {
+        if (classroomDao.findClassroomByName(classroomDTO.getName().trim()) != null) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Такой класс уже есть"));
             //classroomDTO.setName("Такой класс уже есть");
         } else if (teacher == null) {
@@ -223,7 +223,6 @@ public class EditUsersServiceImpl implements EditUsersService {
         }
         return response;
     }
-
 
     @Override
     public TeacherPupilDTOResponse getPupilsTeachers() {

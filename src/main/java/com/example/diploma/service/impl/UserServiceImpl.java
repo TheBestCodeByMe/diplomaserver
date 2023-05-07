@@ -5,8 +5,6 @@ import com.example.diploma.dao.TeacherDao;
 import com.example.diploma.dao.UserDao;
 import com.example.diploma.dto.AllUserDTO;
 import com.example.diploma.dto.UserDTO;
-import com.example.diploma.dto.pupilsAndTeachersDto.TeacherPupilDTO;
-import com.example.diploma.dto.pupilsAndTeachersDto.TeacherPupilDTOResponse;
 import com.example.diploma.model.Pupil;
 import com.example.diploma.model.Teacher;
 import com.example.diploma.model.User;
@@ -38,9 +36,9 @@ public class UserServiceImpl implements UserService {
     private final TeacherDao teacherDao;
 
     @Override
-    public List<AllUserDTO> getAllUsers() {
+    public List<AllUserDTO> getAllActiveUsers() {
         List<AllUserDTO> userDTOList = new ArrayList<>();
-        List<User> userList = userDao.findAll();
+        List<User> userList = userDao.findAllActive();
 
         for (User user:
                userList) {
@@ -48,6 +46,19 @@ public class UserServiceImpl implements UserService {
         }
 
        return userDTOList;
+    }
+
+    @Override
+    public List<AllUserDTO> getAllUsers() {
+        List<AllUserDTO> userDTOList = new ArrayList<>();
+        List<User> userList = userDao.findAll();
+
+        for (User user:
+                userList) {
+            userDTOList.add(UserMapper.mapUserToAllUserDTO(user));
+        }
+
+        return userDTOList;
     }
 
     @Override
