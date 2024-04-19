@@ -7,8 +7,8 @@ DB_PASSWORD=$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 25) 2>
 DB_NAME="${DB_SCOPE}_${DB_PREFIX}_db"
 DB_SCHEMA="${DB_SCOPE}_${DB_PREFIX}_schema"
 # enter your sudo password (not for postgresql user)
-SUDO_PASS="89392019208" # root user password, super user, then delete for security
-DB_HOST_NAME="ulia-dev.smartsafeschool.com"
+SUDO_PASS="pass" # root user password, super user, then delete for security
+DB_HOST_NAME="host"
 DB_PORT="5432"
 
 #echo $SUDO_PASS > ~/.secret
